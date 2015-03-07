@@ -52,7 +52,7 @@ public interface DivaService extends RemoteService {
 
     String exportData(String rowGroup);
     
-    String exportRankingData();
+    String exportRankingData(int[] indexes);
     
     String exportImgAsPdf(String chartType,String quality);
     

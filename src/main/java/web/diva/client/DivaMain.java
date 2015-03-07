@@ -325,10 +325,11 @@ public class DivaMain implements EntryPoint, ChangeHandler {
             public void onSuccess(TreeMap results) {
                 for (Object o : results.keySet()) {
                     int key = (Integer) o;
-                    selectDatasetList.addItem((String) results.get(key));
-                    datasetsNames.put(results.get(key), key);                    
+                    String str =formatTitle((String) results.get(key));
+                    selectDatasetList.addItem(str);
+                    datasetsNames.put(str, key);                    
                     selectDatasetList.setItemSelected(0, true);
-                    tempSelectDatasetList.addItem((String) results.get(key));
+                    tempSelectDatasetList.addItem(str);
                      tempSelectDatasetList.setItemSelected(0, true);
                     SelectionManager.Busy_Task(false, true);
                 }
@@ -369,6 +370,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         datasetInfo = datasetInfos;
         updateLeftPanel(datasetInfos);
         if (reload) {
+            
             Selection s = selectionManager.getSelectedRows();
             selectionManager.setSelectedRows(s);
             return;
@@ -395,7 +397,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         HTML ieErrorLabel = new HTML("<p align=\"left\" style=\"margin-left:0px;color:red;\"><font size=\"3\">It looks like you are using an old version of Internet Explorer. Unfortunatly Internet Explorer 6,7,8,9 and 10 are not supported in the curent version of DiVA. Please try other browsers.</font></p>");
         ieErrorLabel.setWidth("400px");
       
-        HTML infoLabel = new HTML("<p align=\"justify\" style=\"margin-left:0px;color:#585858;\"><font size=\"2\">Start using DiVA by selecting dataset</font></p>");
+        HTML infoLabel = new HTML("<p align=\"justify\" style=\"margin-left:0px;color:#585858;\"><font size=\"2\">Start using DiVA by selecting a dataset</font></p>");
         infoLabel.setWidth("400px");
         
 
@@ -418,10 +420,12 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         leftSideLayout.setCellVerticalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_MIDDLE);
         leftSideLayout.setCellHorizontalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_LEFT);
 
-        HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available at <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>DiVA omics page</a>. </font></p>");
+        HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
         leftSideLayout.add(info2Label);
 
         Image screenImg = new Image("images/divascreen1.png");
+        screenImg.getElement().setAttribute("style","width:640px;");
+      
         welcomePage.add(screenImg);
         welcomePage.setCellVerticalAlignment(screenImg, VerticalPanel.ALIGN_MIDDLE);
         welcomePage.setCellHorizontalAlignment(screenImg, VerticalPanel.ALIGN_CENTER);
@@ -529,7 +533,6 @@ public class DivaMain implements EntryPoint, ChangeHandler {
     }
 
     private ProfilePlotComponent profilePlotComponent;
-    private LineChartResults profilePlotResult;
     /**
      * This method is responsible for invoking line chart method
      *
@@ -547,7 +550,6 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
                     @Override
                     public void onSuccess(LineChartResults result) {
-                        profilePlotResult =result;
                         if (profilePlotComponent != null) {  
                             topMidLayout.remove(profilePlotComponent.getLayout());
                             profilePlotComponent.getLayout().removeFromParent();
@@ -676,5 +678,19 @@ private PCAImageResult pcaImgRsult;
         selectSubDatasetList.setVisible(false);
         getDatasetsList(newName);//get available dataset names
         SelectionManager.Busy_Task(false, true);
+    }
+  
+    private String formatTitle(String source) {
+
+        StringBuilder res = new StringBuilder();
+        source =source.toLowerCase();
+        String[] strArr = source.split(" ");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+            res.append(str).append(" ");
+        }
+        return res.toString().trim();
     }
 }

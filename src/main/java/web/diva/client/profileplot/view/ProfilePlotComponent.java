@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.util.Page;
+import com.smartgwt.client.util.SC;
 
 import web.diva.client.DivaServiceAsync;
 import web.diva.client.selectionmanager.ModularizedListener;
@@ -48,10 +49,11 @@ public class ProfilePlotComponent extends ModularizedListener {
     @Override
     public void selectionChanged(Selection.TYPE type) {
         if (type == Selection.TYPE.OF_ROWS) {
-            Selection sel = selectionManager.getSelectedRows();
+            Selection sel = selectionManager.getSelectedRows();            
             if (sel != null) {
                 int[] selectedRows = sel.getMembers();
                 this.updateSelection(selectedRows);
+            }else{
             }
         }
     }

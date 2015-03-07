@@ -644,7 +644,7 @@ public class PCAPlotComponent extends ModularizedListener {
 
     @SuppressWarnings("UnnecessaryBoxing")
     private void calcMaxImgResize() {
-        calMaxImgWidth=Page.getScreenHeight()-(200);
+        calMaxImgWidth=Page.getScreenHeight()-(300);
         maxScaler = Float.valueOf(results.getImgWidth())/Float.valueOf(calMaxImgWidth);
 
 

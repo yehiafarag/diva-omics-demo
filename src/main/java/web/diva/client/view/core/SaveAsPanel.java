@@ -29,17 +29,17 @@ public class SaveAsPanel extends PopupPanel {
         this.setModal(false);
         
         VerticalPanel framLayout = new VerticalPanel();
-        framLayout.setWidth("300px");
-        framLayout.setHeight("100px");
+        framLayout.setWidth("200px");
+        framLayout.setHeight("80px");
 
         VerticalPanel mainBodyLayout = new VerticalPanel();
-        mainBodyLayout.setWidth("298px");
-        mainBodyLayout.setHeight("128px");
+        mainBodyLayout.setWidth("198px");
+        mainBodyLayout.setHeight("78px");
         
         mainBodyLayout.setStyleName("modalPanelBody");
        
           HorizontalPanel topLayout = new HorizontalPanel();          
-        topLayout.setWidth("300px");
+        topLayout.setWidth("200px");
         topLayout.setHeight("20px");
         Label title = new Label("Save "+fileType);
         title.setStyleName("labelheader");
@@ -62,7 +62,7 @@ public class SaveAsPanel extends PopupPanel {
         topLayout.setCellHorizontalAlignment(closeBtn, HorizontalPanel.ALIGN_RIGHT);
         
         final HorizontalPanel btnsLayout = new HorizontalPanel();
-        btnsLayout.setWidth("298px");
+        btnsLayout.setWidth("198px");
         btnsLayout.setHeight("30px");
         mainBodyLayout.add(btnsLayout);
         mainBodyLayout.setCellVerticalAlignment(btnsLayout, VerticalPanel.ALIGN_MIDDLE);
@@ -77,7 +77,7 @@ public class SaveAsPanel extends PopupPanel {
             }
         });
         downloadLink.setStyleName("buttonRounded");
-        downloadLink.setWidth("80px");
+        downloadLink.setWidth("60px");
         btnsLayout.add(downloadLink);
         btnsLayout.setCellVerticalAlignment(downloadLink, HorizontalPanel.ALIGN_MIDDLE);
         btnsLayout.setCellHorizontalAlignment(downloadLink, HorizontalPanel.ALIGN_CENTER);
@@ -90,7 +90,7 @@ public class SaveAsPanel extends PopupPanel {
             }
         });
         openLink.setStyleName("buttonRounded");
-        openLink.setWidth("80px");
+        openLink.setWidth("60px");
         btnsLayout.add(openLink);
         btnsLayout.setCellVerticalAlignment(openLink, HorizontalPanel.ALIGN_MIDDLE);
         btnsLayout.setCellHorizontalAlignment(openLink, HorizontalPanel.ALIGN_CENTER);

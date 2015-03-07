@@ -212,10 +212,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
     }
 
     @Override
-    public String exportRankingData() {
+    public String exportRankingData(int[] selection) {
         String appPath = this.getServletContext().getRealPath("/");
         String url = this.getThreadLocalRequest().getRequestURL().toString();
-    return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).exportRankTableToTextFile(appPath, getThreadLocalRequest().getSession().getId(), url.substring(0, (url.length() - 10)));
+    return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).exportRankTableToTextFile(appPath, getThreadLocalRequest().getSession().getId(), url.substring(0, (url.length() - 10)),selection);
         
     }
 

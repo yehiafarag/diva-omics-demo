@@ -91,8 +91,9 @@ public class LeftPanelView extends SectionStack {
         final String rowControl = "Rows";
         final String colControl = "Columns";
         final LinkedHashMap<String, String> controls = new LinkedHashMap<String, String>();
-        controls.put(colControl, colControl);
         controls.put(rowControl, rowControl);
+        controls.put(colControl, colControl);
+        
 
         final RadioGroupItem controlItem = new RadioGroupItem();
         controlItem.setShowTitle(false);
@@ -251,7 +252,7 @@ public class LeftPanelView extends SectionStack {
 
         Menu datasetMenu = new Menu();
         datasetMenu.setCanSelectParentItems(true);
-        datasetMenu.setData(createSDMenuItem, exportDatasetMenuItem, saveDatasetMenuItem);
+        datasetMenu.setData(/*createSDMenuItem,*/ exportDatasetMenuItem/*, saveDatasetMenuItem*/);
         datasetMenu.setWidth(100);
 
         itemClickHandlerReg = datasetMenu.addItemClickHandler(new ItemClickHandler() {
@@ -341,6 +342,7 @@ public class LeftPanelView extends SectionStack {
         gBtnLayout.setHeight(30);
 
         colGroupBtn = new IButton("Create Column Group");
+        colGroupBtn.setWidth100();
         gBtnLayout.addMember(colGroupBtn);
 
         colSelectionLayout.setAlign(Alignment.CENTER);

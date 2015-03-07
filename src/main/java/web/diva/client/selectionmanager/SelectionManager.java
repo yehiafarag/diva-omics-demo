@@ -19,11 +19,11 @@ public class SelectionManager {
     /**
      * Column selections per dataset
      */
-    private Selection selectedColumns;
+    private Selection selectedColumns = new Selection(Selection.TYPE.OF_COLUMNS, new int[]{});
     /**
      * Row selections per dataset
      */
-    private Selection selectedRows;
+    private Selection selectedRows = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
     /**
      * Registry of listeners for every dataset
      */
@@ -111,7 +111,9 @@ public class SelectionManager {
      * @param s - selection of rows, if null - no selection
      */
     public void setSelectedRows(Selection s) {
-
+        if (s == null) {
+            selectedRows = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
+        }else
         selectedRows = s;
         selectionTimer.schedule(500);
     }
