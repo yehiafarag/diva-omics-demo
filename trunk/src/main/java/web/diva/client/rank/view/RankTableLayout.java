@@ -6,6 +6,7 @@
 package web.diva.client.rank.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.smartgwt.client.data.DSCallback;
@@ -26,6 +27,8 @@ import com.smartgwt.client.widgets.events.DragStopHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressHandler;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.shared.beans.RankResult;
@@ -155,6 +158,22 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
         }
 
     }
+    
+    public int[] getIndexSelection(){
+       ListGridRecord[] selectionRecord = getSelectedRecords();
+                if (selectionRecord.length > 0) {
+            int[] selectedIndices = new int[selectionRecord.length];
+            for (int index = 0; index < selectionRecord.length; index++) {
+                ListGridRecord rec = selectionRecord[index];
+                selectedIndices[index] = rec.getAttributeAsInt("index");
+            }
+            return(selectedIndices);
+        }
+        else{
+            return(new int[]{});
+        }
+    
+    }
 
     public void showSelectedOnly(boolean showSelectedOnly) {
         this.showSelectedOnly = showSelectedOnly;       
@@ -268,7 +287,26 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
             @Override
             public void onDragStop(DragStopEvent event) {
                 ListGridRecord[] selectionRecord = getSelectedRecords();
+                
                 updateTableSelection(selectionRecord);
+            }
+        });
+       
+           final Timer t = new Timer() {
+
+            @Override
+            public void run() {
+                ListGridRecord[] selectionRecord = getSelectedRecords();
+                updateTableSelection(selectionRecord);
+            }
+        };
+        
+    
+        this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
+
+            @Override
+            public void onBodyKeyPress(BodyKeyPressEvent event) {
+             t.schedule(500);
             }
         });
     }

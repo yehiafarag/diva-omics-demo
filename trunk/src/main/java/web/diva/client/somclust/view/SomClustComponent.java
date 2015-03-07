@@ -50,11 +50,11 @@ public class SomClustComponent extends ModularizedListener {
     private boolean clustColumn = true;
 
     private final DivaServiceAsync GWTClientService;
-    
+
     private final SplitSideTreeImg sideTreeImg;
-    private TopTreeImg upperTreeImg;    
-    private final SplitHeatmapImg heatMapImg;    
-    private final SplitInteractiveClusterColumnSelectionImg interactiveColImage;   
+    private TopTreeImg upperTreeImg;
+    private final SplitHeatmapImg heatMapImg;
+    private final SplitInteractiveClusterColumnSelectionImg interactiveColImage;
     private final Image scaleImg;
     private final VerticalPanel clusterLayout = new VerticalPanel();
     private final HorizontalPanel topClusterLayout = new HorizontalPanel();
@@ -65,26 +65,26 @@ public class SomClustComponent extends ModularizedListener {
 
     private final VLayout mainThumbClusteringLayout;
     private final HTML tooltip = new HTML();
-    
+
     ///maxmize layout variables
-    private final PopupPanel clusteringPopup ;
-    private final  HorizontalPanel tooltipViewPortLayout;
-    private final  HTML maxmizeTooltip = new HTML();
-    
-       private  MaxmizedSplitSideTreeImg maxSideTreeImg;
+    private final PopupPanel clusteringPopup;
+    private final HorizontalPanel tooltipViewPortLayout;
+    private final HTML maxmizeTooltip = new HTML();
+
+    private MaxmizedSplitSideTreeImg maxSideTreeImg;
     private MaxmizedTopTreeImg maxUpperTreeImg;
-    private final  SplitHeatmapImg maxHeatMapImg;
-    private final  SplitInteractiveClusterColumnSelectionImg maxInteractiveColImage;
-    private final  Image maxScaleImg;
-    private  VerticalPanel maxClusterLayout = new VerticalPanel();
-    private final  HorizontalPanel maxTopClusterLayout = new HorizontalPanel();
-    private final  ScrollPanel framMaxMainClusterPanelLayout = new ScrollPanel();
-    private final  HorizontalPanel maxMiddleClusterLayout = new HorizontalPanel();
-    private final  HorizontalPanel maxBottomClusterLayout = new HorizontalPanel();
-    
-    private  HandlerRegistration uperTreeReg,maxUpperTreeReg;
-    private final HandlerRegistration sideTreeReg,maxSideTree1Reg,minSettingBtnReg,clusteringProcessBtnReg,maxmizeBtnReg,settingBtnReg,saveBtnReg,minmizeBtnReg;
-    private final VLayout mainClusteringPopupBodyLayout ;
+    private final SplitHeatmapImg maxHeatMapImg;
+    private final SplitInteractiveClusterColumnSelectionImg maxInteractiveColImage;
+    private final Image maxScaleImg;
+    private VerticalPanel maxClusterLayout = new VerticalPanel();
+    private final HorizontalPanel maxTopClusterLayout = new HorizontalPanel();
+    private final ScrollPanel framMaxMainClusterPanelLayout = new ScrollPanel();
+    private final HorizontalPanel maxMiddleClusterLayout = new HorizontalPanel();
+    private final HorizontalPanel maxBottomClusterLayout = new HorizontalPanel();
+
+    private HandlerRegistration uperTreeReg, maxUpperTreeReg;
+    private final HandlerRegistration sideTreeReg, maxSideTree1Reg, minSettingBtnReg, clusteringProcessBtnReg, maxmizeBtnReg, settingBtnReg, saveBtnReg, minmizeBtnReg;
+    private final VLayout mainClusteringPopupBodyLayout;
     private SomClusteringResult somClusteringResults;
     public SomClustComponent(SomClusteringResult somClusteringResults, SelectionManager selectionManager, DivaServiceAsync DivaClientService,boolean clusterColumn,int width,int height) {
         this.clustColumn = clusterColumn;
@@ -287,6 +287,7 @@ public class SomClustComponent extends ModularizedListener {
                 
                     zoomSlider.setValue(1.0);
                     nvigatorSlider.setValue(0.0);
+                     nvigatorSlider.disable();
                     if (clustColumn) {
                         maxUpperTreeImg.setScale(1);
                     }
@@ -423,6 +424,7 @@ public class SomClustComponent extends ModularizedListener {
                 maxInteractiveColImage.setScale(1);
                 zoomSlider.setValue(1.0);
                 nvigatorSlider.setValue(0.0);
+                 nvigatorSlider.disable();
                 if (clustColumn) {
                     maxUpperTreeImg.setScale(1);
                 }
@@ -565,8 +567,25 @@ public class SomClustComponent extends ModularizedListener {
 //        zoomSlider.addValueChangedHandler(zoomSliderValueChangeHandler);  
         maxBottomClusterLayout.add(nvigatorSlider);
         nvigatorSlider.draw();  
+      
+                nvigatorSlider.setBackgroundImage(somClusteringResults.getInteractiveColumnImgUrl().getNavgUrl());
+        nvigatorSlider.addValueChangedHandler(new ValueChangedHandler() {
+
+            @Override
+            public void onValueChanged(ValueChangedEvent event) {
+                if (event.isLeftButtonDown()) {
+                    double maxScroll = (double) framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition();
+                    int sp = (int) ((event.getValue() * maxScroll) / 100.0);
+                    framMaxMainClusterPanelLayout.setHorizontalScrollPosition(sp);
+//                    navControl = false;
+                }
+
+            }
+        });
+
+
         
-        nvigatorSlider.setBackgroundImage(somClusteringResults.getInteractiveColumnImgUrl().getNavgUrl());
+        
         
         //zoom slider
           
@@ -596,6 +615,8 @@ public class SomClustComponent extends ModularizedListener {
 
             @Override
             public void onValueChanged(ValueChangedEvent event) {
+                if( nvigatorSlider.isDisabled())
+                     nvigatorSlider.enable();
                 double sp = (double) framMaxMainClusterPanelLayout.getHorizontalScrollPosition();
                 double maxScroll = (double) framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition();
                 double vp = (sp / maxScroll);
@@ -692,20 +713,26 @@ public class SomClustComponent extends ModularizedListener {
         clusteringPopup.setWidget(mainClusteringPopupBodyLayout);
         mainClusteringPopupBodyLayout.setStyleName("modalLayout");
 
-        if (framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition() == 0) {
-//            nvigatorSlider.setValue(50.0);
+        if (framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition() <= 0) {
+           nvigatorSlider.disable();
 
         } else {
+            nvigatorSlider.enable();
             nvigatorSlider.setValue(0.0);
         }
         
         if (framMaxMainClusterPanelLayout.getMaximumVerticalScrollPosition() > 0) {
+            nvigatorSlider.enable();
            
         }
         framMaxMainClusterPanelLayout.addScrollHandler(new ScrollHandler() {
 //            boolean resize = true;
             @Override
             public void onScroll(ScrollEvent event) {
+            
+                
+                if(nvigatorSlider.isDisabled())
+                    nvigatorSlider.enable();
                 double sp = (double) framMaxMainClusterPanelLayout.getHorizontalScrollPosition();
                 double maxScroll = (double) framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition();
                 double vp = (sp / maxScroll);
@@ -730,7 +757,7 @@ public class SomClustComponent extends ModularizedListener {
     final Slider nvigatorSlider, zoomSlider;
     private final  Image spacer = new Image("images/w.png"),spacer2 = new Image("images/w.png"),maxSpacer = new Image("images/w.png"),maxSpacer2 = new Image("images/w.png");//,rotatSpacer = new Image("images/w.png"),rotatSpacer2 = new Image("images/w.png");
     private final Label clustInfoLabel = new Label(),maxClustInfoLabel = new Label();
-    
+//    private boolean navControl=false;
     private void initThumLayout(SomClusteringResult somClusteringResults) {
         if (clustColumn) {               
             upperTreeImg.setUrl(somClusteringResults.getUpperTreeImgUrl());

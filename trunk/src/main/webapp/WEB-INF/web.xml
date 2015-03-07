@@ -4,7 +4,7 @@
     <context-param>    
          <description>/home/probe/user/divaFiles  C:\divaFiles</description>   
         <param-name>fileFolder</param-name>       
-        <param-value>C:\divaFiles</param-value>
+        <param-value>/home/probe/user/divaFiles</param-value>
     </context-param>
     <listener>
         <listener-class>web.diva.server.listeners.ContexListener</listener-class>        

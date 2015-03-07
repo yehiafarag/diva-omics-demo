@@ -50,7 +50,7 @@ public interface DivaServiceAsync {
 
     public void exportData(String rowGroup, AsyncCallback<String> asyncCallback);
     
-      public void exportRankingData(AsyncCallback<String> asyncCallback);
+      public void exportRankingData(int[] indexes,AsyncCallback<String> asyncCallback);
     
       public void exportImgAsPdf(String chartType,String quality, AsyncCallback<String> asyncCallback);
       

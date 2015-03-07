@@ -404,7 +404,7 @@ public class DivaUtil implements Serializable{
 //   
     }
 
-    public String exportRankProductToText(File userFolder, String url, String textFileName, RankResult results) {
+    public String exportRankProductToText(File userFolder, String url, String textFileName, RankResult results,int[] selection) {
 
         File text = new File(userFolder, textFileName + ".txt");
         PrintWriter out1 = null;
@@ -425,6 +425,9 @@ public class DivaUtil implements Serializable{
 
             out1.append(headerLine);
             out1.println();
+            if(selection == null || selection.length==0){
+            
+            
             for (int x = 0; x < results.getRowIds().length; x++) {
                 String record = "";
 //                int posReIndexer = results.getPosIndexToRank()[x];
@@ -443,7 +446,7 @@ public class DivaUtil implements Serializable{
                         coulmnReindex++;
 
                     }
-                    if ((x != (results.getRowIds().length - 1) && (y != headers.length - 1))) {
+                    if (/*(x != (results.getRowIds().length - 1) && */(y != headers.length - 1)) {
                         record += "\t";
                     }
                     
@@ -456,6 +459,44 @@ public class DivaUtil implements Serializable{
             out1.close();
             outFile.flush();
             outFile.close();
+            }
+            else{
+              for (int x :selection) {                  
+                String record = "";
+//                int posReIndexer = results.getPosIndexToRank()[x];
+//                int negReIndexer = results.getNegRankToIndex()[results.getPosIndexToRank()[x] - 1];
+                int coulmnReindex = 0;
+                for (int y = 0; y < headers.length; y++) {
+
+                    if (y == 0) {
+                        record += (Integer) results.getPosRank()[x];
+                    } else if (y == 1) {
+                        record += results.getRowIds()[x];
+                    } else if (y == 6) {
+                        record += results.getNegRank()[x];
+                    } else {
+                        record += results.getTableData()[coulmnReindex][x];
+                        coulmnReindex++;
+
+                    }
+                    if (/*(x != (results.getRowIds().length - 1) && */(y != headers.length - 1)) {
+                        record += "\t";
+                    }
+                    
+                }
+                
+                out1.append(record);                
+                out1.println();
+            }
+            out1.flush();
+            out1.close();
+            outFile.flush();
+            outFile.close();
+            
+            
+            
+            
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         } finally {

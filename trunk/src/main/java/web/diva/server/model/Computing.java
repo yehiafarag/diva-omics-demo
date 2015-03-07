@@ -1207,7 +1207,7 @@ public class Computing implements Serializable, IsSerializable{
         return profilePlotImageGenerator.getProfilePlotSelection(startX, startY);
     }
     
-    public String exportRankTableToTextFile(String path, String userId, String url){
+    public String exportRankTableToTextFile(String path, String userId, String url,int[] selection){
         
         String textFile = divaDataset.getName()+"_Rank_Product_Table";
          if (userFolder == null) {
@@ -1215,7 +1215,7 @@ public class Computing implements Serializable, IsSerializable{
             userFolder.mkdir();
 
         }
-        return util.exportRankProductToText(userFolder,url, textFile,rankResults);
+        return util.exportRankProductToText(userFolder,url, textFile,rankResults,selection);
     }
 public FullDataObject getReloadData() {
     FullDataObject data = new FullDataObject();

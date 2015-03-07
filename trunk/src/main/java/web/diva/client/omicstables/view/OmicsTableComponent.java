@@ -15,6 +15,8 @@ import com.smartgwt.client.widgets.events.DragStartEvent;
 import com.smartgwt.client.widgets.events.DragStartHandler;
 import com.smartgwt.client.widgets.events.DragStopEvent;
 import com.smartgwt.client.widgets.events.DragStopHandler;
+import com.smartgwt.client.widgets.events.KeyPressEvent;
+import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
@@ -25,6 +27,8 @@ import com.smartgwt.client.widgets.form.fields.events.BlurHandler;
 import com.smartgwt.client.widgets.form.fields.events.FocusEvent;
 import com.smartgwt.client.widgets.form.fields.events.FocusHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressHandler;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import java.util.HashSet;
@@ -152,7 +156,8 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         this.components.add(OmicsTableComponent.this);
         this.selectionManager.addSelectionChangeListener(OmicsTableComponent.this);
         datasetInfo = null;
-        selectionChanged(Selection.TYPE.OF_ROWS);
+        if(this.selectionManager.getSelectedRows()!= null && this.selectionManager.getSelectedRows().getMembers()!= null &&  this.selectionManager.getSelectedRows().getMembers().length>0)
+            selectionChanged(Selection.TYPE.OF_ROWS);
     }
 
     private void searchKeyword() {
@@ -237,10 +242,31 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
                 }
             }
         });
+        final Timer t = new Timer() {
+
+            @Override
+            public void run() {
+                 ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
+                if (selectionRecord != null && selectionRecord.length > 0) {
+                    SelectionManager.Busy_Task(true, false);
+                    updateSelectionManagerOnTableSelection(selectionRecord);
+                }
+            }
+        };
         
+    
+        omicsIdTable.addBodyKeyPressHandler(new BodyKeyPressHandler() {
+
+            @Override
+            public void onBodyKeyPress(BodyKeyPressEvent event) {
+             t.schedule(500);
+            }
+        });
+   
     
 
     }
+    
 
     private void updateSelectionManager(int[] selectedIndices) {
         selfSelectionTag = true;
@@ -412,3 +438,4 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
 		} 
 	}-*/;
 }
+

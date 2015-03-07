@@ -6,6 +6,7 @@
 package web.diva.client.omicstables.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SelectionStyle;
@@ -18,6 +19,8 @@ import com.smartgwt.client.widgets.events.DragStopHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
+import com.smartgwt.client.widgets.grid.events.BodyKeyPressHandler;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,6 +113,26 @@ public class GroupTable extends ListGrid {
                     
                     updateSelectionManagerOnTableSelection(selectionRecord);
                 }
+            }
+        });
+            final Timer t = new Timer() {
+
+            @Override
+            public void run() {
+                  ListGridRecord[] selectionRecord = getSelectedRecords();
+                if (selectionRecord != null && selectionRecord.length > 0) {
+                    SelectionManager.Busy_Task(true, false);
+                    updateSelectionManagerOnTableSelection(selectionRecord);
+                }
+            }
+        };
+        
+    
+        this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
+
+            @Override
+            public void onBodyKeyPress(BodyKeyPressEvent event) {
+             t.schedule(500);
             }
         });
     }

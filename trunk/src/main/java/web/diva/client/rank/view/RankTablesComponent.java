@@ -138,11 +138,15 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
 
             @Override
             public void onClick(ClickEvent event) {
-                exportRank();
+                int[] selection = new int[]{};
+                if (showSelectedOnlyBtn.getValue()) {
+                    selection = minRankTable.getIndexSelection();
+                }
+                exportRank(selection);
             }
         };
         minSaveReg = minSaveBtn.addClickHandler(exportRankHandler);
-        
+
         maxBtn = new Label();
         btnsLayout.add(maxBtn);
         maxBtn.addStyleName("maxmize");
@@ -337,9 +341,10 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                 });
 
     }
-    private void exportRank(){
+    private void exportRank(int[] selection){
       SelectionManager.Busy_Task(true, true);
-        GWTClientService.exportRankingData(new AsyncCallback<String>() {
+     
+        GWTClientService.exportRankingData(selection,new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("An error occurred while attempting to contact the server");
