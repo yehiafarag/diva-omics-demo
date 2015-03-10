@@ -1,4 +1,4 @@
-#summary DiVA omics challenges and development
+#summary DiVA omics main challenges
 #labels Featured
 
 ==Main Challenges==
