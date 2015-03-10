@@ -1,7 +1,7 @@
-#summary DiVA omics challenges and development.
+#summary DiVA omics challenges and development
 #labels Featured
 
-==Challenges Overview==
+==Main Challenges==
 
 A browser-based Distributed Interactive Visual Analysis System (DiVA) has to analyse large scale omics data while providing interactive visualization of the generated results on the client-side (which is resource limited). 
 
