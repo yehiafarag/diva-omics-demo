@@ -1,4 +1,5 @@
 #summary DiVA omics challenge and development.
+#labels Featured
 
 
 *Challenges Overview*
