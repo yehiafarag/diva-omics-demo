@@ -15,9 +15,7 @@ import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import no.uib.jexpress_modularized.core.dataset.Dataset;
 import no.uib.jexpress_modularized.pca.computation.PcaResults;
@@ -33,14 +31,26 @@ public class FileSystemUtil implements Serializable{
 
     private final DatasetFileReader reader = new DatasetFileReader();
 
-    public Map<Integer, String> getDatasetsNameMap(String path) {
-        Map<Integer, String> datasetsMap = new HashMap<Integer, String>();
+    public TreeMap<Integer, String> getDatasetsNameMap(String path) {
+        TreeMap<Integer, String> datasetsMap = new TreeMap<Integer, String>();
         File appFolder = new File(path);
-        int index = 1;
+        int index = 4;
         for (File datasetFile : appFolder.listFiles()) {
             if (datasetFile.getName().endsWith(".ser")) {
-                datasetsMap.put(index, datasetFile.getName());
-                index++;
+                if (datasetFile.getName().equalsIgnoreCase("Small Dataset.ser")) {
+                    datasetsMap.put(1, datasetFile.getName());
+                }
+                else  if (datasetFile.getName().contains("Medium Dataset.ser")) {
+                    datasetsMap.put(2, datasetFile.getName());
+                }
+                else  if (datasetFile.getName().equalsIgnoreCase("large Dataset.ser")) {
+                    datasetsMap.put(3, datasetFile.getName());
+                }
+                else{
+                 datasetsMap.put(index, datasetFile.getName());
+                 index++;
+                }
+                
 
             }
         }
