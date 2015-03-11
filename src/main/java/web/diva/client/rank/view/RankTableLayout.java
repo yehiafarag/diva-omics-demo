@@ -165,7 +165,7 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
             int[] selectedIndices = new int[selectionRecord.length];
             for (int index = 0; index < selectionRecord.length; index++) {
                 ListGridRecord rec = selectionRecord[index];
-                selectedIndices[index] = rec.getAttributeAsInt("index");
+                selectedIndices[index] = (rec.getAttributeAsInt("Pos Rank")-1);
             }
             return(selectedIndices);
         }
@@ -247,8 +247,9 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
 
             } else {
                 l.setType(ListGridFieldType.FLOAT);       
-                l.setAlign(Alignment.LEFT);             
+//                l.setAlign(Alignment.LEFT);             
                 l.setFormat("0.000");
+                
 //                l.setAutoFitWidth(true);
             }
             
