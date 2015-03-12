@@ -758,7 +758,7 @@ public class SomClustImgGenerator {
 //            base64 = "data:image/png;base64," + base64;
             SplitedImg si = this.splitImage(sideTreeBImg);
             result.setTreeImg1Url(si.getImg1Url());
-            result.setTreeImg2Url(si.getImg2Url());
+            result.setTreeImg(si);
             System.gc();
             
             return result;
@@ -904,20 +904,42 @@ public class SomClustImgGenerator {
     }
     
     public SplitedImg splitImage(BufferedImage img){
-    int imgHeight = (img.getHeight()/2);
-    BufferedImage bf1 = img.getSubimage(0, 0, img.getWidth(), imgHeight);
+    int imgHeight1 = (img.getHeight()/4);
     
+    BufferedImage bf1 = img.getSubimage(0, 0, img.getWidth(), imgHeight1);    
     String str1 =this.generateEncodedImg(bf1);
     
      
-     int imgHeight2 = img.getHeight()-imgHeight;
-    BufferedImage bf2 = img.getSubimage(0,imgHeight, img.getWidth(), imgHeight2);
+//     int imgHeight2 = img.getHeight()-imgHeight1;
+    BufferedImage bf2 = img.getSubimage(0,imgHeight1, img.getWidth(), imgHeight1);
     String str2 =this.generateEncodedImg(bf2);
+    
+    
+    BufferedImage bf3 = img.getSubimage(0,(2*imgHeight1), img.getWidth(), imgHeight1);
+    String str3 =this.generateEncodedImg(bf3);
+    
+    
+    
+     
+    
+    
+    int imgHeight2 = img.getHeight()-(3*imgHeight1);
+    
+      BufferedImage bf4 = img.getSubimage(0,(3*imgHeight1), img.getWidth(), imgHeight2);
+    String str4 =this.generateEncodedImg(bf4);
+    
+    
+    
+    
     SplitedImg si = new SplitedImg();
-    si.setHeight1(imgHeight);
-    si.setHeight2(imgHeight2);
+    si.setHeightFirst(imgHeight1);
+    si.setHeightLast(imgHeight2);   
+    
     si.setImg1Url(str1);
     si.setImg2Url(str2);
+     si.setImg3Url(str3);
+    si.setImg4Url(str4);
+    
     
     return si;
     

@@ -39,7 +39,9 @@ public class BusyTaskIndicator {
 
     }
 
+    private boolean busy=false;
     public void busyTask(boolean busy,boolean slow) {
+        this.busy= busy;
         if (busy) {
             
         progressPanel.setAnimationEnabled(slow);
@@ -48,6 +50,10 @@ public class BusyTaskIndicator {
         } else {
             progressPanel.hide();
         }
+    }
+
+    public boolean isBusy() {
+        return busy;
     }
 
 }

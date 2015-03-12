@@ -11,11 +11,30 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  * @author y-mok_000
  */
-public class SplitedImg implements IsSerializable{
+public class SplitedImg implements IsSerializable {
+
     private String img1Url;
     private String img2Url;
-    private int height1;
-    private int height2;
+    private String img3Url;
+    private String img4Url;
+    private int heightFirst;
+
+    public String getImg3Url() {
+        return img3Url;
+    }
+
+    public void setImg3Url(String img3Url) {
+        this.img3Url = img3Url;
+    }
+
+    public String getImg4Url() {
+        return img4Url;
+    }
+
+    public void setImg4Url(String img4Url) {
+        this.img4Url = img4Url;
+    }
+    private int heightLast;
 
     public String getImg1Url() {
         return img1Url;
@@ -33,19 +52,21 @@ public class SplitedImg implements IsSerializable{
         this.img2Url = img2Url;
     }
 
-    public int getHeight1() {
-        return height1;
+    public int getHeightFirst() {
+        return heightFirst;
     }
 
-    public void setHeight1(int height1) {
-        this.height1 = height1;
+    public void setHeightFirst(int heightFirst) {
+        this.heightFirst = heightFirst;
     }
 
-    public int getHeight2() {
-        return height2;
+    public int getHeightLast() {
+        return heightLast;
     }
 
-    public void setHeight2(int height2) {
-        this.height2 = height2;
+    public void setHeightLast(int heightLast) {
+        this.heightLast = heightLast;
     }
+
+    
 }

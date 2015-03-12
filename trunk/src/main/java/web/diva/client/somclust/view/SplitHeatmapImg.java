@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.smartgwt.client.util.SC;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.shared.beans.SplitedImg;
@@ -95,22 +94,34 @@ public class SplitHeatmapImg extends VerticalPanel implements MouseMoveHandler, 
     private final HTML toolTip;
     private final int type;
 
-    private final Image topImage;
-    private final Image bottomImage;
+     private final Image image1,image2,image3,image4;
     private final int[] reindexer;
     private final SelectionManager selectionManager;
 
-    public SplitHeatmapImg(SplitedImg simage, String[] rowNames, String[] colNames, double[][] values, HTML toolTip, int type, int squareL, int squareW, int width, int[] reindexes,SelectionManager selectionManager) {
+    public SplitHeatmapImg(SplitedImg heatMapImg, String[] rowNames, String[] colNames, double[][] values, HTML toolTip, int type, int squareL, int squareW, int width, int[] reindexes,SelectionManager selectionManager) {
         this.reindexer = reindexes;
         this.selectionManager = selectionManager;
 //        super(url);
 
-        topImage = new Image(simage.getImg1Url());
-        topImage.setWidth(width + "px");
-        topImage.setHeight(simage.getHeight1() + "px");
-        bottomImage = new Image(simage.getImg2Url());
-        bottomImage.setWidth(width + "px");
-        bottomImage.setHeight(simage.getHeight2() + "px");
+      image1 = new Image(heatMapImg.getImg1Url());
+        image1.setWidth(width + "px");
+        image1.setHeight(heatMapImg.getHeightFirst() + "px");
+        
+         image2 = new Image(heatMapImg.getImg2Url());
+        image2.setWidth(width + "px");
+        image2.setHeight(heatMapImg.getHeightFirst() + "px");
+        
+         image3 = new Image(heatMapImg.getImg3Url());
+        image3.setWidth(width + "px");
+        image3.setHeight(heatMapImg.getHeightFirst() + "px");
+         
+        
+        image4 = new Image(heatMapImg.getImg4Url());
+        image4.setWidth(width + "px");
+        image4.setHeight(heatMapImg.getHeightLast()+ "px");
+         
+        
+        
         this.squareL = squareL;
         this.squareW = squareW;
         this.addDomHandler(SplitHeatmapImg.this, MouseMoveEvent.getType());
@@ -124,11 +135,22 @@ public class SplitHeatmapImg extends VerticalPanel implements MouseMoveHandler, 
         toolTip.setVisible(false);
         this.type = type;
 
-        this.add(topImage);             
-        this.add(bottomImage);
-        this.setCellHorizontalAlignment(topImage, VerticalPanel.ALIGN_CENTER); 
-        this.setCellHorizontalAlignment(bottomImage, VerticalPanel.ALIGN_CENTER);
-        this.setCellVerticalAlignment(bottomImage, VerticalPanel.ALIGN_TOP);
+         this.setSpacing(0);
+        this.add(image1);             
+         this.add(image2);
+          this.add(image3);   
+           this.add(image4);   
+          
+        
+        this.setCellHorizontalAlignment(image1, VerticalPanel.ALIGN_CENTER); 
+        this.setCellHorizontalAlignment(image2, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image2, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image3, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image3, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image4, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image4, VerticalPanel.ALIGN_TOP);
+         
+        
         
         
         

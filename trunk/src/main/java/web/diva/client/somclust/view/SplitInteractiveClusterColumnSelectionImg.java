@@ -46,8 +46,6 @@ public class SplitInteractiveClusterColumnSelectionImg extends VerticalPanel imp
             toolTip.setVisible(true);
         } else {
             this.setStyleName("clusterTreeOver");
-            
-//            toolTip.setVisible(false);
         }
 
     }
@@ -83,8 +81,7 @@ public class SplitInteractiveClusterColumnSelectionImg extends VerticalPanel imp
     private  final int[] reindexer;
     private final HTML toolTip;
     private final int type;
-     private final Image topImage;
-    private final Image bottomImage;
+    private final Image image1,image2,image3,image4;
     
     private final SelectionManager selectionManager;
     public SplitInteractiveClusterColumnSelectionImg(SplitedImg interactiveImg, String[] rowNames,HTML toolTip,int type,int squareL,int width,int[] reindexes,SelectionManager selectionManager) {
@@ -96,19 +93,39 @@ public class SplitInteractiveClusterColumnSelectionImg extends VerticalPanel imp
         this.addDomHandler(SplitInteractiveClusterColumnSelectionImg.this,MouseMoveEvent.getType());
         this.addDomHandler(SplitInteractiveClusterColumnSelectionImg.this,MouseOutEvent.getType());
         this.addDomHandler(SplitInteractiveClusterColumnSelectionImg.this,ClickEvent.getType());
-        topImage = new Image(interactiveImg.getImg1Url());
-        topImage.setWidth(width + "px");
-        topImage.setHeight(interactiveImg.getHeight1() + "px");
-        bottomImage = new Image(interactiveImg.getImg2Url());
-        bottomImage.setWidth(width + "px");
-        bottomImage.setHeight(interactiveImg.getHeight2() + "px");        
-        this.setSpacing(0);
-        this.add(topImage);             
-        this.add(bottomImage);
+        image1 = new Image(interactiveImg.getImg1Url());
+        image1.setWidth(width + "px");
+        image1.setHeight(interactiveImg.getHeightFirst() + "px");
         
-        this.setCellHorizontalAlignment(topImage, VerticalPanel.ALIGN_CENTER); 
-        this.setCellHorizontalAlignment(bottomImage, VerticalPanel.ALIGN_CENTER);
-        this.setCellVerticalAlignment(bottomImage, VerticalPanel.ALIGN_TOP);
+         image2 = new Image(interactiveImg.getImg2Url());
+        image2.setWidth(width + "px");
+        image2.setHeight(interactiveImg.getHeightFirst() + "px");
+        
+         image3 = new Image(interactiveImg.getImg3Url());
+        image3.setWidth(width + "px");
+        image3.setHeight(interactiveImg.getHeightFirst() + "px");
+         
+        
+        image4 = new Image(interactiveImg.getImg4Url());
+        image4.setWidth(width + "px");
+        image4.setHeight(interactiveImg.getHeightLast()+ "px");
+         
+        
+                this.setSpacing(0);
+        this.add(image1);             
+         this.add(image2);
+          this.add(image3);   
+           this.add(image4);   
+           
+        
+        this.setCellHorizontalAlignment(image1, VerticalPanel.ALIGN_CENTER); 
+        this.setCellHorizontalAlignment(image2, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image2, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image3, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image3, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image4, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image4, VerticalPanel.ALIGN_TOP);
+        
         
         
        
@@ -122,9 +139,13 @@ public class SplitInteractiveClusterColumnSelectionImg extends VerticalPanel imp
         this.rowNames = rowNames;
     }
     
-    public void setUrl(String url1,String url2){
-    topImage.setUrl(url1);
-    bottomImage.setUrl(url2);
+    public void setUrl(SplitedImg sideTreeeImg){
+    image1.setUrl(sideTreeeImg.getImg1Url());
+    image2.setUrl(sideTreeeImg.getImg2Url());
+    image3.setUrl(sideTreeeImg.getImg3Url());
+    image4.setUrl(sideTreeeImg.getImg4Url());
+   
+    
     }
     
     }

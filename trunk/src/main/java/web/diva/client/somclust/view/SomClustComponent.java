@@ -108,7 +108,7 @@ public class SomClustComponent extends ModularizedListener {
         Label title = new Label("Hierarchical Clustering");
         title.setStyleName("labelheader");
         topLayout.add(title);
-        title.setWidth("70%");
+        title.setWidth("50%");
         title.setHeight("18px");
 
         topLayout.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
@@ -116,6 +116,7 @@ public class SomClustComponent extends ModularizedListener {
         HorizontalPanel btnsLayout = new HorizontalPanel();
         btnsLayout.setWidth("34px");
         btnsLayout.setHeight("18px");
+        btnsLayout.getElement().setAttribute("style", " margin-right: 15px;");
         topLayout.add(btnsLayout);
         topLayout.setCellHorizontalAlignment(btnsLayout, HorizontalPanel.ALIGN_RIGHT);
         topLayout.setCellVerticalAlignment(btnsLayout, HorizontalPanel.ALIGN_TOP);
@@ -151,6 +152,7 @@ public class SomClustComponent extends ModularizedListener {
         tooltip.setHeight("24px");
         
         sideTreeImg = new SplitSideTreeImg(somClusteringResults.getSideTreeImg(), somClusteringResults.getRowNode(), 2, tooltip,somClusteringResults.getSquareL(),somClusteringResults.getSideTreeWidth(),somClusteringResults.getSideTreeHeight());        
+     
         heatMapImg = new SplitHeatmapImg(somClusteringResults.getHeatMapImg(), somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues(), tooltip,1,somClusteringResults.getSquareL(),somClusteringResults.getSquareW(),somClusteringResults.getHeatmapWidth(),somClusteringResults.getReIndexer(),selectionManager);
         interactiveColImage = new SplitInteractiveClusterColumnSelectionImg(somClusteringResults.getInteractiveColumnImgUrl().getInteractiveColumn(),somClusteringResults.getRowNames(),tooltip,1,somClusteringResults.getSquareL(),somClusteringResults.getInteractiveColumnWidth(),somClusteringResults.getReIndexer(),selectionManager);
        
@@ -158,7 +160,8 @@ public class SomClustComponent extends ModularizedListener {
         
         mainClusterPanelLayout.setWidth("100%");
         mainClusterPanelLayout.setHeight("96%");
-        mainClusterPanelLayout.setStyleName("whiteLayout");
+        mainClusterPanelLayout.setStyleName("frame");
+     
         mainClusterPanelLayout.setAlwaysShowScrollBars(false);
           if (clusterColumn) {
             topClusterLayout.setHeight(70 + "px");
@@ -280,7 +283,7 @@ public class SomClustComponent extends ModularizedListener {
             @Override
             public void onClick(ClickEvent event) {
                 if (clusteringPopup.isShowing()) {
-                    maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
+                    maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto;  -moz-transform: rotate(90deg) scale(" + 1 + ");  -o-transform:rotate(90deg) scale(" + 1 + ");-ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
                     maxSideTreeImg.setScale(1);                    
                 maxHeatMapImg.setScale(1);
                 maxInteractiveColImage.setScale(1);     
@@ -316,10 +319,8 @@ public class SomClustComponent extends ModularizedListener {
 
                 clusteringPopup.center();
                 clusteringPopup.show();
-//                maxClusterLayout.getElement().setAttribute("style", "position: relative;" + ("top:" + (-maxClusterLayout.getOffsetHeight()) + "px ;"));
-
-                 maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
-                maxSideTreeImg.setScale(1);                
+                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -moz-transform: rotate(90deg) scale(" + 1 + ");  -o-transform:rotate(90deg) scale(" + 1 + "); -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
+                maxSideTreeImg.setScale(1);
                 maxHeatMapImg.setScale(1);
                 maxInteractiveColImage.setScale(1);
                 zoomSlider.setValue(1.0);
@@ -329,52 +330,42 @@ public class SomClustComponent extends ModularizedListener {
             }
         });
 
-//        if (mainClusterPanelLayout.getMaximumVerticalScrollPosition()> 0 ) {
-//            mainClusterPanelLayout.setHorizontalScrollPosition(mainClusterPanelLayout.getMaximumHorizontalScrollPosition());
-//            mainClusterPanelLayout.setVerticalScrollPosition(mainClusterPanelLayout.getMaximumVerticalScrollPosition());
-//        
-//        }
-//        
-
-        
-         /* the end of thumb layout*/
+        /* the end of thumb layout*/
         /* the start of maxmize layout*/
         clusteringPopup = new PopupPanel(false, true);
         clusteringPopup.setAnimationEnabled(true);
         clusteringPopup.ensureDebugId("cwBasicPopup-imagePopup");
-        
+
         mainClusteringPopupBodyLayout = new VLayout();
         mainClusteringPopupBodyLayout.setWidth(97 + "%");
-        mainClusteringPopupBodyLayout.setHeight(80+"%");
-      
-        
+        mainClusteringPopupBodyLayout.setHeight(80 + "%");
+
         HorizontalPanel maxTopLayout = new HorizontalPanel();
         mainClusteringPopupBodyLayout.addMember(maxTopLayout);
         maxTopLayout.setWidth(100 + "%");
         maxTopLayout.setHeight("18px");
         maxTopLayout.setStyleName("whiteLayout");
         maxTopLayout.setSpacing(3);
-         
+
         Label maxTitle = new Label("Hierarchical Clustering");
         maxTitle.setStyleName("labelheader");
         maxTopLayout.add(maxTitle);
 
-        maxTitle.setWidth(80+ "%");
+        maxTitle.setWidth(80 + "%");
         maxTopLayout.setCellHorizontalAlignment(maxTitle, HorizontalPanel.ALIGN_LEFT);
-        
-         HorizontalPanel maxTopBtnLayout = new HorizontalPanel();
-         maxTopLayout.add(maxTopBtnLayout);
+
+        HorizontalPanel maxTopBtnLayout = new HorizontalPanel();
+        maxTopLayout.add(maxTopBtnLayout);
         maxTopLayout.setCellHorizontalAlignment(maxTopBtnLayout, HorizontalPanel.ALIGN_RIGHT);
-         maxTopBtnLayout.setWidth("50px");
-         Label settingsBtn = new Label();
+        maxTopBtnLayout.setWidth("50px");
+        Label settingsBtn = new Label();
         settingsBtn.addStyleName("settings");
         settingsBtn.setHeight("16px");
         settingsBtn.setWidth("16px");
         maxTopBtnLayout.add(settingsBtn);
         maxTopBtnLayout.setCellHorizontalAlignment(settingsBtn, HorizontalPanel.ALIGN_RIGHT);
         settingBtnReg = settingsBtn.addClickHandler(settingClickHandler);
-        
-        
+
         Label saveBtn = new Label();
         saveBtn.addStyleName("save");
         saveBtn.setHeight("16px");
@@ -389,13 +380,13 @@ public class SomClustComponent extends ModularizedListener {
         maxTopBtnLayout.add(minmizeBtn);
         maxTopBtnLayout.setCellHorizontalAlignment(minmizeBtn, HorizontalPanel.ALIGN_RIGHT);
 
-      ClickHandler saveHandler = new ClickHandler() {
+        ClickHandler saveHandler = new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 SelectionManager.Busy_Task(true, false);
 //                Window.open(profilePlotMaxImage.getUrl(), "downlodwindow", "status=0,toolbar=0,menubar=0,location=0");
-                String quality ="normal";
+                String quality = "normal";
                 GWTClientService.exportClusteringAsPdf(quality, new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -418,7 +409,7 @@ public class SomClustComponent extends ModularizedListener {
 
             @Override
             public void onClick(ClickEvent event) {
-                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
+                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -moz-transform: rotate(90deg) scale(" + 1 + ");  -o-transform:rotate(90deg) scale(" + 1 + "); -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
                 maxSideTreeImg.setScale(1);                
                 maxHeatMapImg.setScale(1);
                 maxInteractiveColImage.setScale(1);
@@ -632,7 +623,7 @@ public class SomClustComponent extends ModularizedListener {
 
                 
 
-                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -ms-transform: rotate(90deg) scale("+event.getValue()+"); -webkit-transform:rotate(90deg) scale("+event.getValue()+");  transform: rotate(90deg) scale("+event.getValue()+"); position: absolute;  top:"+top+"px;   left:"+ 100+"px; ");
+                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto;-moz-transform: rotate(90deg) scale(" + event.getValue()+ ");  -o-transform:rotate(90deg) scale(" + event.getValue() + "); -ms-transform: rotate(90deg) scale("+event.getValue()+"); -webkit-transform:rotate(90deg) scale("+event.getValue()+");  transform: rotate(90deg) scale("+event.getValue()+"); position: absolute;  top:"+top+"px;   left:"+ 100+"px; ");
                 maxSideTreeImg.setScale(event.getValue());
                 maxHeatMapImg.setScale(event.getValue());
                 maxInteractiveColImage.setScale(event.getValue());
@@ -794,7 +785,7 @@ public class SomClustComponent extends ModularizedListener {
             maxSpacer2.setVisible(clustColumn);
         }
 
-        maxSideTreeImg.setUrl(somClusteringResults.getSideTreeImg().getImg1Url(),somClusteringResults.getSideTreeImg().getImg2Url()); 
+        maxSideTreeImg.setUrl(somClusteringResults.getSideTreeImg()); 
         maxHeatMapImg.updateTooltips(somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues());       
         
         maxInteractiveColImage.updateTooltips(somClusteringResults.getRowNames());
@@ -879,8 +870,8 @@ public class SomClustComponent extends ModularizedListener {
 
                     @Override
                     public void onSuccess(InteractiveColumnsResults result) {
-                        interactiveColImage.setUrl(result.getInteractiveColumn().getImg1Url(),result.getInteractiveColumn().getImg2Url());
-                        maxInteractiveColImage.setUrl(result.getInteractiveColumn().getImg1Url(),result.getInteractiveColumn().getImg2Url());
+                        interactiveColImage.setUrl(result.getInteractiveColumn());
+                        maxInteractiveColImage.setUrl(result.getInteractiveColumn());
                        
                         nvigatorSlider.setBackgroundImage(result.getNavgUrl());
                         SelectionManager.Busy_Task(false, true);
@@ -989,8 +980,8 @@ public class SomClustComponent extends ModularizedListener {
 
             @Override
             public void onSuccess(SomClustTreeSelectionUpdate result) {
-                sideTreeImg.setUrl(result.getTreeImg1Url(),result.getTreeImg2Url());
-                maxSideTreeImg.setUrl(result.getTreeImg1Url(),result.getTreeImg2Url());
+                sideTreeImg.setUrl(result.getTreeImg());
+                maxSideTreeImg.setUrl(result.getTreeImg());
                 if (result.getSelectedIndices() != null) {
                     update = false;
                     Selection selection = new Selection(Selection.TYPE.OF_ROWS, result.getSelectedIndices());

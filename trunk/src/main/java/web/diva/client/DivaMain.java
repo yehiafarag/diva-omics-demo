@@ -70,16 +70,17 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
     @Override
     public void onModuleLoad() {
-        if(Window.Navigator.getUserAgent().contains("MSIE"))
-            oldIE= true;
-        masterWidth= Page.getScreenWidth();
-        masterHeight=Page.getScreenHeight();
+        if (Window.Navigator.getUserAgent().contains("MSIE")) {
+            oldIE = true;
+        }
+        
+        masterWidth = Page.getScreenWidth();
+        masterHeight = Page.getScreenHeight();
         calcAllDim();
         selectionManager = new SelectionManager();
         SelectionManager.Busy_Task(true, true);
         selectionManager.setMainAppController(this);
-        datasetTitle = new Label();   
-
+        datasetTitle = new Label();       
         RootPanel.get("dataset_main_title").add(datasetTitle);
         this.initApplication();
     }
@@ -93,18 +94,22 @@ public class DivaMain implements EntryPoint, ChangeHandler {
    medPanelWidth = Page.getScreenWidth()/2;   
    if(Double.valueOf(medPanelWidth)%2.0 >0.0)
        medPanelWidth = medPanelWidth-1;
-   rightPanelWidth = Page.getScreenWidth()-(10+leftPanelWidth+2+medPanelWidth+2+10);
+   rightPanelWidth = Page.getScreenWidth()-(leftPanelWidth+2+medPanelWidth+2);
    
    
         }
 //    private final ImageScaler scaler = new ImageScaler();
 
     private void softReload() {
-        if (Page.getScreenWidth() != Window.getClientWidth() || Page.getScreenHeight() != Window.getClientHeight()) {
-            Window.enableScrolling(true);          
+         
+        if ((Page.getScreenWidth() < Window.getClientWidth()) || (Page.getScreenHeight()< Window.getClientHeight())) {                    
+           SC.warn("Please maximize your browser window "+Window.getClientWidth()+" page "+Page.getScreenWidth()+"  "+Page.getScrollHeight()+"  "+Window.getClientHeight()); 
+            Window.enableScrolling(true);  
 //            Page.updateViewport(0.5f, Window.getClientWidth(), Window.getClientHeight(), true);          
-        } else {
-             Window.enableScrolling(false);
+        } else {  
+           
+             Window.enableScrolling(false);         
+             SC.dismissCurrentDialog();
 //            Page.updateViewport(0.5f, Window.getClientWidth(), Window.getClientHeight(), true);
         }
 //   SelectionManager.Busy_Task(true, true);
@@ -226,7 +231,11 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
                 }
 
-                redrawTimer.schedule(1000);
+                if (!SelectionManager.isBusy()) {
+//                    Window.enableScrolling(false);
+                    redrawTimer.schedule(1000);
+                }
+                
 
             }
         });
@@ -234,7 +243,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
             @Override
             public void run() {
-                softReload();
+//                softReload();
             }
         };
         initHomePage();
@@ -252,9 +261,10 @@ public class DivaMain implements EntryPoint, ChangeHandler {
      */
     @Override
     public void onChange(ChangeEvent event) {
+        
         if (tempSelectDatasetList.getSelectedIndex() > 0) {
             try {
-
+ 
                 RootPanel.get("welcomediva").clear(true);
                 selectSubDatasetList.clear();
                 selectSubDatasetList.addItem("Select Sub-Dataset");
@@ -266,6 +276,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 loadDataset(datasetId);
                 updateSubDsSelectionList(tempSelectDatasetList.getItemText(tempSelectDatasetList.getSelectedIndex()));
                 tempSelectDatasetList.setItemSelected(0, true);
+                
 
             } catch (Exception e) {
                 Window.alert("exp " + e.getMessage());
@@ -294,6 +305,11 @@ public class DivaMain implements EntryPoint, ChangeHandler {
             selectDatasetList.setItemSelected(0, true);
 
         }
+           if (!SelectionManager.isBusy()) {
+//                    Window.enableScrolling(false);
+                    redrawTimer.schedule(1000);
+                }
+        
     }
 
     private void updateSubDsSelectionList(String datasetName) {
