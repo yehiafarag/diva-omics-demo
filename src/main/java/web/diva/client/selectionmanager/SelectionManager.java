@@ -267,4 +267,7 @@ public class SelectionManager {
     public void setMainAppController(DivaMain mainAppController) {
         this.mainAppController = mainAppController;
     }
+    public static boolean isBusy(){
+        return busyIndicator.isBusy();
+    }
 }

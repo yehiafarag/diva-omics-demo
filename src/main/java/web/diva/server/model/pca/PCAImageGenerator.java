@@ -437,7 +437,10 @@ public class PCAImageGenerator implements Serializable{
 
          } else {
              selectRect = this.getSelectionRecatangle(startX, startY, endX, endY);
+             
          }
+         if(selectRect == null)
+              return new int[]{}; 
 
          HashSet<Integer> selectedPoints = new HashSet<Integer>();
          for (int x = 0; x < points[0].length; x++) {

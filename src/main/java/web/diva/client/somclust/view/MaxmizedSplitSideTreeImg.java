@@ -85,10 +85,9 @@ public class MaxmizedSplitSideTreeImg extends VerticalPanel implements MouseMove
         }
         return ret;
     }
- private final Image topImage;
-    private final Image bottomImage;
-    private final String defaultTopUrl;
-    private final String defaultBottomUrl;
+ private final Image image1,image2,image3,image4;
+//    private final Image bottomImage;
+    private final SplitedImg defaultSideTreeeImg;
     public MaxmizedSplitSideTreeImg(SplitedImg sideTreeeImg, ClientClusterNode node, int type,HTML toolTip,int squareL,int width) {
       
         this.squareL= squareL;
@@ -100,24 +99,46 @@ public class MaxmizedSplitSideTreeImg extends VerticalPanel implements MouseMove
         
         
         
-        topImage = new Image(sideTreeeImg.getImg1Url());
-        topImage.setWidth(width + "px");
-        topImage.setHeight(sideTreeeImg.getHeight1() + "px");
-        bottomImage = new Image(sideTreeeImg.getImg2Url());
-        bottomImage.setWidth(width + "px");
-        bottomImage.setHeight(sideTreeeImg.getHeight2() + "px");        
+        image1 = new Image(sideTreeeImg.getImg1Url());
+        image1.setWidth(width + "px");
+        image1.setHeight(sideTreeeImg.getHeightFirst() + "px");
+        
+         image2 = new Image(sideTreeeImg.getImg2Url());
+        image2.setWidth(width + "px");
+        image2.setHeight(sideTreeeImg.getHeightFirst() + "px");
+        
+         image3 = new Image(sideTreeeImg.getImg3Url());
+        image3.setWidth(width + "px");
+        image3.setHeight(sideTreeeImg.getHeightFirst() + "px");
+         
+        
+               
+         image4 = new Image(sideTreeeImg.getImg4Url());
+        image4.setWidth(width + "px");
+        image4.setHeight(sideTreeeImg.getHeightLast()+ "px");
+        
         this.mainNode = node;
         this.type = type;
         
          this.setSpacing(0);
-        this.add(topImage);             
-        this.add(bottomImage);
+        this.add(image1);             
+         this.add(image2);
+          this.add(image3);   
+           this.add(image4);   
+           
         
-        this.setCellHorizontalAlignment(topImage, VerticalPanel.ALIGN_CENTER); 
-        this.setCellHorizontalAlignment(bottomImage, VerticalPanel.ALIGN_CENTER);
-        this.setCellVerticalAlignment(bottomImage, VerticalPanel.ALIGN_TOP);
-        this.defaultTopUrl = sideTreeeImg.getImg1Url();
-        this.defaultBottomUrl= sideTreeeImg.getImg2Url();
+        this.setCellHorizontalAlignment(image1, VerticalPanel.ALIGN_CENTER); 
+        this.setCellHorizontalAlignment(image2, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image2, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image3, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image3, VerticalPanel.ALIGN_TOP);
+         this.setCellHorizontalAlignment(image4, VerticalPanel.ALIGN_CENTER);
+        this.setCellVerticalAlignment(image4, VerticalPanel.ALIGN_TOP);
+         
+        
+        
+        
+        this.defaultSideTreeeImg = sideTreeeImg;
          this.setStyleName("clusterTreeOver");
       
         
@@ -143,14 +164,18 @@ public class MaxmizedSplitSideTreeImg extends VerticalPanel implements MouseMove
     public int getYcor() {
         return ycor;
     }
-     public void setUrl(String img1,String img2){
-    topImage.setUrl(img1);
-    bottomImage.setUrl(img2);
+     public void setUrl(SplitedImg sideTreeeImg){
+    image1.setUrl(sideTreeeImg.getImg1Url());
+    image2.setUrl(sideTreeeImg.getImg2Url());
+    image3.setUrl(sideTreeeImg.getImg3Url());
+    image4.setUrl(sideTreeeImg.getImg4Url());
     
     }
     public void clearSelection(){
-      topImage.setUrl(defaultTopUrl);
-    bottomImage.setUrl(defaultBottomUrl);
+      image1.setUrl(defaultSideTreeeImg.getImg1Url());
+    image2.setUrl(defaultSideTreeeImg.getImg2Url());
+    image3.setUrl(defaultSideTreeeImg.getImg3Url());
+    image4.setUrl(defaultSideTreeeImg.getImg4Url());
     
     
     }
