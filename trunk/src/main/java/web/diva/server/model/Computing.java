@@ -43,10 +43,10 @@ import web.diva.server.model.beans.DivaDataset;
 import web.diva.shared.beans.DivaGroup;
 import web.diva.shared.beans.FullDataObject;
 import web.diva.shared.beans.InteractiveColumnsResults;
-import web.diva.shared.beans.LineChartResults;
+import web.diva.shared.beans.ProfilePlotResults;
 import web.diva.shared.beans.PCAImageResult;
 import web.diva.shared.beans.RankResult;
-import web.diva.shared.beans.SomClustTreeSelectionUpdate;
+import web.diva.shared.beans.SomClustTreeSelectionResult;
 import web.diva.shared.beans.SomClusteringResult;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
@@ -363,11 +363,11 @@ public class Computing implements Serializable, IsSerializable{
 
     }
 
-    public SomClustTreeSelectionUpdate updateSideTree(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateSideTree(int x, int y, double w, double h) {
         return somClustImgGenerator.updateSideTreeSelection(x, y, w, h);
     }
 
-    public SomClustTreeSelectionUpdate updateUpperTree(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateUpperTree(int x, int y, double w, double h) {
         return somClustImgGenerator.updateUpperTreeSelection(x, y, w, h);
     }
 
@@ -384,7 +384,7 @@ public class Computing implements Serializable, IsSerializable{
      * @param height - height
      * @return line chart image profilePlotResult
      */
-    public LineChartResults computeProfilePlot(double width, double height) {
+    public ProfilePlotResults computeProfilePlot(double width, double height) {
 
         boolean[] members = new boolean[divaDataset.getDataLength()];
         for (int i = 0; i < members.length; i++) {
@@ -392,13 +392,13 @@ public class Computing implements Serializable, IsSerializable{
         }
         profilePlotImageGenerator = new ProfilePlotImgeGenerator(divaDataset, members);
 
-        profilePlotResult = new LineChartResults();
+        profilePlotResult = new ProfilePlotResults();
         profilePlotResult.setUrl(profilePlotImageGenerator.toImage());
         profilePlotResult.setImgHeight(900);
         profilePlotResult.setImgWidth(900);
         return profilePlotResult;
     }
-   private   LineChartResults profilePlotResult ;
+   private   ProfilePlotResults profilePlotResult ;
 
     /**
      * This method is used to update line chart

@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  * @author y-mok_000
  */
-public class LineChartResults implements IsSerializable{
+public class ProfilePlotResults implements IsSerializable{
 
     private int imgHeight;
     private int imgWidth;

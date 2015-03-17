@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web.diva.client.rank.view;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,53 +23,15 @@ import web.diva.shared.beans.DivaGroup;
 import web.diva.shared.beans.RankResult;
 
 /**
+ * Ranking Analysis component
  *
- * @author Yehia Farag Ranking Tables Module
+ * @author Yehia Farag
  */
 public class RankTablesComponent extends ModularizedListener implements IsSerializable, com.smartgwt.client.widgets.events.ClickHandler {
-
-    @Override
-    public final void selectionChanged(Selection.TYPE type) {
-        if (type == Selection.TYPE.OF_ROWS) {
-            Selection sel = selectionManager.getSelectedRows();
-            if (sel != null){// && sel.getMembers().length > 0) {
-                minRankTable.updateTable(sel.getMembers());
-                if (maxRankTable != null) {
-                    maxRankTable.updateTable(sel.getMembers());
-                }
-            }
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "RankTable";
-
-    }
-
-    @Override
-    public void remove() {
-        maxmizeReg.removeHandler();
-        minmizReg.removeHandler();
-        maxSettingsReg.removeHandler();
-        minSettingsReg.removeHandler();
-        showSelectedReg.removeHandler();
-        if (maxRankTable != null) {
-            maxRankTable.remove();
-            maxShowASelectedReg.removeHandler();
-        }
-        minRankTable.remove();
-        selectionManager.removeSelectionChangeListener(this);
-        selectionManager = null;
-        GWTClientService = null;
-
-    }
 
     private final VLayout mainRankLayout;
     private final RankTableLayout minRankTable;
     private RankTableLayout maxRankTable;
-
     private final PopupPanel tablePopup;
     private final Label maxBtn;
     private final Label minBtn;
@@ -82,26 +40,30 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
     private SelectionManager selectionManager;
     private final RankPanel rankPanel;
     private final HandlerRegistration minSaveReg, maxmizeReg, minmizReg, maxSettingsReg, minSettingsReg, showSelectedReg;
-    private HandlerRegistration  maxShowASelectedReg,maxSaveReg;
-    private  CheckBox maxShowSelectedOnlyBtn,showSelectedOnlyBtn;
+    private HandlerRegistration maxShowASelectedReg, maxSaveReg;
+    private CheckBox maxShowSelectedOnlyBtn, showSelectedOnlyBtn;
+    private RankResult rankResults;
 
-    public RankTablesComponent(DivaServiceAsync greetingService, final SelectionManager selectionManager, final RankResult results, List<DivaGroup> colGroupsList) {
-       this.rankResults =results;
+    /**
+     *
+     * @param selectionManager main central manager
+     * @param results ranking information
+     * @param colGroupsList list of column groups
+     * @param divaService diva GWTClientService
+     */
+    public RankTablesComponent(DivaServiceAsync divaService, final SelectionManager selectionManager, final RankResult results, List<DivaGroup> colGroupsList) {
+        this.rankResults = results;
         this.classtype = 3;
         this.components.add(RankTablesComponent.this);
-        this.GWTClientService = greetingService;
+        this.GWTClientService = divaService;
         this.selectionManager = selectionManager;
         selectionManager.addSelectionChangeListener(RankTablesComponent.this);
-        
         this.rankPanel = new RankPanel();
-
         mainRankLayout = new VLayout();
         mainRankLayout.setHeight("100%");
         mainRankLayout.setWidth("100%");
-      
         mainRankLayout.setStyleName("rank");
         mainRankLayout.setMargin(0);
-
         HorizontalPanel topLayout = new HorizontalPanel();
         mainRankLayout.addMember(topLayout);
         topLayout.setWidth("100%");
@@ -172,7 +134,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     maxmizeTableLayout.setHeight("80%");
                     maxmizeTableLayout.setWidth("80%");
 
-                    maxRankTable = new RankTableLayout(selectionManager, results.getDatasetId(), results);
+                    maxRankTable = new RankTableLayout(selectionManager, results);
                     maxRankTable.setWidth("80%");
                     maxRankTable.setHeight("80%");
 
@@ -192,7 +154,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
 
                     maxTopLayout.add(maxSaveBtn);
                     maxTopLayout.setCellHorizontalAlignment(maxSaveBtn, HorizontalPanel.ALIGN_RIGHT);
-                       maxSaveReg = maxSaveBtn.addClickHandler(exportRankHandler);
+                    maxSaveReg = maxSaveBtn.addClickHandler(exportRankHandler);
 
                     maxTopLayout.add(minBtn);
                     maxTopLayout.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
@@ -219,9 +181,6 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                             maxRankTable.draw();
                         }
                     });
-//                    maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue());
-//                    maxRankTable.showSelectedOnly(showSelectedOnlyBtn.getValue());
-                    
                     maxBottomLayout.add(maxShowSelectedOnlyBtn);
                     maxBottomLayout.setCellHorizontalAlignment(maxShowSelectedOnlyBtn, VerticalPanel.ALIGN_LEFT);
                     maxBottomLayout.setCellVerticalAlignment(maxShowSelectedOnlyBtn, VerticalPanel.ALIGN_BOTTOM);
@@ -230,8 +189,8 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     selectionChanged(Selection.TYPE.OF_ROWS);
 
                 }
-                 maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue());
-                 maxRankTable.showSelectedOnly(showSelectedOnlyBtn.getValue());
+                maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue());
+                maxRankTable.showSelectedOnly(showSelectedOnlyBtn.getValue());
                 tablePopup.center();
                 tablePopup.show();
             }
@@ -241,13 +200,13 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
 
             @Override
             public void onClick(ClickEvent event) {
-                 showSelectedOnlyBtn.setValue(maxShowSelectedOnlyBtn.getValue());
-                 minRankTable.showSelectedOnly(maxShowSelectedOnlyBtn.getValue());
+                showSelectedOnlyBtn.setValue(maxShowSelectedOnlyBtn.getValue());
+                minRankTable.showSelectedOnly(maxShowSelectedOnlyBtn.getValue());
                 tablePopup.hide();
             }
         });
 
-        minRankTable = new RankTableLayout(selectionManager, results.getDatasetId(), results);
+        minRankTable = new RankTableLayout(selectionManager, results);
         mainRankLayout.addMember(minRankTable);
         HorizontalPanel bottomLayout = new HorizontalPanel();
         mainRankLayout.addMember(bottomLayout);
@@ -294,10 +253,19 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
 
     }
 
+    /**
+     *
+     * @return Ranking main body layout
+     */
     public VLayout getMainRankLayout() {
         return mainRankLayout;
     }
 
+    /**
+     * on click method for ranking panel listener
+     *
+     * @param event
+     */
     @Override
     public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
         if (rankPanel.isShowing()) {
@@ -311,16 +279,29 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                 maxSettingsBtn.setErrorlablVisible(true);
                 maxSettingsBtn.rankPanelvalidate();
             } else {
-                viewRankTables(perm, seed, groups, log2,maxSettingsBtn.isDefaultRank());
+                viewRankTables(perm, seed, groups, log2, maxSettingsBtn.isDefaultRank());
                 maxSettingsBtn.hidePanel();
             }
-        } 
+        }
     }
 
-    private RankResult rankResults;
+    /**
+     * This method is responsible for invoking the ranking analysis method on
+     * the server side
+     *
+     * @param perm perm value in string format
+     * @param seed seed value in string format
+     * @param colGropNames list of groups name used for ranking comparison
+     * @param log2
+     * @param defaultRank is the rank is default for the dataset (will be loaded
+     * automatically on loading dataset)
+     * @param asyncCallback RankResult that have all information required for
+     * initializing ranking tables
+     *
+     */
     private void viewRankTables(String perm, String seed, List<String> colGropNames, String log2, boolean defaultRank) {
         SelectionManager.Busy_Task(true, true);
-        GWTClientService.computeRank(perm, seed, colGropNames, log2,defaultRank,
+        GWTClientService.computeRank(perm, seed, colGropNames, log2, defaultRank,
                 new AsyncCallback<RankResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -332,8 +313,9 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     public void onSuccess(RankResult result) {
                         rankResults = result;
                         minRankTable.updateRecords(result);
-                        if(maxRankTable != null)
+                        if (maxRankTable != null) {
                             maxRankTable.updateRecords(result);
+                        }
                         selectionChanged(Selection.TYPE.OF_ROWS);
                         SelectionManager.Busy_Task(false, true);
 
@@ -341,31 +323,87 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                 });
 
     }
-    private void exportRank(int[] selection){
-      SelectionManager.Busy_Task(true, true);
-     
-        GWTClientService.exportRankingData(selection,new AsyncCallback<String>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("An error occurred while attempting to contact the server");
-                        SelectionManager.Busy_Task(false, true);
-                    }
 
-                    @Override
-                    public void onSuccess(String result) {
-                       SaveAsPanel sa = new SaveAsPanel("Rank Product File ",result);
-                        SelectionManager.Busy_Task(false, true);
-                        sa.center();
-                        sa.show();
-                        SelectionManager.Busy_Task(false, true);
+    /**
+     * This method is responsible for exporting dataset ranking results in
+     * tab-based format based on groups or selected data
+     *
+     * @param selection indexes of exported data
+     *
+     */
+    private void exportRank(int[] selection) {
+        SelectionManager.Busy_Task(true, true);
 
-                    }
-                });
-    
+        GWTClientService.exportRankingData(selection, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("An error occurred while attempting to contact the server");
+                SelectionManager.Busy_Task(false, true);
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                SaveAsPanel sa = new SaveAsPanel("Rank Product File ", result);
+                SelectionManager.Busy_Task(false, true);
+                sa.center();
+                sa.show();
+                SelectionManager.Busy_Task(false, true);
+
+            }
+        });
+
     }
 
-    public RankResult getRankResults() {
-        return rankResults;
+    /**
+     * This method is the listener implementation for the central manager the
+     * method responsible for the component notification there is selection
+     * event
+     *
+     * @param type Selection.TYPE row or column
+     *
+     */
+    @Override
+    public final void selectionChanged(Selection.TYPE type) {
+        if (type == Selection.TYPE.OF_ROWS) {
+            Selection sel = selectionManager.getSelectedRows();
+            if (sel != null) {// && sel.getMembers().length > 0) {
+                minRankTable.updateTable(sel.getMembers());
+                if (maxRankTable != null) {
+                    maxRankTable.updateTable(sel.getMembers());
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "RankTable";
+
+    }
+
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
+    @Override
+    public void remove() {
+        maxmizeReg.removeHandler();
+        minmizReg.removeHandler();
+        maxSettingsReg.removeHandler();
+        minSettingsReg.removeHandler();
+        showSelectedReg.removeHandler();
+        minSaveReg.removeHandler();
+        if (maxRankTable != null) {
+            maxRankTable.remove();
+            maxShowASelectedReg.removeHandler();
+            maxSaveReg.removeHandler();
+        }
+        minRankTable.remove();
+        selectionManager.removeSelectionChangeListener(this);
+        selectionManager = null;
+        GWTClientService = null;
+
     }
 
 }

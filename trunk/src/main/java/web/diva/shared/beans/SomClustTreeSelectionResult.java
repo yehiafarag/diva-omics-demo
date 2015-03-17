@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  * @author Yehia Farag
  */
-public class SomClustTreeSelectionUpdate implements IsSerializable{
+public class SomClustTreeSelectionResult implements IsSerializable{
     
     private SplitedImg treeImg;
     private int[] selectedIndices;

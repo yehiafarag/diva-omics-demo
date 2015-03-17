@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package web.diva.client.selectionmanager;
 
 /**
- * Template for the main classes.
+ * Template for the modularized listeners  classes.
  */
 public abstract class ModularizedListener implements SelectionChangeListener {
 
@@ -16,6 +13,7 @@ public abstract class ModularizedListener implements SelectionChangeListener {
     //NOTE: made this variable protected (had default modifier originally)
     protected int classtype = 0;
 
+    
     /**
      * Set the type of component.
      *

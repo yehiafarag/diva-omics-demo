@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package web.diva.client.omicstables.view;
 
 import com.smartgwt.client.types.ListGridFieldType;
@@ -12,11 +8,15 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
 /**
- *
+ * Omics information table
  * @author Yehia Farag
  */
 public class OmicsTable extends ListGrid {
 
+    /**
+     * @param datasetInfo dataset information contains all the omics information
+     * data
+     */
     public OmicsTable(DatasetInformation datasetInfo) {
         setShowRecordComponents(true);
         setShowRecordComponentsByCell(true);

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package web.diva.client.omicstables.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -46,9 +42,11 @@ import web.diva.shared.beans.DivaGroup;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
 /**
+ * container for omics data information table row groups tables and columns
+ * group tables
  *
  * @author Yehia Farag this component represents the left panel on DIVA it
- * contains omics data information table rows sel tables columns sel tables
+ *
  */
 public class LeftPanelView extends SectionStack {
 
@@ -61,14 +59,25 @@ public class LeftPanelView extends SectionStack {
     private IButton colGroupBtn;
     private GroupPanel groupPanel;
     private GroupTable rowGroupTable;
-     private GroupTable colGroupTable;
-
+    private final GroupTable colGroupTable;
+    private HLayout gBtnLayout;
     private SaveDatasetPanel saveDsPanel;
     private final SectionStackSection rowSelectionSection;
     private final HandlerRegistration controlItemChangeHandlerReg, itemClickHandlerReg, colGroupBtnReg;
     private HandlerRegistration createRowGroupHandlerReg, colGroupHandlerReg, selectColsReg, exportPanelReg, activeGroupPanelReg, subDsPanelReg, saveDsPanelReg;
 
-    public LeftPanelView(SelectionManager selectionManagers, DivaServiceAsync GWTClientService, DatasetInformation datasetInfos,int width,int height) {
+    /**
+     *
+     * @param selectionManagers main central manager
+     * @param datasetInfos dataset information object
+     * @param GWTClientService access for client service
+     * @param width panel width
+     * @param height panel height
+     *
+     *
+     *
+     */
+    public LeftPanelView(SelectionManager selectionManagers, DivaServiceAsync GWTClientService, DatasetInformation datasetInfos, int width, int height) {
 
         this.setVisibilityMode(VisibilityMode.MULTIPLE);
         this.selectionManager = selectionManagers;
@@ -76,11 +85,11 @@ public class LeftPanelView extends SectionStack {
         this.datasetInfo = datasetInfos;
 
         this.setBorder("1px solid #F6F5F5");
-        this.setWidth(width+"px");
-        this.setHeight(height+"px");
+        this.setWidth(width + "px");
+        this.setHeight(height + "px");
         this.setMargin(2);
         this.setScrollSectionIntoView(false);
-        rowSelectionSection = new SectionStackSection("&nbsp;Selection (" +  0+ "/" + datasetInfo.getRowsNumb() + ")");     
+        rowSelectionSection = new SectionStackSection("&nbsp;Selection (" + 0 + "/" + datasetInfo.getRowsNumb() + ")");
 
         rowSelectionSection.setControls();
         rowSelectionSection.setCanCollapse(false);
@@ -93,7 +102,6 @@ public class LeftPanelView extends SectionStack {
         final LinkedHashMap<String, String> controls = new LinkedHashMap<String, String>();
         controls.put(rowControl, rowControl);
         controls.put(colControl, colControl);
-        
 
         final RadioGroupItem controlItem = new RadioGroupItem();
         controlItem.setShowTitle(false);
@@ -105,18 +113,16 @@ public class LeftPanelView extends SectionStack {
         controlItem.setValueMap(controls);
         controlItem.setValue(rowControl);
 
-      
-        
         controlItemChangeHandlerReg = controlItem.addChangeHandler(new com.smartgwt.client.widgets.form.fields.events.ChangeHandler() {
 
             @Override
             public void onChange(com.smartgwt.client.widgets.form.fields.events.ChangeEvent event) {
                 if (event.getValue().toString().equalsIgnoreCase(rowControl)) {
 
-                     if (selectionManager.getSelectedRows()!= null && selectionManager.getSelectedRows().getMembers()!= null) {
-                        rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedRows().getMembers().length + "/" + datasetInfo.getRowsNumb()+ ")");
+                    if (selectionManager.getSelectedRows() != null && selectionManager.getSelectedRows().getMembers() != null) {
+                        rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedRows().getMembers().length + "/" + datasetInfo.getRowsNumb() + ")");
                     } else {
-                        rowSelectionSection.setTitle("&nbsp;Selection (" + 0 + "/" + datasetInfo.getRowsNumb()+ ")");
+                        rowSelectionSection.setTitle("&nbsp;Selection (" + 0 + "/" + datasetInfo.getRowsNumb() + ")");
                     }
                     rowSelectionLayout.setVisible(true);
                     colSelectionLayout.setVisible(false);
@@ -127,7 +133,7 @@ public class LeftPanelView extends SectionStack {
                     colSelectionLayout.setWidth("100%");
                     colSelectionLayout.setHeight("2%");
 
-                    if (selectionManager.getSelectedColumns() != null && selectionManager.getSelectedColumns().getMembers()!= null) {
+                    if (selectionManager.getSelectedColumns() != null && selectionManager.getSelectedColumns().getMembers() != null) {
                         rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedColumns().getMembers().length + "/" + datasetInfo.getColNumb() + ")");
                     } else {
                         rowSelectionSection.setTitle("&nbsp;Selection (" + 0 + "/" + datasetInfo.getColNumb() + ")");
@@ -163,7 +169,7 @@ public class LeftPanelView extends SectionStack {
         colSelectionLayout.setHeight(30);
         colSelectionLayout.setAlign(VerticalAlignment.TOP);
 
-        omicsTable = new OmicsTableComponent(selectionManager, datasetInfos, datasetInfos.getRowsNumb(),rowSelectionSection,controlItem);
+        omicsTable = new OmicsTableComponent(selectionManager, datasetInfos, datasetInfos.getRowsNumb(), rowSelectionSection, controlItem);
         rowSelectionLayout.addMember(omicsTable.getOmicsTableLayout());
 
         HorizontalPanel rowGBtnLayout = new HorizontalPanel();
@@ -184,7 +190,6 @@ public class LeftPanelView extends SectionStack {
         /* new group and ds  layout*/
 //        MenuItem createRowGroupMenuItem = new MenuItem("Create Row Groups");
 //        MenuItem activateRowGroupMenuItem = new MenuItem("Activate Row Groups");
-
 //        Menu rowGroupMenu = new Menu();
 //        rowGroupMenu.setCanSelectParentItems(true);
 //        rowGroupMenu.setData(createRowGroupMenuItem, activateRowGroupMenuItem);
@@ -219,17 +224,16 @@ public class LeftPanelView extends SectionStack {
 //
 //        IMenuButton rowGroupBtn = new IMenuButton("Row Groups", rowGroupMenu);
 ////        rowGroupBtn.setShowMenuButtonImage(false);
-
         IButton rowGroupBtn = new IButton("Create Row Group");
         rowGroupBtn.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                 if (groupPanel == null) {
-                        groupPanel = new GroupPanel();
-                        createRowGroupHandlerReg = groupPanel.getOkBtn().addClickHandler(createRowGroupHandler);
-                    }
-                    updateAndShowGroupPanel("row");
+                if (groupPanel == null) {
+                    groupPanel = new GroupPanel();
+                    createRowGroupHandlerReg = groupPanel.getOkBtn().addClickHandler(createRowGroupHandler);
+                }
+                updateAndShowGroupPanel("row");
             }
         });
         rowGBtnLayout.add(rowGroupBtn);
@@ -252,7 +256,7 @@ public class LeftPanelView extends SectionStack {
 
         Menu datasetMenu = new Menu();
         datasetMenu.setCanSelectParentItems(true);
-        datasetMenu.setData(/*createSDMenuItem,*/ exportDatasetMenuItem/*, saveDatasetMenuItem*/);
+        datasetMenu.setData(/*createSDMenuItem,*/exportDatasetMenuItem/*, saveDatasetMenuItem*/);
         datasetMenu.setWidth(100);
 
         itemClickHandlerReg = datasetMenu.addItemClickHandler(new ItemClickHandler() {
@@ -262,13 +266,12 @@ public class LeftPanelView extends SectionStack {
                     if (subDsPanel == null) {
                         initSubDsPanel(datasetInfo.getRowGroupList());
                     }
-                    if(selectionManager.getSelectedRows() == null &&datasetInfo.getRowGroupList().size()==1 ){
-                        Notification.notifi("","You Need To Select Data or Create Row Group First ");
-                    }
-                    else{
-                    updateSubDsPanel();
-                    subDsPanel.center();
-                    subDsPanel.show();
+                    if (selectionManager.getSelectedRows() == null && datasetInfo.getRowGroupList().size() == 1) {
+                        Notification.notifi("", "You Need To Select Data or Create Row Group First ");
+                    } else {
+                        updateSubDsPanel();
+                        subDsPanel.center();
+                        subDsPanel.show();
                     }
                 } else if (event.getItem().getTitle().equalsIgnoreCase("Save Current Dataset")) {
                     if (saveDsPanel == null) {
@@ -305,7 +308,7 @@ public class LeftPanelView extends SectionStack {
         rowSelectionLayout.setAlign(Alignment.CENTER);
 
         /* end of new  group and ds  layout*/
-        rowGroupTable = new GroupTable(selectionManager,"row");
+        rowGroupTable = new GroupTable(selectionManager, "row");
         rowGroupTable.updateRecords(datasetInfo.getRowGroupList());
         rowSelectionLayout.addMember(rowGroupTable);
 
@@ -362,22 +365,27 @@ public class LeftPanelView extends SectionStack {
                 updateAndShowGroupPanel("col");
             }
         });
-         colGroupTable = new GroupTable(selectionManager,"col");
+        colGroupTable = new GroupTable(selectionManager, "col");
         colGroupTable.updateRecords(datasetInfo.getColGroupsList());
         colSelectionLayout.addMember(colGroupTable);
 
     }
-    private HLayout gBtnLayout;
 
+    /**
+     * This method is responsible for updating groups panels (for create group)
+     * and visualize it
+     *
+     * @param type type of the group col or row
+     */
     private void updateAndShowGroupPanel(String type) {
         if (type.equalsIgnoreCase("col")) {
-             if (selectionManager.getSelectedColumns()== null) {
+            if (selectionManager.getSelectedColumns() == null) {
                 Notification.notifi("", "You Need To Select Data First");
             } else {
-            groupPanel.setCount(selectionManager.getSelectedColumns().getMembers().length);
-            groupPanel.center();
+                groupPanel.setCount(selectionManager.getSelectedColumns().getMembers().length);
+                groupPanel.center();
                 groupPanel.show();
-             }
+            }
         } else if (type.equalsIgnoreCase("row")) {
             if (selectionManager.getSelectedRows() == null) {
                 Notification.notifi("", "You Need To Select Data First");
@@ -388,7 +396,6 @@ public class LeftPanelView extends SectionStack {
             }
 
         }
-
 
     }
 
@@ -425,10 +432,20 @@ public class LeftPanelView extends SectionStack {
         return selectCols;
     }
 
+    /**
+     * This method is responsible for getting the column selection list
+     *
+     * @return SelectItem -column selection list
+     */
     public SelectItem getColSelectionTable() {
         return colSelectionTable;
     }
 
+    /**
+     * This method is responsible for initializing exporting panel
+     *
+     * @param rowGroupList list of the row groups
+     */
     private void initExportPanel(List<DivaGroup> rowGroupList) {
         exportPanel = new RowGroupPanel(rowGroupList, "Export Row Group", SelectionStyle.SINGLE);
         exportPanelReg = exportPanel.getOkBtn().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
@@ -443,22 +460,12 @@ public class LeftPanelView extends SectionStack {
         });
 
     }
-//
-//    private void initActiveGroupPanel(List<DivaGroup> rowGroupList) {
-//        activeGroupPanel = new RowGroupPanel(rowGroupList, "Activate Row Group", SelectionStyle.SIMPLE);
-//        activeGroupPanelReg = activeGroupPanel.getOkBtn().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-//
-//            @Override
-//            public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-//                String[] gnames = activeGroupPanel.getSelectRowGroups();
-//                if (gnames != null && gnames.length != 0) {
-//                    activateGroups(gnames);
-//                }
-//            }
-//        });
-//
-//    }
 
+    /**
+     * This method is responsible for sub-dataset creation panel
+     *
+     * @param rowGroupList list of the row groups
+     */
     private void initSubDsPanel(List<DivaGroup> rowGroupList) {
         subDsPanel = new RowGroupPanel(rowGroupList, "Create Sub-Dataset", SelectionStyle.SINGLE);
         subDsPanelReg = subDsPanel.getOkBtn().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
@@ -483,6 +490,9 @@ public class LeftPanelView extends SectionStack {
 
     }
 
+    /**
+     * This method is responsible for initializing save dataset panel
+     */
     private void initSaveDsPanel() {
         saveDsPanel = new SaveDatasetPanel();
         saveDsPanelReg = saveDsPanel.getOkBtn().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
@@ -498,17 +508,19 @@ public class LeftPanelView extends SectionStack {
 
     }
 
+    /**
+     * This method is responsible for updating the exporting panel with the
+     * updated groups and selection
+     */
     private void updateExportPanel() {
         exportPanel.updateData(datasetInfo.getRowGroupList());
 
     }
 
-//    private void updateActiveGroupPanelPanel() {
-//       
-//        activeGroupPanel.updateData(datasetInfo.getRowGroupList());
-//
-//    }
-
+    /**
+     * This method is responsible for updating the sub-dataset panel with the
+     * updated groups and selection
+     */
     private void updateSubDsPanel() {
         DivaGroup dg = new DivaGroup();
         dg.setColor("../images/lightgray.png");
@@ -539,8 +551,8 @@ public class LeftPanelView extends SectionStack {
                     }
 
                     @Override
-                    public void onSuccess(String result) {  
-                        SaveAsPanel sa = new SaveAsPanel("File",result);
+                    public void onSuccess(String result) {
+                        SaveAsPanel sa = new SaveAsPanel("File", result);
                         SelectionManager.Busy_Task(false, true);
                         sa.center();
                         sa.show();
@@ -551,17 +563,18 @@ public class LeftPanelView extends SectionStack {
                 });
 
     }
+
     /**
      * This method is responsible for invoking create row group method
      *
      * @param name - row group name
      * @param color - selected hashed color
-     * @param type - group type (row)
+     * @param description - group description
      * @param selectedRows - selected rows indexes
      */
-    private void createRowGroup(String name, String color, String type, int[] selectedRows) {
+    private void createRowGroup(String name, String color, String description, int[] selectedRows) {
         SelectionManager.Busy_Task(true, true);
-        GWTClientService.createRowGroup(name, color, type, selectedRows,
+        GWTClientService.createRowGroup(name, color, description, selectedRows,
                 new AsyncCallback<DatasetInformation>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -599,10 +612,10 @@ public class LeftPanelView extends SectionStack {
                     }
 
                     @Override
-                    public void onSuccess(String datasetName) {                       
+                    public void onSuccess(String datasetName) {
                         saveDsPanel.hide(true);
                         selectionManager.saveDataset(datasetName);
-                          SC.say("Done", "Dataset Successfully Saved");
+                        SC.say("Done", "Dataset Successfully Saved");
                     }
                 });
 
@@ -641,11 +654,11 @@ public class LeftPanelView extends SectionStack {
      * @param name - column group name
      * @param color - selected hashed color
      * @param selection - selected column indexes
-     * @param type - group type (column)
+     * @param description - group description
      */
-    private void createColGroup(String name, String color, String type, int[] selection) {
+    private void createColGroup(String name, String color, String description, int[] selection) {
         SelectionManager.Busy_Task(true, true);
-        GWTClientService.createColGroup(name, color, type, selection,
+        GWTClientService.createColGroup(name, color, description, selection,
                 new AsyncCallback<DatasetInformation>() {
                     @Override
                     public void onFailure(Throwable caught) {
@@ -655,42 +668,18 @@ public class LeftPanelView extends SectionStack {
 
                     @Override
                     public void onSuccess(DatasetInformation result) {
-                         groupPanel.hide(true);
+                        groupPanel.hide(true);
                         selectionManager.updateAllModules(result);
                     }
                 });
 
     }
 
-//    /**
-//     * This method is responsible for invoking activate rows groups method
-//     *
-//     * @param datasetId - datasetId
-//     * @param rowGroups row groups indexes to activate
-//     * @param colGroups column groups indexes to activate
-//     * @param colGropNames selected ranking columns indexes
-//     */
-//    private void activateGroups(String[] rowGroups) {
-//
-//        SelectionManager.Busy_Task(true, true);
-//        GWTClientService.activateGroups(rowGroups,
-//                new AsyncCallback<DatasetInformation>() {
-//                    @Override
-//                    public void onFailure(Throwable caught) {
-//                        Window.alert("ERROR IN SERVER CONNECTION");
-//                        SelectionManager.Busy_Task(false, true);
-//                    }
-//                    @Override
-//                    public void onSuccess(DatasetInformation result) {
-//                        activeGroupPanel.hide(true);
-//                        selectionManager.updateAllModules(result);
-//
-//                    }
-//                });
-//
-//    }
-
-    public void remove() { 
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
+    public void remove() {
         omicsTable.remove();
         rowGroupTable.remove();
         controlItemChangeHandlerReg.removeHandler();
@@ -723,16 +712,30 @@ public class LeftPanelView extends SectionStack {
         datasetInfo = null;
         selectionManager = null;
         GWTClientService = null;
-       
+
         omicsTable = null;
         rowGroupTable = null;
 
     }
-    
-    public void resize(int width,int height){
-     this.setWidth(width+"px");
-        this.setHeight(height+"px");
-        this.redraw();
-    }
 
+    //
+//    private void initActiveGroupPanel(List<DivaGroup> rowGroupList) {
+//        activeGroupPanel = new RowGroupPanel(rowGroupList, "Activate Row Group", SelectionStyle.SIMPLE);
+//        activeGroupPanelReg = activeGroupPanel.getOkBtn().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+//
+//            @Override
+//            public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+//                String[] gnames = activeGroupPanel.getSelectRowGroups();
+//                if (gnames != null && gnames.length != 0) {
+//                    activateGroups(gnames);
+//                }
+//            }
+//        });
+//
+//    }
+//    private void updateActiveGroupPanelPanel() {
+//       
+//        activeGroupPanel.updateData(datasetInfo.getRowGroupList());
+//
+//    }
 }

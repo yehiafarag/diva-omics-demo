@@ -35,7 +35,7 @@ import org.jfree.chart.encoders.ImageFormat;
 import web.diva.server.model.HeatmapColorFactory;
 import web.diva.shared.beans.ClientClusterNode;
 import web.diva.shared.beans.InteractiveColumnsResults;
-import web.diva.shared.beans.SomClustTreeSelectionUpdate;
+import web.diva.shared.beans.SomClustTreeSelectionResult;
 import web.diva.shared.beans.SplitedImg;
 
 /**
@@ -737,9 +737,9 @@ public class SomClustImgGenerator {
     }
 
     private  BufferedImage sideTreeBImg;
-    public SomClustTreeSelectionUpdate updateSideTreeSelection(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateSideTreeSelection(int x, int y, double w, double h) {
         sideTreeBImg = sideTree.getImage();
-        SomClustTreeSelectionUpdate result = new SomClustTreeSelectionUpdate();
+        SomClustTreeSelectionResult result = new SomClustTreeSelectionResult();
         Node n = this.getNodeAt(x, y, rowNode);        
         if (n != null) {
             sideTree.painttree(n, sideTreeBImg.getGraphics(), Color.red);
@@ -771,10 +771,10 @@ public class SomClustImgGenerator {
     }
 
     private BufferedImage upperTreeBImg;
-    public SomClustTreeSelectionUpdate updateUpperTreeSelection(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateUpperTreeSelection(int x, int y, double w, double h) {
          upperTreeBImg = upperTree.getImage();
         Node n = this.getNodeAt(y, x, colNode);
-        SomClustTreeSelectionUpdate result = new SomClustTreeSelectionUpdate();
+        SomClustTreeSelectionResult result = new SomClustTreeSelectionResult();
         if (n != null) {
             upperTree.painttree(n, upperTreeBImg.getGraphics(), Color.red);
             
