@@ -1,24 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package web.diva.client.rank.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.smartgwt.client.data.DSCallback;
-import com.smartgwt.client.data.DSRequest;
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SortDirection;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.DragStartEvent;
 import com.smartgwt.client.widgets.events.DragStartHandler;
@@ -34,190 +23,38 @@ import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.shared.beans.RankResult;
 
 /**
+ * Ranking Table
  *
  * @author Yehia Farag
  */
 public class RankTableLayout extends ListGrid implements IsSerializable {
 
     private ListGridRecord[] posRecordMap, negRecordMap, selectedRows;
-    private int rowCounter;
-    private double[] maxValues;
-    private boolean sparkline;
-    private int[]sparkLineHeaderIndexer = new int[]{0,0,0,1,2,3,4,0,5,6,7};
-
-//    @Override
-//    public Canvas updateRecordComponent(ListGridRecord record, Integer colNum, Canvas component, boolean recordChanged) {
-//       if (sparkline) {
-//            rowCounter = this.getRowNum(record);
-//            String fieldName = this.getFieldName(colNum);
-//            int indexer = record.getAttributeAsInt("Pos Rank") - 1;
-//            if (fieldName.equals("Fold change")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][0], record.getAttributeAsDouble("Fold change"), maxValues[0]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Pos Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][1], record.getAttributeAsDouble("Pos Score"), maxValues[1]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Expected Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][2], record.getAttributeAsDouble("Expected Score"), maxValues[2]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("q-value")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][3], record.getAttributeAsDouble("q-value"), maxValues[3]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][4], record.getAttributeAsDouble("Neg Score"), maxValues[4]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg Expected Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][5], record.getAttributeAsDouble("Neg Expected Score"), maxValues[5]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg q-value")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][6], record.getAttributeAsDouble("Neg q-value"), maxValues[6]);
-//                return recordCanvas;
-//            } else {
-//                return null;
-//            }
-//        } else {
-//            return null;
-//        }
-//    }
-
-//   private SparkLineRecord[][] updatedSparklineRecords ;
-//
-//    @Override
-//    protected Canvas createRecordComponent(final ListGridRecord record, Integer colNum) {
-//
-//        if (sparkline) {
-//            rowCounter = this.getRowNum(record);
-//            String fieldName = this.getFieldName(colNum);
-//            int indexer = record.getAttributeAsInt("Pos Rank") - 1;
-//            if (fieldName.equals("Fold change")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][0], record.getAttributeAsDouble("Fold change"), maxValues[0]);
-//               
-//                return recordCanvas;
-//            } else if (fieldName.equals("Pos Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][1], record.getAttributeAsDouble("Pos Score"), maxValues[1]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Expected Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][2], record.getAttributeAsDouble("Expected Score"), maxValues[2]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("q-value")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][3], record.getAttributeAsDouble("q-value"), maxValues[3]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][4], record.getAttributeAsDouble("Neg Score"), maxValues[4]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg Expected Score")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][5], record.getAttributeAsDouble("Neg Expected Score"), maxValues[5]);
-//                return recordCanvas;
-//            } else if (fieldName.equals("Neg q-value")) {
-//                SparkLineRecord recordCanvas = new SparkLineRecord(labelsUrl[indexer][6], record.getAttributeAsDouble("Neg q-value"), maxValues[6]);
-//                return recordCanvas;
-//            } else {
-//                return null;
-//            }
-//        } else {
-//            return null;
-//        }
-//
-//    }
-
-
-    public void remove() {
-        clickReg.removeHandler();
-        dragStartReg.removeHandler();
-        dragStopReg.removeHandler();
-
-    }
     private boolean showSelectedOnly;
-
-    public void updateTable(int[] selection) {
-        if (selectionTag) {
-            selectionTag = false;
-        } else {
-            this.deselectAllRecords();
-            if (selection.length == 0) {
-                selectedRows=new ListGridRecord[]{};
-                return;
-            }
-            ListGridRecord[] reIndexSelection = new ListGridRecord[selection.length];
-            int i = 0;
-
-            for (int z : selection) {
-                reIndexSelection[i++] = posRecordMap[z];
-            }
-            selectedRows = reIndexSelection;
-            if (showSelectedOnly) {
-                this.setRecords(reIndexSelection);
-                this.selectAllRecords();
-                this.scrollToTop();
-            } else {
-                this.setRecords(records);
-                this.selectRecords(reIndexSelection);
-                this.scrollToRow(this.getRecordIndex(reIndexSelection[0]));
-            }
-
-        }
-
-    }
-    
-    public int[] getIndexSelection(){
-       ListGridRecord[] selectionRecord = getSelectedRecords();
-                if (selectionRecord.length > 0) {
-            int[] selectedIndices = new int[selectionRecord.length];
-            for (int index = 0; index < selectionRecord.length; index++) {
-                ListGridRecord rec = selectionRecord[index];
-                selectedIndices[index] = (rec.getAttributeAsInt("Pos Rank")-1);
-            }
-            return(selectedIndices);
-        }
-        else{
-            return(new int[]{});
-        }
-    
-    }
-
-    public void showSelectedOnly(boolean showSelectedOnly) {
-        this.showSelectedOnly = showSelectedOnly;       
-        if (showSelectedOnly) {    
-            selectedRows = this.getSelectedRecords();      
-            this.setRecords(selectedRows);            
-            this.selectAllRecords();    
-            this.scrollToTop();
-            
-        } else {
-            this.setRecords(records);
-            if(selectedRows != null){
-            this.selectRecords(selectedRows);
-            this.scrollToRow(this.getRecordIndex(selectedRows[0]));
-            }
-            
-        }
-        
-    }
-    
-
-  
-
     private ListGridRecord[] records;
     private final SelectionManager selectionManager;
     private int[] posRankToIndex, negRankToIndex;
     private boolean selectionTag = false;
-    
-    private  HandlerRegistration clickReg,dragStartReg,dragStopReg;
-    private String[][] labelsUrl;
-    private double[][] tableData;
+    private HandlerRegistration clickReg, dragStartReg, dragStopReg;
 
-    public RankTableLayout(SelectionManager selectionManager, int datasetId, RankResult results) {
-        this.labelsUrl=results.getLabels();
-        this.tableData=results.getTableData();
+    /**
+     * @param selectionManager main central manager
+     * @param results RankResult that contains all ranking information
+     */
+    public RankTableLayout(SelectionManager selectionManager, RankResult results) {
         this.setOverflow(Overflow.HIDDEN);
         this.selectionManager = selectionManager;
         initGrid(results.getHeaders());
         this.updateRecords(results);
-       
-//        results = null;
 
     }
 
+    /**
+     * This method is responsible for initializing the ranking table
+     *
+     * @param headers the headers of the table
+     *
+     */
     private void initGrid(String[] headers) {
         setShowRecordComponents(true);
         setShowRecordComponentsByCell(true);
@@ -246,24 +83,12 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
                 l.setType(ListGridFieldType.TEXT);
 
             } else {
-                l.setType(ListGridFieldType.FLOAT);       
-//                l.setAlign(Alignment.LEFT);             
+                l.setType(ListGridFieldType.FLOAT);
                 l.setFormat("0.000");
-                
-//                l.setAutoFitWidth(true);
             }
-            
+
             fields[z] = l;
         }
-        
-//        //for url mapping
-//        for (int i = 0; i < 7; i++) {
-//            ListGridField url = (ListGridField) new ListGridField(i + "", i+"");
-//            url.setType(ListGridFieldType.TEXT);
-//            url.setHidden(true);
-//            fields[7 + i] = url;
-//        }
-        
         sort(headers[4], SortDirection.ASCENDING);
         setFields(fields);
         setCanResizeFields(true);
@@ -284,16 +109,16 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
             public void onDragStart(DragStartEvent event) {
             }
         });
-       dragStopReg=  addDragStopHandler(new DragStopHandler() {
+        dragStopReg = addDragStopHandler(new DragStopHandler() {
             @Override
             public void onDragStop(DragStopEvent event) {
                 ListGridRecord[] selectionRecord = getSelectedRecords();
-                
+
                 updateTableSelection(selectionRecord);
             }
         });
-       
-           final Timer t = new Timer() {
+
+        final Timer t = new Timer() {
 
             @Override
             public void run() {
@@ -301,17 +126,106 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
                 updateTableSelection(selectionRecord);
             }
         };
-        
-    
+
         this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
 
             @Override
             public void onBodyKeyPress(BodyKeyPressEvent event) {
-             t.schedule(500);
+                t.schedule(500);
             }
         });
     }
 
+    /**
+     * This method is responsible for re indexing the selected indexes and map
+     * it to ranking records
+     *
+     * @param selection indexes of the selected data
+     *
+     */
+    public void updateTable(int[] selection) {
+        if (selectionTag) {
+            selectionTag = false;
+        } else {
+            this.deselectAllRecords();
+            if (selection.length == 0) {
+                selectedRows = new ListGridRecord[]{};
+                return;
+            }
+            ListGridRecord[] reIndexSelection = new ListGridRecord[selection.length];
+            int i = 0;
+
+            for (int z : selection) {
+                reIndexSelection[i++] = posRecordMap[z];
+            }
+            selectedRows = reIndexSelection;
+            if (showSelectedOnly) {
+                this.setRecords(reIndexSelection);
+                this.selectAllRecords();
+                this.scrollToTop();
+            } else {
+                this.setRecords(records);
+                this.selectRecords(reIndexSelection);
+                this.scrollToRow(this.getRecordIndex(reIndexSelection[0]));
+            }
+
+        }
+
+    }
+
+    /**
+     * This method is responsible for convert ranking records into default data
+     * indexes
+     *
+     * @return record indexes
+     *
+     */
+    public int[] getIndexSelection() {
+        ListGridRecord[] selectionRecord = getSelectedRecords();
+        if (selectionRecord.length > 0) {
+            int[] selectedIndices = new int[selectionRecord.length];
+            for (int index = 0; index < selectionRecord.length; index++) {
+                ListGridRecord rec = selectionRecord[index];
+                selectedIndices[index] = (rec.getAttributeAsInt("Pos Rank") - 1);
+            }
+            return (selectedIndices);
+        } else {
+            return (new int[]{});
+        }
+
+    }
+
+    /**
+     * This method is responsible for show selected data only in the ranking
+     * table
+     *
+     * @param showSelectedOnly show only selected records
+     */
+    public void showSelectedOnly(boolean showSelectedOnly) {
+        this.showSelectedOnly = showSelectedOnly;
+        if (showSelectedOnly) {
+            selectedRows = this.getSelectedRecords();
+            this.setRecords(selectedRows);
+            this.selectAllRecords();
+            this.scrollToTop();
+
+        } else {
+            this.setRecords(records);
+            if (selectedRows != null) {
+                this.selectRecords(selectedRows);
+                this.scrollToRow(this.getRecordIndex(selectedRows[0]));
+            }
+
+        }
+
+    }
+
+    /**
+     * This method is responsible for updating the view by selecting records on
+     * ranking table
+     *
+     * @param selectionRecord selected records
+     */
     private void updateTableSelection(ListGridRecord[] selectionRecord) {
         if (selectionRecord.length > 0) {
             int[] selectedIndices = new int[selectionRecord.length];
@@ -320,21 +234,26 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
                 selectedIndices[index] = rec.getAttributeAsInt("index");
             }
             updateSelectionManager(selectedIndices);
-        }
-        else{
+        } else {
             updateSelectionManager(new int[]{});
         }
 
     }
 
-    private ListGridRecord[] getRecodList(double[][] tableData, String[] headers, String[] rowIds, int[] posRank, int[] negRank, int[] posRankToNegRank) {
+    /**
+     * This method is responsible for initializing the record list
+     *
+     * @param datasetInfo
+     *
+     */
+    private ListGridRecord[] initRecodList(double[][] tableData, String[] headers, String[] rowIds, int[] posRank, int[] negRank, int[] posRankToNegRank) {
 
         ListGridRecord[] recordsInit = new ListGridRecord[rowIds.length];
         posRecordMap = new ListGridRecord[recordsInit.length];
         negRecordMap = new ListGridRecord[recordsInit.length];
         for (int x = 0; x < recordsInit.length; x++) {
             ListGridRecord record = new ListGridRecord();
-           
+
             int posReIndexer = posRankToIndex[x];
             int negReIndexer = negRankToIndex[posRankToNegRank[x] - 1];
             record.setAttribute("index", (Integer) posReIndexer);
@@ -361,7 +280,6 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
                     Window.alert(nexp.getMessage());
                 }
             }
-            
 
             recordsInit[x] = record;
             posRecordMap[posReIndexer] = record;
@@ -372,6 +290,13 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
         return recordsInit;
     }
 
+    /**
+     * This method is responsible for updating the selection manager on user
+     * selection on table
+     *
+     * @param selectedIndices selected data indexes
+     *
+     */
     private void updateSelectionManager(int[] selectedIndices) {
         selectionTag = true;
         SelectionManager.Busy_Task(true, false);
@@ -385,23 +310,29 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
         return "rank table";
     }
 
+    /**
+     * This method is responsible for updating the ranking records
+     *
+     * @param results RankResult that has all ranking information
+     *
+     */
     public final void updateRecords(RankResult results) {
-        sparkline = results.isSparkline();
-        maxValues = results.getMaxValues();
-        this.labelsUrl=results.getLabels();
-        this.tableData=results.getTableData();
         this.posRankToIndex = results.getPosRank();
         this.posRankToIndex = results.getPosRankToIndex();
         this.negRankToIndex = results.getNegRankToIndex();
-        
-        this.records = getRecodList(results.getTableData(), results.getHeaders(), results.getRowIds(), results.getPosRank(), results.getNegRank(), results.getPosRankToNegRank());
+        this.records = initRecodList(results.getTableData(), results.getHeaders(), results.getRowIds(), results.getPosRank(), results.getNegRank(), results.getPosRankToNegRank());
         setData(records);
-        
+
     }
-    
-    private void setSparkLineRecords(){
-    
-//   updatedSparklineRecords = new SparkLineRecord[negRankToIndex.length][maxValues.length];
-    
+
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
+    public void remove() {
+        clickReg.removeHandler();
+        dragStartReg.removeHandler();
+        dragStopReg.removeHandler();
+
     }
 }

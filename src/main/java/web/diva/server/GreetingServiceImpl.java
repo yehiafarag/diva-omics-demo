@@ -14,9 +14,9 @@ import web.diva.shared.model.core.model.dataset.DatasetInformation;
 import web.diva.shared.beans.DivaGroup;
 import web.diva.shared.beans.FullDataObject;
 import web.diva.shared.beans.InteractiveColumnsResults;
-import web.diva.shared.beans.LineChartResults;
+import web.diva.shared.beans.ProfilePlotResults;
 import web.diva.shared.beans.PCAImageResult;
-import web.diva.shared.beans.SomClustTreeSelectionUpdate;
+import web.diva.shared.beans.SomClustTreeSelectionResult;
 import web.diva.shared.beans.SomClusteringResult;
 
 /**
@@ -52,21 +52,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
     }
 
  
-    @Override
-    public int[] indexToRank(int[] indexes, int type) {
-        int[] selectedRank = new int[indexes.length];
-        if (type == 1) {
-            for (int x = 0; x < selectedRank.length; x++) {
-//                selectedRank[x] = (rankResults.getPosIndexToRank()[indexes[x]] - 1);
-            }
-        } else if (type == 2) {
-            for (int x = 0; x < selectedRank.length; x++) {
-//                selectedRank[x] = (rankResults.getNegIndexToRank()[indexes[x]] - 1);
-            }
-        }
-        return selectedRank;
-
-    }
+//    @Override
+//    public int[] indexToRank(int[] indexes, int type) {
+//        int[] selectedRank = new int[indexes.length];
+//        if (type == 1) {
+//            for (int x = 0; x < selectedRank.length; x++) {
+////                selectedRank[x] = (rankResults.getPosIndexToRank()[indexes[x]] - 1);
+//            }
+//        } else if (type == 2) {
+//            for (int x = 0; x < selectedRank.length; x++) {
+////                selectedRank[x] = (rankResults.getNegIndexToRank()[indexes[x]] - 1);
+//            }
+//        }
+//        return selectedRank;
+//
+//    }
 
     @Override
     public int[] getPCASelection(int startX, int startY, int endX, int endY) {
@@ -80,13 +80,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
     }
 
     @Override
-    public TreeMap<Integer, String> getAvailableDatasets(int userTabId) {
+    public TreeMap<Integer, String> getAvailableDatasets() {
         TreeMap<Integer, String> datasetsMap = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getAvailableDatasetsMap();
         return datasetsMap;
     }
 
     @Override
-    public DatasetInformation setMainDataset(int datasetId) {
+    public DatasetInformation registerMainDataset(int datasetId) {
         
       
         return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).setMainDataset(datasetId);
@@ -102,11 +102,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
         
     }
      @Override
-    public SomClustTreeSelectionUpdate updateSideTree(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateSideTree(int x, int y, double w, double h) {
         return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).updateSideTree(x, y, w, h);
     }
      @Override
-    public SomClustTreeSelectionUpdate updateUpperTree(int x, int y, double w, double h) {
+    public SomClustTreeSelectionResult updateUpperTree(int x, int y, double w, double h) {
         return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).updateUpperTree(x, y, w, h);
     }
     @Override
@@ -161,13 +161,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
     }
 
     @Override
-    public LineChartResults computeProfilePlot(double w, double h) {
+    public ProfilePlotResults computeProfilePlot(double w, double h) {
       return ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).computeProfilePlot(w, h);
         
     }
 
     @Override
-    public String updateLineChartSelection(int[] selection) {
+    public String updateProfilePlotSelection(int[] selection) {
 
        
         String results = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).updateLineChartSelection(selection); 
@@ -182,13 +182,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
         return id;
     }
 
-    @Override
-    public LinkedHashMap<String, String>[] getGroupsPanelData() {
-        LinkedHashMap<String, String>[] activeGroupsData =  new LinkedHashMap[2];
-        activeGroupsData[0] = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getRowGroupsPanelData();
-         activeGroupsData[1] = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getColGroupsPanelData();  
-        return activeGroupsData;
-    }
+//    @Override
+//    public LinkedHashMap<String, String>[] getGroupsPanelData() {
+//        LinkedHashMap<String, String>[] activeGroupsData =  new LinkedHashMap[2];
+//        activeGroupsData[0] = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getRowGroupsPanelData();
+//         activeGroupsData[1] = ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getColGroupsPanelData();  
+//        return activeGroupsData;
+//    }
 
 
 
@@ -227,11 +227,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements DivaSer
     
     }
 
-    @Override
-    public FullDataObject getReloadData() {
-    return  ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getReloadData();
-    
-    }
+//    @Override
+//    public FullDataObject getReloadData() {
+//    return  ((Computing) getThreadLocalRequest().getSession().getAttribute("computing")).getReloadData();
+//    
+//    }
 
     
     

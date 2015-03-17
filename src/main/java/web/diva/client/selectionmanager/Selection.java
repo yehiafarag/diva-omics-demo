@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package web.diva.client.selectionmanager;
 
 
@@ -41,7 +38,6 @@ public class Selection {
     public Selection(Selection.TYPE selectionType, int[] selectedIndices) {
         this(selectionType);
         members=selectedIndices;
-//        addMembers(selectedIndices);
     }
 
     public boolean isActive() {
@@ -55,32 +51,7 @@ public class Selection {
     public Selection.TYPE getType() {
         return type;
     }
-
-//    public void addMember(int id) {
-//        members.add(id);
-//    }
-
-//    private void addMembers(int[] ids) {
-//        if (ids == null) {
-//            throw new IllegalArgumentException("Array od selected indices is null");
-//        }
-//        for (int id : ids) {
-//            members.add(id);
-//        }
-//    }
-
-//    public boolean hasMember(int member) {
-//        return members.contains(member);
-//    }
-
     public int[] getMembers() {
-//        if (members.isEmpty()) {
-//            return null;
-//        }
-//        int[] ms = new int[members.size()];
-//        Iterator<Integer> it = members.iterator();
-//        for (int i = 0; it.hasNext(); ms[i++] = it.next()) {
-//        }
         return members;
     }
 

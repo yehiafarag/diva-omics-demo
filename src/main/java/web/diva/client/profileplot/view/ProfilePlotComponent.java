@@ -4,7 +4,6 @@
  */
 package web.diva.client.profileplot.view;
 
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -17,7 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.util.Page;
-import com.smartgwt.client.util.SC;
 
 import web.diva.client.DivaServiceAsync;
 import web.diva.client.selectionmanager.ModularizedListener;
@@ -37,54 +35,42 @@ public class ProfilePlotComponent extends ModularizedListener {
     private final Image thumbImage;
     private DivaServiceAsync GWTClientService;
     private final HandlerRegistration lablePopupClickHandlerReg, imagePopupClickHandlerReg;
-    private int mainPanelWidth;
-    private int mainPanelHeight;
 
-    @Override
-    public String toString() {
+    private final VerticalPanel thumbImageLayout;
+    private final HorizontalPanel topLayout;
 
-        return "ProfilePlot";
-    }
+    private final int profilePlotPanelWidth;
+    private final int profilePlotPanelHeight;
 
-    @Override
-    public void selectionChanged(Selection.TYPE type) {
-        if (type == Selection.TYPE.OF_ROWS) {
-            Selection sel = selectionManager.getSelectedRows();            
-            if (sel != null) {
-                int[] selectedRows = sel.getMembers();
-                this.updateSelection(selectedRows);
-            }else{
-            }
-        }
-    }
-
-    public int getProfilePlotPanelHeight() {
-        return profilePlotPanelHeight;
-    }
-
-    private int profilePlotPanelWidth;
-    private int profilePlotPanelHeight;
-    private  final int imgHeight, imgWidth;
-    public ProfilePlotComponent(String results, SelectionManager selectionManager, DivaServiceAsync greetingServices, final int imgHeight, final int imgWidth, int medPanelWidth) {
-        this.GWTClientService = greetingServices;
+    /**
+     *
+     * @param selectionManager main central manager
+     * @param results main image url
+     * @param divaService diva GWTClientService
+     * @param imgHeight
+     * @param imgWidth
+     * @param midPanelWidth the width of the mid panel
+     *
+     *
+     */
+    public ProfilePlotComponent(String results, SelectionManager selectionManager, DivaServiceAsync divaService, final int imgHeight, final int imgWidth, int midPanelWidth) {
+        this.GWTClientService = divaService;
         this.classtype = 1;
         this.components.add(ProfilePlotComponent.this);
         this.selectionManager = selectionManager;
         this.selectionManager.addSelectionChangeListener(ProfilePlotComponent.this);
-        this.imgHeight=imgHeight;
-        this.imgWidth=imgWidth;
 
-        int newWidth = (medPanelWidth / 2);
+        int newWidth = (midPanelWidth / 2);
         profilePlotPanelWidth = newWidth;
-        profilePlotPanelHeight= newWidth+22;
+        profilePlotPanelHeight = newWidth + 22;
         mainBodyLayout = new VerticalPanel();
-        mainBodyLayout.setHeight(profilePlotPanelHeight+"px");
-        mainBodyLayout.setWidth(profilePlotPanelWidth+"px");
+        mainBodyLayout.setHeight(profilePlotPanelHeight + "px");
+        mainBodyLayout.setWidth(profilePlotPanelWidth + "px");
         mainBodyLayout.setStyleName("profileplot");
 
         topLayout = new HorizontalPanel();
         mainBodyLayout.add(topLayout);
-        topLayout.setWidth(profilePlotPanelWidth+"px");
+        topLayout.setWidth(profilePlotPanelWidth + "px");
         topLayout.setHeight("18px");
         topLayout.setStyleName("whiteLayout");
         Label title = new Label("Profile Plot");
@@ -118,15 +104,13 @@ public class ProfilePlotComponent extends ModularizedListener {
         lablePopupClickHandlerReg = maxmizeBtn.addClickHandler(popupClickHandler);
 
         profilePlotMaxImage = new Image(results);
-        
-        
-        int updatedImgWidth = resizeMaxImgWidth();
-        int maxHeight =  updatedImgWidth+ 50;
-        int maxWidth = updatedImgWidth + 2;
-        profilePlotMaxImage.setWidth(updatedImgWidth+"px");
-        profilePlotMaxImage.setHeight(updatedImgWidth+"px");
 
-        
+        int updatedImgWidth = calcMaxImgResize();
+        int maxHeight = updatedImgWidth + 50;
+        int maxWidth = updatedImgWidth + 2;
+        profilePlotMaxImage.setWidth(updatedImgWidth + "px");
+        profilePlotMaxImage.setHeight(updatedImgWidth + "px");
+
         VerticalPanel popupLayout = new VerticalPanel();
         popupLayout.setHeight((maxHeight) + "px");
         popupLayout.setWidth(maxWidth + "px");
@@ -174,8 +158,6 @@ public class ProfilePlotComponent extends ModularizedListener {
                         SelectionManager.Busy_Task(false, false);
                     }
                 });
-
-//                Window.open(profilePlotMaxImage.getUrl(), "Download Image", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=no,toolbar=true, newWidth=" + Window.getClientWidth() + ",height=" + Window.getClientHeight());
             }
         });
 
@@ -202,22 +184,20 @@ public class ProfilePlotComponent extends ModularizedListener {
         thumbImage.addStyleName("clickableImg");
 
         imagePopupClickHandlerReg = thumbImage.addClickHandler(popupClickHandler);
-        
-         thumbImageLayout = new VerticalPanel();
-//        thumbImageLayout.setStyleName("imagesborder");
-       
-       
+
+        thumbImageLayout = new VerticalPanel();
+
         thumbImageLayout.setHeight((newWidth) + "px");
         thumbImageLayout.setWidth((profilePlotPanelWidth) + "px");
 
-        thumbImage.setWidth((newWidth-2) +"px");
-        thumbImage.setHeight((newWidth-2)+"px");
+        thumbImage.setWidth((newWidth - 2) + "px");
+        thumbImage.setHeight((newWidth - 2) + "px");
         thumbImageLayout.add(thumbImage);
         thumbImageLayout.setCellHorizontalAlignment(thumbImage, VerticalPanel.ALIGN_CENTER);
         thumbImageLayout.setCellVerticalAlignment(thumbImage, VerticalPanel.ALIGN_MIDDLE);
 
-         mainBodyLayout.add(thumbImageLayout);
-        
+        mainBodyLayout.add(thumbImageLayout);
+
         Selection sel = selectionManager.getSelectedRows();
         if (sel != null) {
             final int[] selectedRows = sel.getMembers();
@@ -232,39 +212,55 @@ public class ProfilePlotComponent extends ModularizedListener {
 
         }
 
+    }
 
+    @Override
+    public String toString() {
+
+        return "ProfilePlot";
     }
-    
-    private int resizeMaxImgWidth(){
-    int width = Page.getScreenHeight()-200;
-    return width;
-    
-    
-    }
-   private   final VerticalPanel thumbImageLayout;
-   private    final HorizontalPanel topLayout;
-    
-        private void getSelection(int startX, int startY) {
-        SelectionManager.Busy_Task(true, false);
-        GWTClientService.getProfilePlotSelection(startX, startY, new AsyncCallback<int[]>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+
+    /**
+     * This method is the listener implementation for the central manager the
+     * method responsible for the component notification there is selection
+     * event
+     *
+     * @param type Selection.TYPE row or column
+     *
+     */
+    @Override
+    public void selectionChanged(Selection.TYPE type) {
+        if (type == Selection.TYPE.OF_ROWS) {
+            Selection sel = selectionManager.getSelectedRows();
+            if (sel != null) {
+                int[] selectedRows = sel.getMembers();
+                this.updateSelection(selectedRows);
+            } else {
             }
-
-            @Override
-            public void onSuccess(int[] result) {
-                updateSelection(result);
-                Selection selection = new Selection(Selection.TYPE.OF_ROWS, result);
-                selectionManager.setSelectedRows(selection);
-
-            }
-        });
+        }
     }
 
+    /**
+     * This method is responsible for calculates the max image size( image width
+     * and height)
+     */
+    @SuppressWarnings("UnnecessaryBoxing")
+    private int calcMaxImgResize() {
+        int width = Page.getScreenHeight() - 200;
+        return width;
+
+    }
+
+    /**
+     * This method is responsible for updating chart with the user selected
+     * indexes
+     *
+     * @param selectedIndices selected data indexes
+     *
+     */
     private void updateSelection(int[] selection) {
         if (selection != null) {// && selection.length > 0) {
-            GWTClientService.updateLineChartSelection(selection, new AsyncCallback<String>() {
+            GWTClientService.updateProfilePlotSelection(selection, new AsyncCallback<String>() {
                 @Override
                 public void onFailure(Throwable caught) {
                     Window.alert("ERROR IN SERVER CONNECTION");
@@ -280,10 +276,19 @@ public class ProfilePlotComponent extends ModularizedListener {
 
     }
 
+    /**
+     *
+     * @return Profile plot main body layout
+     *
+     */
     public VerticalPanel getLayout() {
         return mainBodyLayout;
     }
 
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
     @Override
     public void remove() {
         imagePopupClickHandlerReg.removeHandler();
@@ -294,21 +299,23 @@ public class ProfilePlotComponent extends ModularizedListener {
         mainBodyLayout = null;
 
     }
-    
-    public void resize(int medPanelWidth){
-//        int newWidth = (medPanelWidth / 2) - 20;
-////        int newHeight = scaler.reScale(newWidth, imgHeight,imgWidth);
-//        profilePlotPanelWidth = newWidth+10;
-//        profilePlotPanelHeight= newHeight+20;
-//        mainBodyLayout.setHeight(profilePlotPanelHeight+"px");
-//        mainBodyLayout.setWidth(profilePlotPanelWidth+"px");
-//        topLayout.setWidth(profilePlotPanelWidth+"px");
-//         thumbImageLayout.setHeight(newHeight + "px");
-//        thumbImageLayout.setWidth(profilePlotPanelWidth + "px");
-//        thumbImage.setWidth(newWidth +"px");
-//        thumbImage.setHeight(newHeight+"px");
-       
 
-        
+    @Deprecated
+    private void getSelection(int startX, int startY) {
+        SelectionManager.Busy_Task(true, false);
+        GWTClientService.getProfilePlotSelection(startX, startY, new AsyncCallback<int[]>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("ERROR IN SERVER CONNECTION");
+            }
+
+            @Override
+            public void onSuccess(int[] result) {
+                updateSelection(result);
+                Selection selection = new Selection(Selection.TYPE.OF_ROWS, result);
+                selectionManager.setSelectedRows(selection);
+
+            }
+        });
     }
 }

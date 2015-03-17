@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package web.diva.client.omicstables.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -29,6 +24,7 @@ import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.shared.beans.DivaGroup;
 
 /**
+ * groups table for omics groups data
  *
  * @author Yehia Farag
  */
@@ -38,9 +34,14 @@ public class GroupTable extends ListGrid {
     private boolean dragStart;
     private final String tableType;
 
+    /**
+     * @param selectionManagerInst central selection manager
+     * @param tableType row or column groups table
+     *
+     */
     public GroupTable(SelectionManager selectionManagerInst, String tableType) {
         this.selectionManager = selectionManagerInst;
-        this.tableType=tableType;
+        this.tableType = tableType;
         this.setHeight("29%");
         setWidth("100%");
         this.setLeaveScrollbarGap(true);
@@ -54,7 +55,7 @@ public class GroupTable extends ListGrid {
         setShowAllRecords(true);
         setShowRollOver(false);
         setCanSort(true);
-        
+
         setCanDragSelect(true);
 
         ListGridField groupNameField = new ListGridField("groupName", "Group Name", 200);
@@ -76,7 +77,6 @@ public class GroupTable extends ListGrid {
         this.setFields(new ListGridField[]{groupNameField, countField, colorField});
         this.selectSingleRecord(0);
 
-      
         dargStartSelectionReg = this.addDragStartHandler(new DragStartHandler() {
 
             @Override
@@ -89,7 +89,7 @@ public class GroupTable extends ListGrid {
 
             @Override
             public void onDragStop(DragStopEvent event) {
-                dragStart= false;
+                dragStart = false;
                 ListGridRecord[] selectionRecord = getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
@@ -110,35 +110,40 @@ public class GroupTable extends ListGrid {
                 ListGridRecord[] selectionRecord = getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
-                    
+
                     updateSelectionManagerOnTableSelection(selectionRecord);
                 }
             }
         });
-            final Timer t = new Timer() {
+        final Timer t = new Timer() {
 
             @Override
             public void run() {
-                  ListGridRecord[] selectionRecord = getSelectedRecords();
+                ListGridRecord[] selectionRecord = getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
                     updateSelectionManagerOnTableSelection(selectionRecord);
                 }
             }
         };
-        
-    
+
         this.addBodyKeyPressHandler(new BodyKeyPressHandler() {
 
             @Override
             public void onBodyKeyPress(BodyKeyPressEvent event) {
-             t.schedule(500);
+                t.schedule(500);
             }
         });
     }
     private final HandlerRegistration handlerReg, clickHandlerReg, dargStartSelectionReg;
     private List<DivaGroup> groupsList;
 
+    /**
+     * This method is responsible for updating the visualized groups data
+     *
+     * @param groupsList list of diva groups
+     *
+     */
     public void updateRecords(List<DivaGroup> groupsList) {
         this.groupsList = groupsList;
         ListGridRecord[] records = new ListGridRecord[groupsList.size()];
@@ -155,8 +160,16 @@ public class GroupTable extends ListGrid {
         this.setData(records);
     }
 
+    /**
+     * This method is responsible for converting the selected records into
+     * selection indexes to update the selection manager on user selection on
+     * table
+     *
+     * @param selectionRecord list of the selected records
+     *
+     */
     private void updateSelectionManagerOnTableSelection(ListGridRecord[] selectionRecord) {
-        
+
         if (selectionRecord.length == 0) {
             return;
         }
@@ -209,6 +222,13 @@ public class GroupTable extends ListGrid {
     }
     private boolean groubTableSelection = false;
 
+    /**
+     * This method is responsible for updating the selection manager on user
+     * selection on table
+     *
+     * @param selectedIndices selected data indexes
+     *
+     */
     private void updateSelectionManager(int[] selectedIndices) {
         groubTableSelection = true;
         if (tableType.equalsIgnoreCase("col")) {
@@ -221,14 +241,30 @@ public class GroupTable extends ListGrid {
         }
     }
 
+    /**
+     * This method is responsible for checking the source of selection (from
+     * table or external selection)
+     *
+     * @return boolean is group table selection
+     */
     public boolean isGroubTableSelection() {
         return groubTableSelection;
     }
 
+    /**
+     * This method is responsible for setting the source of selection (from
+     * table or external selection)
+     *
+     * @param groubTableSelection boolean is group table selection
+     */
     public void setGroubTableSelection(boolean groubTableSelection) {
         this.groubTableSelection = groubTableSelection;
     }
 
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
     public void remove() {
         clickHandlerReg.removeHandler();
         handlerReg.removeHandler();

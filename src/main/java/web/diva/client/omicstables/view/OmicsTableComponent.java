@@ -1,7 +1,3 @@
-/*used
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web.diva.client.omicstables.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -15,8 +11,6 @@ import com.smartgwt.client.widgets.events.DragStartEvent;
 import com.smartgwt.client.widgets.events.DragStartHandler;
 import com.smartgwt.client.widgets.events.DragStopEvent;
 import com.smartgwt.client.widgets.events.DragStopHandler;
-import com.smartgwt.client.widgets.events.KeyPressEvent;
-import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
@@ -39,37 +33,45 @@ import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
 /**
+ * main omics information table module the class work as container for omices
+ * tables and responsible for updating all components on the left panel
+ *
  * @author Yehia Farag omics information table that has rows ids, and activated
- * groups colors
+ *
  */
 public final class OmicsTableComponent extends ModularizedListener implements IsSerializable {
 
     private final OmicsTable omicsIdTable;
     private GroupTable groupTable;
 
-    public void setGroupTable(GroupTable groupTable) {
-        this.groupTable = groupTable;
-    }
     private final ListGridRecord[] records;
     private SelectionManager selectionManager;
     private SelectItem colSelectionTable;
     private boolean selfSelectionTag = false;
     private final String[] infoSearchingMap;
 
-    @Override
-    public String toString() {
-        return "OmicsTable";
-    }
     private final VLayout omicsTableLayout;
-//    private final Label header;
-    private final int rowNumber,colNumber;
+    private final int rowNumber, colNumber;
     private TextItem searchingField;
     private final HandlerRegistration searchingFieldFocusReg, searchingFieldBlurReg, searchingFieldKeyPressReg, searchBtnReg;
-    private HandlerRegistration omicsSelectionReg,omicsDargStartSelectionReg;
+    private HandlerRegistration omicsSelectionReg, omicsDargStartSelectionReg;
     private final SectionStackSection rowSelectionSection;
     private final RadioGroupItem controlItem;
+    private final Timer timer;
+    private boolean dragStart;
 
-    public OmicsTableComponent(SelectionManager selectionManager, DatasetInformation datasetInfo, int rowsNumber,SectionStackSection rowSelectionSection,RadioGroupItem controlItem) {
+    /**
+     *
+     * @param selectionManager main central manager
+     * @param datasetInfo dataset information object
+     * @param rowsNumber total number of rows in the dataset
+     * @param rowSelectionSection reference to the parent
+     * @param controlItem reference to row/column control panel
+     *
+     *
+     *
+     */
+    public OmicsTableComponent(SelectionManager selectionManager, DatasetInformation datasetInfo, int rowsNumber, SectionStackSection rowSelectionSection, RadioGroupItem controlItem) {
         timer = new Timer() {
 
             @Override
@@ -84,7 +86,7 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         this.selectionManager = selectionManager;
         this.rowNumber = rowsNumber;
         this.colNumber = datasetInfo.getColNumb();
-        this.records = getRecodList(datasetInfo);
+        this.records = initRecodList(datasetInfo);
         omicsTableLayout = new VLayout();
         rowSelectionSection.setTitle("&nbsp;Selection (0 / " + rowsNumber + ")");
         omicsTableLayout.setHeight("70%");
@@ -156,10 +158,15 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         this.components.add(OmicsTableComponent.this);
         this.selectionManager.addSelectionChangeListener(OmicsTableComponent.this);
         datasetInfo = null;
-        if(this.selectionManager.getSelectedRows()!= null && this.selectionManager.getSelectedRows().getMembers()!= null &&  this.selectionManager.getSelectedRows().getMembers().length>0)
+        if (this.selectionManager.getSelectedRows() != null && this.selectionManager.getSelectedRows().getMembers() != null && this.selectionManager.getSelectedRows().getMembers().length > 0) {
             selectionChanged(Selection.TYPE.OF_ROWS);
+        }
     }
 
+    /**
+     * This method is responsible for searching for data within the dataset
+     * information columns
+     */
     private void searchKeyword() {
 
         if (searchingField.getValueAsString() == null || searchingField.getValueAsString().equalsIgnoreCase("") || searchingField.getValueAsString().equalsIgnoreCase("Enter One Keyword")) {
@@ -196,19 +203,36 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         }
 
     }
-    private final Timer timer;
-    private boolean dragStart;
 
+    /**
+     *
+     * @param groupTable row group table
+     *
+     */
+    public void setGroupTable(GroupTable groupTable) {
+        this.groupTable = groupTable;
+    }
+
+    @Override
+    public String toString() {
+        return "OmicsTable";
+    }
+
+    /**
+     * This method is responsible for initializing the omics information table
+     *
+     * @param selectionRecord list of the selected records
+     *
+     */
     private void initGrid() {
         omicsIdTable.setHeight("60%");
         omicsIdTable.setWidth("100%");
-       
         omicsSelectionReg = omicsIdTable.addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-                if(dragStart)
+                if (dragStart) {
                     return;
+                }
                 ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
@@ -220,22 +244,21 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
 
             }
         });
-        
-        
+
         omicsDargStartSelectionReg = omicsIdTable.addDragStartHandler(new DragStartHandler() {
 
             @Override
             public void onDragStart(DragStartEvent event) {
-               dragStart=true;
+                dragStart = true;
             }
         });
-        
+
         omicsSelectionReg = omicsIdTable.addDragStopHandler(new DragStopHandler() {
 
             @Override
             public void onDragStop(DragStopEvent event) {
-                 dragStart= false;
-               ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
+                dragStart = false;
+                ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
                     updateSelectionManagerOnTableSelection(selectionRecord);
@@ -246,28 +269,31 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
 
             @Override
             public void run() {
-                 ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
+                ListGridRecord[] selectionRecord = omicsIdTable.getSelectedRecords();
                 if (selectionRecord != null && selectionRecord.length > 0) {
                     SelectionManager.Busy_Task(true, false);
                     updateSelectionManagerOnTableSelection(selectionRecord);
                 }
             }
         };
-        
-    
+
         omicsIdTable.addBodyKeyPressHandler(new BodyKeyPressHandler() {
 
             @Override
             public void onBodyKeyPress(BodyKeyPressEvent event) {
-             t.schedule(500);
+                t.schedule(500);
             }
         });
-   
-    
 
     }
-    
 
+    /**
+     * This method is responsible for updating the selection manager on user
+     * selection on table
+     *
+     * @param selectedIndices selected data indexes
+     *
+     */
     private void updateSelectionManager(int[] selectedIndices) {
         selfSelectionTag = true;
         SelectionManager.Busy_Task(true, false);
@@ -275,11 +301,22 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         selectionManager.setSelectedRows(selection);
     }
 
+    /**
+     *
+     * @return omicsTableLayout the main body layout
+     *
+     */
     public VLayout getOmicsTableLayout() {
         return omicsTableLayout;
     }
 
-    private ListGridRecord[] getRecodList(DatasetInformation datasetInfo) {
+    /**
+     * This method is responsible for initializing the record list
+     *
+     * @param datasetInfo
+     *
+     */
+    private ListGridRecord[] initRecodList(DatasetInformation datasetInfo) {
 
         ListGridRecord[] recordsInit = new ListGridRecord[datasetInfo.getRowsNumb()];
         for (int x = 0; x < recordsInit.length; x++) {
@@ -310,6 +347,14 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         return recordsInit;
     }
 
+    /**
+     * This method is responsible for converting the selected records into
+     * selection indexes to update the selection manager on user selection on
+     * table
+     *
+     * @param selectionRecord list of the selected records
+     *
+     */
     private void updateSelectionManagerOnTableSelection(ListGridRecord[] selectionRecord) {
         if (selectionRecord.length > 0) {
             int[] selectedIndices = new int[selectionRecord.length];
@@ -319,30 +364,37 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
             }
             selfSelectionTag = true;
             updateSelectionManager(selectedIndices);
-        }else{
-        
+        } else {
+
             selfSelectionTag = true;
             updateSelectionManager(new int[]{});
-        
+
         }
 
     }
 
+    /**
+     * This method is the listener implementation for the central manager the
+     * method responsible for notifi the components there is selection event
+     *
+     * @param type Selection.TYPE row or column
+     *
+     */
     @Override
     public void selectionChanged(Selection.TYPE type) {
         if (selfSelectionTag) {
             selfSelectionTag = false;
-            if (((type != Selection.TYPE.OF_ROWS || selectionManager.getSelectedRows().getMembers() == null) || selectionManager.getSelectedRows().getMembers().length == 0) || !omicsIdTable.isVisible()) if (type == Selection.TYPE.OF_COLUMNS && selectionManager.getSelectedColumns().getMembers() != null && selectionManager.getSelectedColumns().getMembers().length != 0 && !omicsIdTable.isVisible()) {
-//                header.setText("Selected Rows Number ( " + selectionManager.getSelectedRows().getMembers().length + " / " + rowNumber + " )");
-                rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedColumns().getMembers().length + "/" + colNumber + ")");
-            } else {
-                //                header.setText("Selected Rows Number ( " + selectionManager.getSelectedRows().getMembers().length + " / " + rowNumber + " )");
-                rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedRows().getMembers().length + "/" + rowNumber + ")");
-                if (groupTable != null && !groupTable.isGroubTableSelection()) {
-                    groupTable.deselectAllRecords();
+            if (((type != Selection.TYPE.OF_ROWS || selectionManager.getSelectedRows().getMembers() == null) || selectionManager.getSelectedRows().getMembers().length == 0) || !omicsIdTable.isVisible()) {
+                if (type == Selection.TYPE.OF_COLUMNS && selectionManager.getSelectedColumns().getMembers() != null && selectionManager.getSelectedColumns().getMembers().length != 0 && !omicsIdTable.isVisible()) {
+                    rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedColumns().getMembers().length + "/" + colNumber + ")");
                 } else {
-                    if (groupTable != null) {
-                        groupTable.setGroubTableSelection(false);
+                    rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedRows().getMembers().length + "/" + rowNumber + ")");
+                    if (groupTable != null && !groupTable.isGroubTableSelection()) {
+                        groupTable.deselectAllRecords();
+                    } else {
+                        if (groupTable != null) {
+                            groupTable.setGroubTableSelection(false);
+                        }
                     }
                 }
             }
@@ -352,7 +404,7 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
             if (sel != null) {
                 int[] selectedRows = sel.getMembers();
                 //update table selection             
-                if (selectedRows != null ){// selectedRows.length != 0) {
+                if (selectedRows != null) {// selectedRows.length != 0) {
                     sendOnChangeEvent(controlItem.getForm(), controlItem.getName(), controlItem.getValueAsString(), "Rows");
                     controlItem.setValue("Rows");
                     ListGridRecord[] reIndexSelection = new ListGridRecord[selectedRows.length];
@@ -361,7 +413,6 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
                         reIndexSelection[i++] = records[z];
                     }
                     omicsIdTable.setRecords(reIndexSelection);
-//                    header.setText("Selected Rows Number ( " + reIndexSelection.length + " / " + rowNumber + " )");
                     rowSelectionSection.setTitle("&nbsp;Selection (" + reIndexSelection.length + "/" + rowNumber + ")");
                     try {
                         omicsIdTable.selectAllRecords();
@@ -376,21 +427,20 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
                         }
 
                     }
-                }else
-                {
+                } else {
                     omicsIdTable.deselectAllRecords();
                     if (groupTable != null) {
-                            groupTable.deselectAllRecords();
-                        }
-                
+                        groupTable.deselectAllRecords();
+                    }
+
                 }
             }
         } else if (type == Selection.TYPE.OF_COLUMNS) {
             Selection sel = selectionManager.getSelectedColumns();
             if (sel != null) {
                 int[] selectedColumn = sel.getMembers();
-                if (selectedColumn != null /*&& selectedColumn.length != 0 */&& colSelectionTable != null) {
-                     sendOnChangeEvent(controlItem.getForm(), controlItem.getName(), controlItem.getValueAsString(), "Columns");
+                if (selectedColumn != null /*&& selectedColumn.length != 0 */ && colSelectionTable != null) {
+                    sendOnChangeEvent(controlItem.getForm(), controlItem.getName(), controlItem.getValueAsString(), "Columns");
                     controlItem.setValue("Columns");
                     String[] values = new String[selectedColumn.length];
                     for (int x = 0; x < selectedColumn.length; x++) {
@@ -408,11 +458,22 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         }
     }
 
+    /**
+     * This method is responsible for setting colSelectionTable into the
+     * component the component responsible for updating all omics tables
+     *
+     * @param colSelectionTable column selection list
+     *
+     */
     public void setColSelectionTable(SelectItem colSelectionTable) {
         this.colSelectionTable = colSelectionTable;
         selectionChanged(Selection.TYPE.OF_COLUMNS);
     }
 
+    /**
+     * This method is responsible for cleaning on removing the component from
+     * the container
+     */
     @Override
     public void remove() {
         searchingFieldFocusReg.removeHandler();
@@ -428,14 +489,12 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         selectionManager.removeSelectionChangeListener(this);
         selectionManager = null;
     }
-    
-    
-    private native void sendOnChangeEvent(DynamicForm form, String formItemName, String oldValue, String newValue) /*-{
-		var formWidget = form.@com.smartgwt.client.widgets.form.DynamicForm::getOrCreateJsObj()();
-		var formItem = formWidget.getField(formItemName);
-		if (typeof formItem.change == "function") {
-			formItem.change(formItem.form, formItem, newValue, oldValue);
-		} 
-	}-*/;
-}
 
+    private native void sendOnChangeEvent(DynamicForm form, String formItemName, String oldValue, String newValue) /*-{
+     var formWidget = form.@com.smartgwt.client.widgets.form.DynamicForm::getOrCreateJsObj()();
+     var formItem = formWidget.getField(formItemName);
+     if (typeof formItem.change == "function") {
+     formItem.change(formItem.form, formItem, newValue, oldValue);
+     } 
+     }-*/;
+}

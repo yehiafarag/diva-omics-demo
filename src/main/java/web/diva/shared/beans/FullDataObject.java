@@ -12,16 +12,16 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author y-mok_000
  */
 public class FullDataObject implements IsSerializable{
-    private LineChartResults profilePlotResult;
+    private ProfilePlotResults profilePlotResult;
     private PCAImageResult pcaImgRsult;
     private RankResult rankResult;
     private SomClusteringResult somClustResult;
 
-    public LineChartResults getProfilePlotResult() {
+    public ProfilePlotResults getProfilePlotResult() {
         return profilePlotResult;
     }
 
-    public void setProfilePlotResult(LineChartResults profilePlotResult) {
+    public void setProfilePlotResult(ProfilePlotResults profilePlotResult) {
         this.profilePlotResult = profilePlotResult;
     }
 
