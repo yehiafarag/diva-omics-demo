@@ -8,6 +8,7 @@ import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.types.SortDirection;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.DragStartEvent;
 import com.smartgwt.client.widgets.events.DragStartHandler;
@@ -211,7 +212,7 @@ public class RankTableLayout extends ListGrid implements IsSerializable {
 
         } else {
             this.setRecords(records);
-            if (selectedRows != null) {
+            if (selectedRows != null && selectedRows.length > 0) {
                 this.selectRecords(selectedRows);
                 this.scrollToRow(this.getRecordIndex(selectedRows[0]));
             }

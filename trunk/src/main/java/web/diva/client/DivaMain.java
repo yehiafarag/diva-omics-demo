@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -30,6 +29,7 @@ import web.diva.client.pca.view.PCAPlotComponent;
 import web.diva.client.rank.view.RankTablesComponent;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.somclust.view.SomClustComponent;
+import web.diva.client.view.core.ServerConnError;
 import web.diva.shared.beans.ProfilePlotResults;
 import web.diva.shared.beans.PCAImageResult;
 import web.diva.shared.beans.RankResult;
@@ -49,8 +49,8 @@ import web.diva.shared.beans.SomClusteringResult;
  */
 public class DivaMain implements EntryPoint, ChangeHandler {
 
-    private SelectionManager selectionManager;
-    private final String SERVER_ERROR = "An error occurred while attempting to contact the server";
+    private SelectionManager Selection_Manager;
+    
     private RankTablesComponent rankTables;
     private final TreeMap datasetsNames = new TreeMap();
     private LeftPanelView leftPanelView;
@@ -80,17 +80,17 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
     @Override
     public void onModuleLoad() {
-        if (Window.Navigator.getUserAgent().contains("MSIE")) {
-            oldIE = true;
-        }
+//        if (Window.Navigator.getUserAgent().contains("MSIE")) {
+//            oldIE = true;
+//        }
 
         masterWidth = Page.getScreenWidth();
         masterHeight = Page.getScreenHeight();
         initLayoutDimensions();
         RootPanel.get().setHeight(700 + "px");
-        selectionManager = new SelectionManager();
+        Selection_Manager = new SelectionManager();
         SelectionManager.Busy_Task(true, true);
-        selectionManager.setMainAppController(this);
+        Selection_Manager.setMainAppController(this);
         datasetTitle = new Label();
         RootPanel.get("dataset_main_title").add(datasetTitle);
         this.initMainComponentsLayout();
@@ -195,7 +195,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 selectDatasetList.setVisible(true);
                 selectSubDatasetList.setVisible(false);
                 int datasetId = (Integer) datasetsNames.get(tempSelectDatasetList.getItemText(tempSelectDatasetList.getSelectedIndex()));
-                selectionManager.resetSelection();
+                Selection_Manager.resetSelection();
                 datasetTitle.setText(tempSelectDatasetList.getItemText(tempSelectDatasetList.getSelectedIndex()));
                 loadDataset(datasetId);
                 updateSubDsSelectionList(tempSelectDatasetList.getItemText(tempSelectDatasetList.getSelectedIndex()));
@@ -210,7 +210,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 selectSubDatasetList.addItem("Select Sub-Dataset");
                 selectSubDatasetList.setVisible(false);
                 int datasetId = (Integer) datasetsNames.get(selectDatasetList.getItemText(selectDatasetList.getSelectedIndex()));
-                selectionManager.resetSelection();
+                Selection_Manager.resetSelection();
                 datasetTitle.setText(selectDatasetList.getItemText(selectDatasetList.getSelectedIndex()));
                 loadDataset(datasetId);
                 updateSubDsSelectionList(selectDatasetList.getItemText(selectDatasetList.getSelectedIndex()));
@@ -221,7 +221,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
             }
         } else if (selectSubDatasetList.getSelectedIndex() > 0) {
             int datasetId = (Integer) datasetsNames.get(selectSubDatasetList.getItemText(selectSubDatasetList.getSelectedIndex()));
-            selectionManager.resetSelection();
+            Selection_Manager.resetSelection();
             datasetTitle.setText(selectSubDatasetList.getItemText(selectSubDatasetList.getSelectedIndex()));
             loadDataset(datasetId);
             updateSubDsSelectionList(selectSubDatasetList.getItemText(selectSubDatasetList.getSelectedIndex()));
@@ -293,7 +293,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 new AsyncCallback<DatasetInformation>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert(SERVER_ERROR);
+                        Selection_Manager.connError();
                     }
 
                     @Override
@@ -317,8 +317,8 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         updateLeftPanel(datasetInfos);
         if (reload) {
 
-            Selection s = selectionManager.getSelectedRows();
-            selectionManager.setSelectedRows(s);
+            Selection s = Selection_Manager.getSelectedRows();
+            Selection_Manager.setSelectedRows(s);
             return;
         }
         processProfilePlot();
@@ -391,7 +391,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         if (leftPanelView != null) {
             leftPanelView.deparent();
         }
-        leftPanelView = new LeftPanelView(selectionManager, DivaClientService, datasetInfos, leftPanelWidth, leftPanelHeight);
+        leftPanelView = new LeftPanelView(Selection_Manager, DivaClientService, datasetInfos, leftPanelWidth, leftPanelHeight);
         leftPanelView.setStyleName("whitelayout");
         RootPanel.get("leftpanel").clear(true);
         RootPanel.get("leftpanel").add(leftPanelView);
@@ -439,13 +439,13 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                     @Override
                     public void onFailure(Throwable caught) {
 
-                        Window.alert(SERVER_ERROR);
+                         Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(SomClusteringResult result) {
-                        hierarchicalClustering = new SomClustComponent(result, selectionManager, DivaClientService, true, rightPanelWidth, leftPanelHeight);
+                        hierarchicalClustering = new SomClustComponent(result, Selection_Manager, DivaClientService, true, rightPanelWidth, leftPanelHeight);
                         RootPanel.get("SomClusteringResults").clear();
                         RootPanel.get("SomClusteringResults").add(hierarchicalClustering.getSomclusteringLayout());
                         Timer t = new Timer() {
@@ -478,7 +478,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
      */
     public void updateClusteringPanel(SomClusteringResult result, boolean clusterColumn) {
         SelectionManager.Busy_Task(true, true);
-        hierarchicalClustering = new SomClustComponent(result, selectionManager, DivaClientService, clusterColumn, rightPanelWidth, leftPanelHeight - 2);
+        hierarchicalClustering = new SomClustComponent(result, Selection_Manager, DivaClientService, clusterColumn, rightPanelWidth, leftPanelHeight - 2);
         RootPanel.get("SomClusteringResults").clear();
         RootPanel.get("SomClusteringResults").add(hierarchicalClustering.getSomclusteringLayout());
         SelectionManager.Busy_Task(false, true);
@@ -496,7 +496,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 new AsyncCallback<ProfilePlotResults>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert(SERVER_ERROR);
+                         Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
@@ -513,7 +513,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                             pcaPlotComponent.remove();
                         }
 
-                        profilePlotComponent = new ProfilePlotComponent(result.getUrl(), selectionManager, DivaClientService, result.getImgHeight(), result.getImgWidth(), middlePanelWidth);
+                        profilePlotComponent = new ProfilePlotComponent(result.getUrl(), Selection_Manager, DivaClientService, result.getImgHeight(), result.getImgWidth(), middlePanelWidth);
                         topMidLayout.add(profilePlotComponent.getLayout());
                         if (!init) {
                             SelectionManager.Busy_Task(false, true);
@@ -538,12 +538,12 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                 new AsyncCallback<PCAImageResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert(SERVER_ERROR);
+                         Selection_Manager.connError();
                     }
 
                     @Override
                     public void onSuccess(PCAImageResult result) {
-                        pcaPlotComponent = new PCAPlotComponent(result, selectionManager, DivaClientService, datasetInfo.getColNumb(), datasetInfo.getDatasetInfo(), middlePanelWidth);
+                        pcaPlotComponent = new PCAPlotComponent(result, Selection_Manager, DivaClientService, datasetInfo.getColNumb(), datasetInfo.getDatasetInfo(), middlePanelWidth);
                         topMidLayout.add(pcaPlotComponent.getPCAComponent());
                         topMidLayout.setCellHorizontalAlignment(pcaPlotComponent.getPCAComponent(), HorizontalPanel.ALIGN_RIGHT);
                         if (!init) {
@@ -569,7 +569,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         DivaClientService.getDefaultRank(new AsyncCallback<RankResult>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert(SERVER_ERROR);
+                 Selection_Manager.connError();
                 SelectionManager.Busy_Task(false, true);
             }
 
@@ -580,7 +580,7 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                     rankLayoutCanv.removeMember(rankTables.getMainRankLayout());
                     rankTables.remove();
                 }
-                rankTables = new RankTablesComponent(DivaClientService, selectionManager, rankResults, datasetInfo.getColGroupsList());
+                rankTables = new RankTablesComponent(DivaClientService, Selection_Manager, rankResults, datasetInfo.getColGroupsList());
                 rankLayoutCanv.addMember(rankTables.getMainRankLayout());
                 if (!init) {
                     SelectionManager.Busy_Task(false, true);

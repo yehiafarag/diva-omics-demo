@@ -2,9 +2,12 @@
 package web.diva.client.selectionmanager;
 
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import web.diva.client.DivaMain;
 import web.diva.client.view.core.BusyTaskIndicator;
+import web.diva.client.view.core.ServerConnError;
 import web.diva.shared.beans.SomClusteringResult;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
@@ -211,7 +214,17 @@ public class SelectionManager {
     public void setMainAppController(DivaMain mainAppController) {
         this.mainAppController = mainAppController;
     }
-    public static boolean isBusy(){
+
+    public static boolean isBusy() {
         return busyIndicator.isBusy();
     }
+
+    private final ServerConnError SERVER_ERROR = new ServerConnError();
+
+    public void connError() {
+        Busy_Task(false, true);
+        SERVER_ERROR.connError();
+
+    }
+
 }
