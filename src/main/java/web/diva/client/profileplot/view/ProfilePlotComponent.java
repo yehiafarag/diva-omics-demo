@@ -10,6 +10,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -21,6 +22,8 @@ import web.diva.client.DivaServiceAsync;
 import web.diva.client.selectionmanager.ModularizedListener;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
+import web.diva.client.view.core.HeaderLayout;
+import web.diva.client.view.core.InfoIcon;
 import web.diva.client.view.core.SaveAsPanel;
 
 /**
@@ -79,13 +82,29 @@ public class ProfilePlotComponent extends ModularizedListener {
         title.setWidth("70px");
         topLayout.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
 
-        Label maxmizeBtn = new Label();
+        HorizontalPanel btnsPanel = new HorizontalPanel();
+        btnsPanel.setWidth("34px");
+        btnsPanel.setHeight("20px");
+        btnsPanel.add(new InfoIcon("Profile Plot", initInfoLayout(200,600),200,600));
+        
+          Label maxmizeBtn = new Label();
         maxmizeBtn.addStyleName("maxmize");
         maxmizeBtn.setHeight("16px");
         maxmizeBtn.setWidth("16px");
-        topLayout.add(maxmizeBtn);
+        btnsPanel.add(maxmizeBtn);
         maxmizeBtn.setHorizontalAlignment(Label.ALIGN_RIGHT);
-        topLayout.setCellHorizontalAlignment(maxmizeBtn, HorizontalPanel.ALIGN_RIGHT);
+        btnsPanel.setCellHorizontalAlignment(maxmizeBtn, HorizontalPanel.ALIGN_RIGHT);
+        
+        topLayout.add(btnsPanel);
+        topLayout.setCellHorizontalAlignment(btnsPanel, HorizontalPanel.ALIGN_RIGHT);
+        
+        
+        
+      
+        
+        
+        
+        
 
         /**
          * ** end of top layout *****
@@ -163,6 +182,7 @@ public class ProfilePlotComponent extends ModularizedListener {
 
         maxTopLayout.add(maxTitle);
         maxTopLayout.setCellHorizontalAlignment(maxTitle, HorizontalPanel.ALIGN_LEFT);
+        maxTopLayout.add(new InfoIcon("Profile Plot", initInfoLayout(200,600),200,600));
         maxTopLayout.add(saveBtn);
         maxTopLayout.setCellHorizontalAlignment(saveBtn, HorizontalPanel.ALIGN_RIGHT);
         maxTopLayout.add(minmizeBtn);
@@ -317,5 +337,20 @@ public class ProfilePlotComponent extends ModularizedListener {
 
             }
         });
+    }
+
+    private VerticalPanel initInfoLayout(int h,int w) {
+        VerticalPanel infopanel = new VerticalPanel();
+        infopanel.setWidth(w+"px");
+        infopanel.setHeight(h+"px");
+
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>User can use popup mode to get better visualization by clicking on  the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> in the upper right corner.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In popup mode users can export the profile plot images as pdf files by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on right upper corner.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Please note the current version of DiVA does not support user selection for Profile plot module. </p>");
+
+        infopanel.add(information);
+
+        return infopanel;
+
     }
 }

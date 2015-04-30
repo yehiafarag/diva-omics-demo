@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
+//import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -25,6 +26,7 @@ import web.diva.client.DivaServiceAsync;
 import web.diva.client.selectionmanager.ModularizedListener;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
+import web.diva.client.view.core.InfoIcon;
 import web.diva.client.view.core.SaveAsPanel;
 import web.diva.shared.beans.PCAImageResult;
 import web.diva.shared.beans.UpdatedTooltip;
@@ -36,7 +38,7 @@ import web.diva.shared.beans.UpdatedTooltip;
  */
 public class PCAPlotComponent extends ModularizedListener {
 
-    private SelectionManager selectionManager;
+    private SelectionManager Selection_Manager;
     private boolean zoom = false;
     private boolean selectAll = false;
     private DivaServiceAsync GWTClientService;
@@ -70,7 +72,7 @@ public class PCAPlotComponent extends ModularizedListener {
 
     /**
      *
-     * @param selectionManager main central manager
+     * @param Selection_Manager main central manager
      * @param datasetInfo dataset information object
      * @param results main PCAImageResult with all pca information, tool-tips
      * and data
@@ -80,13 +82,13 @@ public class PCAPlotComponent extends ModularizedListener {
      *
      *
      */
-    public PCAPlotComponent(final PCAImageResult results, SelectionManager selectionManager, DivaServiceAsync divaService, final int colNumber, String datasetInfo, int midPanelWidth) {
+    public PCAPlotComponent(final PCAImageResult results, final SelectionManager Selection_Manager, DivaServiceAsync divaService, final int colNumber, String datasetInfo, int midPanelWidth) {
 
         this.GWTClientService = divaService;
         this.classtype = 2;
         this.components.add(PCAPlotComponent.this);
-        this.selectionManager = selectionManager;
-        this.selectionManager.addSelectionChangeListener(PCAPlotComponent.this);
+        this.Selection_Manager = Selection_Manager;
+        this.Selection_Manager.addSelectionChangeListener(PCAPlotComponent.this);
         this.tooltipInformationData = results.getTooltipInformatinData();
         this.datasetInfo = datasetInfo;
         this.results = results;
@@ -110,11 +112,27 @@ public class PCAPlotComponent extends ModularizedListener {
         topLayout.add(title);
         title.setWidth("50%");
         topLayout.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
-        Label maxmizeBtn = new Label();
+        
+        
+        
+        
+        
+         HorizontalPanel btnsPanel = new HorizontalPanel();
+        btnsPanel.setWidth("34px");
+        btnsPanel.setHeight("20px");
+        btnsPanel.add(new InfoIcon("PCA Plot", initInfoLayout(600,600),600,600));
+        
+          Label maxmizeBtn = new Label();
         maxmizeBtn.addStyleName("maxmize");
         maxmizeBtn.setHeight("16px");
         maxmizeBtn.setWidth("16px");
-        topLayout.add(maxmizeBtn);
+        btnsPanel.add(maxmizeBtn);
+        maxmizeBtn.setHorizontalAlignment(Label.ALIGN_RIGHT);
+        btnsPanel.setCellHorizontalAlignment(maxmizeBtn, HorizontalPanel.ALIGN_RIGHT);
+        
+        topLayout.add(btnsPanel);
+        topLayout.setCellHorizontalAlignment(btnsPanel, HorizontalPanel.ALIGN_RIGHT);
+        
         calcMinImgResize();
         if (pcaThumbImgDrawPan == null) {
             pcaThumbImgDrawPan = createThumbImgDrawPane();
@@ -142,7 +160,7 @@ public class PCAPlotComponent extends ModularizedListener {
         maxTitle.setStyleName("labelheader");
         maxTopLayout.add(maxTitle);
 
-        maxTitle.setWidth(((calMaxImgWidth + 2) - 300) + "px");
+        maxTitle.setWidth(((calMaxImgWidth + 2) - 318) + "px");
         maxTopLayout.setCellHorizontalAlignment(maxTitle, HorizontalPanel.ALIGN_LEFT);
 
         CheckBox showallBtn = new CheckBox("Show All");
@@ -216,6 +234,14 @@ public class PCAPlotComponent extends ModularizedListener {
         maxTopLayout.add(saveBtn);
         maxTopLayout.setCellHorizontalAlignment(saveBtn, HorizontalPanel.ALIGN_RIGHT);
 
+        
+        InfoIcon icon = new InfoIcon("PCA Plot",initInfoLayout(600,600),600,600);
+        
+          maxTopLayout.add(icon);
+        maxTopLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
+        
+        
+        
         Label minmizeBtn = new Label();
         minmizeBtn.addStyleName("minmize");
         minmizeBtn.setHeight("16px");
@@ -231,7 +257,7 @@ public class PCAPlotComponent extends ModularizedListener {
                 GWTClientService.exportImgAsPdf("PCA_Plot", "high", new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, false);
                     }
 
@@ -310,7 +336,7 @@ public class PCAPlotComponent extends ModularizedListener {
      *
      */
     private void updateWithSelection() {
-        Selection sel = selectionManager.getSelectedRows();
+        Selection sel = Selection_Manager.getSelectedRows();
         if (sel != null) {
             selectedRows = sel.getMembers();
             this.updateSelection(selectedRows);
@@ -335,7 +361,7 @@ public class PCAPlotComponent extends ModularizedListener {
 
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+                Selection_Manager.connError();
             }
 
             @Override
@@ -362,7 +388,7 @@ public class PCAPlotComponent extends ModularizedListener {
 
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+                Selection_Manager.connError();
             }
 
             @Override
@@ -385,7 +411,7 @@ public class PCAPlotComponent extends ModularizedListener {
      *
      */
     private void showAll(boolean showAll) {
-        Selection sel = selectionManager.getSelectedRows();
+        Selection sel = Selection_Manager.getSelectedRows();
         if (sel != null) {
             selectedRows = sel.getMembers();
         }
@@ -393,7 +419,7 @@ public class PCAPlotComponent extends ModularizedListener {
 
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+                Selection_Manager.connError();
             }
 
             @Override
@@ -420,7 +446,7 @@ public class PCAPlotComponent extends ModularizedListener {
         GWTClientService.getPCASelection(startX, startY, endX, endY, new AsyncCallback<int[]>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+                Selection_Manager.connError();
             }
 
             @Override
@@ -446,7 +472,7 @@ public class PCAPlotComponent extends ModularizedListener {
         if (selectedIndices != null) {// && selectedIndices.length > 0) {
             SelectionManager.Busy_Task(true, false);
             Selection selection = new Selection(Selection.TYPE.OF_ROWS, selectedIndices);
-            selectionManager.setSelectedRows(selection);
+            Selection_Manager.setSelectedRows(selection);
         }
     }
 
@@ -471,7 +497,7 @@ public class PCAPlotComponent extends ModularizedListener {
         GWTClientService.updatePCASelection(selectedIndices, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("ERROR IN SERVER CONNECTION");
+                Selection_Manager.connError();
             }
 
             @Override
@@ -512,8 +538,8 @@ public class PCAPlotComponent extends ModularizedListener {
         settingBtnReg.removeHandler();
         saveBtnReg.removeHandler();
         maxmizeBtnReg.removeHandler();
-        selectionManager.removeSelectionChangeListener(this);
-        selectionManager = null;
+        Selection_Manager.removeSelectionChangeListener(this);
+        Selection_Manager = null;
         mainThumbPCALayout = null;
         tooltipViewPortLayout = null;
         GWTClientService = null;
@@ -560,7 +586,7 @@ public class PCAPlotComponent extends ModularizedListener {
                 new AsyncCallback<PCAImageResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, false);
                     }
 
@@ -829,7 +855,7 @@ public class PCAPlotComponent extends ModularizedListener {
     @Override
     public void selectionChanged(Selection.TYPE type) {
         if (type == Selection.TYPE.OF_ROWS) {
-            Selection sel = selectionManager.getSelectedRows();
+            Selection sel = Selection_Manager.getSelectedRows();
             if (sel != null && !zoom && !selectAll) {
                 selectedRows = sel.getMembers();
                 if (selectedRows != null) {//&& selectedRows.length != 0) {
@@ -849,4 +875,24 @@ public class PCAPlotComponent extends ModularizedListener {
         return results;
     }
 
+    private VerticalPanel initInfoLayout(int h, int w) {
+        VerticalPanel infopanel = new VerticalPanel();
+        infopanel.setWidth(w + "px");
+        infopanel.setHeight(h + "px");
+        infopanel.setStyleName("whiteLayout");
+
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'> PCA module supports direct mouse selections on both the minimized and popup mode using the mouse click and drag. <br/><center> <img src='images/pca-selection.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended for users to use PCA module in the popup mode to get better visualization and to access the full PCA module features. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In popup mode users can export the PCA scatter plot images as pdf files by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.<br/>"
+                + " Also Users can change the Principal Component number used for the plot by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'> PCA module supports (zoom and select) mode where the useres can activate zooming by ticking the zoom-checkbox  and select the choosen area to zoom on the chart.<center><img src='images/zoompca.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>After zooming to desired level the user can reactivate the selection mode by unchecked the zoom checkbox.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can reset the chart by clicking on zoom out icon <img src='images/zoomout.png' alt='' style='width:auto;height:16px'/></center></p>."
+        );
+
+        infopanel.add(information);
+
+        return infopanel;
+
+    }
 }

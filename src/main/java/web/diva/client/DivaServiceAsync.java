@@ -211,13 +211,7 @@ public interface DivaServiceAsync {
      */
     public void saveDataset(String newName, AsyncCallback<String> asyncCallback);
 
-    /**
-     * This method is responsible for getting the column groups required by
-     * ranking panel
-     *
-     * @param asyncCallback List DivaGroup
-     */
-    public void getColGroups(AsyncCallback<List<DivaGroup>> asyncCallback);
+   
 
     /**
      * This method is responsible for updating profilePlot selection updated
@@ -263,8 +257,7 @@ public interface DivaServiceAsync {
      */
     public void getProfilePlotSelection(int startX, int startY, AsyncCallback<int[]> asyncCallback);
 
-    public void indexToRank(int[] indexes, int type, AsyncCallback<int[]> asyncCallback);
-
+  
     /**
      * This method is responsible for updating the side tree of the clustering
      * and return selected indexes and updated image url
@@ -334,5 +327,16 @@ public interface DivaServiceAsync {
      * @param asyncCallback PCAImageResult (image url and updated tooltips)
      */
     public void pcaZoomReset(AsyncCallback<PCAImageResult> asyncCallback);
+    
+     /**
+     * This method is responsible for getting the column groups required by
+     * ranking panel
+     *
+     * @param asyncCallback List DivaGroup
+     */
+    public void getColGroups(AsyncCallback<List<DivaGroup>> asyncCallback);
+    
+//      public void indexToRank(int[] indexes, int type, AsyncCallback<int[]> asyncCallback);
+
 
 }

@@ -3,10 +3,11 @@ package web.diva.client.rank.view;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
+//import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -18,6 +19,7 @@ import web.diva.client.selectionmanager.ModularizedListener;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
 import web.diva.client.unused.RankPanel;
+import web.diva.client.view.core.InfoIcon;
 import web.diva.client.view.core.SaveAsPanel;
 import web.diva.shared.beans.DivaGroup;
 import web.diva.shared.beans.RankResult;
@@ -37,27 +39,27 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
     private final Label minBtn;
     private final RankSettingBtn minSettingBtn, maxSettingsBtn;
     private DivaServiceAsync GWTClientService;
-    private SelectionManager selectionManager;
+    private SelectionManager Selection_Manager;
     private final RankPanel rankPanel;
     private final HandlerRegistration minSaveReg, maxmizeReg, minmizReg, maxSettingsReg, minSettingsReg, showSelectedReg;
     private HandlerRegistration maxShowASelectedReg, maxSaveReg;
     private CheckBox maxShowSelectedOnlyBtn, showSelectedOnlyBtn;
-    private RankResult rankResults;
+//    private RankResult rankResults;
 
     /**
      *
-     * @param selectionManager main central manager
+     * @param Selection_Manager main central manager
      * @param results ranking information
      * @param colGroupsList list of column groups
      * @param divaService diva GWTClientService
      */
-    public RankTablesComponent(DivaServiceAsync divaService, final SelectionManager selectionManager, final RankResult results, List<DivaGroup> colGroupsList) {
-        this.rankResults = results;
+    public RankTablesComponent(DivaServiceAsync divaService, final SelectionManager Selection_Manager, final RankResult results, List<DivaGroup> colGroupsList) {
+//        this.rankResults = results;
         this.classtype = 3;
         this.components.add(RankTablesComponent.this);
         this.GWTClientService = divaService;
-        this.selectionManager = selectionManager;
-        selectionManager.addSelectionChangeListener(RankTablesComponent.this);
+        this.Selection_Manager = Selection_Manager;
+        Selection_Manager.addSelectionChangeListener(RankTablesComponent.this);
         this.rankPanel = new RankPanel();
         mainRankLayout = new VLayout();
         mainRankLayout.setHeight("100%");
@@ -78,15 +80,16 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
         topLayout.setCellVerticalAlignment(title, HorizontalPanel.ALIGN_TOP);
 
         HorizontalPanel btnsLayout = new HorizontalPanel();
-        btnsLayout.setWidth("52px");
+        btnsLayout.setWidth("85px");
         btnsLayout.setHeight("18px");
+        btnsLayout.setSpacing(1);
         topLayout.add(btnsLayout);
         topLayout.setCellHorizontalAlignment(btnsLayout, HorizontalPanel.ALIGN_RIGHT);
         topLayout.setCellVerticalAlignment(btnsLayout, HorizontalPanel.ALIGN_TOP);
 
         minSettingBtn = new RankSettingBtn(GWTClientService, rankPanel);
         btnsLayout.add(minSettingBtn);
-        btnsLayout.setCellHorizontalAlignment(minSettingBtn, HorizontalPanel.ALIGN_LEFT);
+        btnsLayout.setCellHorizontalAlignment(minSettingBtn, HorizontalPanel.ALIGN_RIGHT);
 
         Label minSaveBtn = new Label();
         minSaveBtn.addStyleName("save");
@@ -108,7 +111,11 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             }
         };
         minSaveReg = minSaveBtn.addClickHandler(exportRankHandler);
-
+        InfoIcon icon = new InfoIcon("Rank Product", initInfoLayout(450,600),450,600);
+        btnsLayout.add(icon);
+        btnsLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
+        
+        
         maxBtn = new Label();
         btnsLayout.add(maxBtn);
         maxBtn.addStyleName("maxmize");
@@ -131,22 +138,28 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             public void onClick(ClickEvent event) {
                 if (maxRankTable == null) {
                     VerticalPanel maxmizeTableLayout = new VerticalPanel();
-                    maxmizeTableLayout.setHeight("80%");
-                    maxmizeTableLayout.setWidth("80%");
+                   
 
-                    maxRankTable = new RankTableLayout(selectionManager, results);
+                    maxRankTable = new RankTableLayout(Selection_Manager, results);
                     maxRankTable.setWidth("80%");
-                    maxRankTable.setHeight("80%");
+                    maxRankTable.setHeight("80%"); 
+                    int maxWidth = maxRankTable.getOffsetWidth();
+                    
+                    maxmizeTableLayout.setHeight((maxRankTable.getOffsetHeight()+72)+ "px");
+                    maxmizeTableLayout.setWidth( maxWidth+ "px");
 
                     HorizontalPanel maxTopLayout = new HorizontalPanel();
-                    maxTopLayout.setWidth(maxRankTable.getOffsetWidth() + "px");
+                    maxTopLayout.setWidth(maxWidth + "px");
+                    maxTopLayout.setHeight("20px");
+                    maxTopLayout.setSpacing(2);
                     Label title = new Label();
                     title.setText("Rank Product (Differential Expression)");
                     title.setStyleName("labelheader");
-                    title.setWidth((maxRankTable.getOffsetWidth() - 66) + "px");
+                    title.setWidth((maxWidth - 100) + "px");
 
                     maxTopLayout.add(title);
                     maxTopLayout.add(maxSettingsBtn);
+                     maxTopLayout.setCellHorizontalAlignment(maxSettingsBtn, HorizontalPanel.ALIGN_RIGHT);
                     Label maxSaveBtn = new Label();
                     maxSaveBtn.addStyleName("save");
                     maxSaveBtn.setHeight("16px");
@@ -155,22 +168,27 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     maxTopLayout.add(maxSaveBtn);
                     maxTopLayout.setCellHorizontalAlignment(maxSaveBtn, HorizontalPanel.ALIGN_RIGHT);
                     maxSaveReg = maxSaveBtn.addClickHandler(exportRankHandler);
-
+                    
+                    InfoIcon maxIcon = new InfoIcon("Rank Product", initInfoLayout(450,600),450,600);
+                    maxTopLayout.add(maxIcon);
+                    maxTopLayout.setCellHorizontalAlignment(maxIcon, HorizontalPanel.ALIGN_RIGHT);
+                    
                     maxTopLayout.add(minBtn);
                     maxTopLayout.setCellHorizontalAlignment(title, HorizontalPanel.ALIGN_LEFT);
                     maxTopLayout.setCellHorizontalAlignment(minBtn, HorizontalPanel.ALIGN_RIGHT);
                     maxTopLayout.setCellHorizontalAlignment(maxSettingsBtn, HorizontalPanel.ALIGN_RIGHT);
-
+                    
                     maxmizeTableLayout.add(maxTopLayout);
-                    maxmizeTableLayout.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+                    maxmizeTableLayout.setCellHorizontalAlignment(maxTopLayout, VerticalPanel.ALIGN_CENTER);
 
                     maxmizeTableLayout.add(maxRankTable);
 
                     HorizontalPanel maxBottomLayout = new HorizontalPanel();
                     maxmizeTableLayout.add(maxBottomLayout);
                     maxBottomLayout.setWidth("100%");
-                    maxBottomLayout.setHeight("30px");
-                    maxShowSelectedOnlyBtn = new CheckBox("Show Selected Data Only");
+                    maxBottomLayout.setHeight("50px");
+                    maxShowSelectedOnlyBtn = new CheckBox("Show Selected Data Only");  
+                    maxShowSelectedOnlyBtn.setStyleName("boldLabel");
                     maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue());
                     maxShowASelectedReg = maxShowSelectedOnlyBtn.addClickHandler(new ClickHandler() {
                         @Override
@@ -183,16 +201,20 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     });
                     maxBottomLayout.add(maxShowSelectedOnlyBtn);
                     maxBottomLayout.setCellHorizontalAlignment(maxShowSelectedOnlyBtn, VerticalPanel.ALIGN_LEFT);
-                    maxBottomLayout.setCellVerticalAlignment(maxShowSelectedOnlyBtn, VerticalPanel.ALIGN_BOTTOM);
+                    maxBottomLayout.setCellVerticalAlignment(maxShowSelectedOnlyBtn, VerticalPanel.ALIGN_MIDDLE);
                     tablePopup.setWidget(maxmizeTableLayout);
                     maxmizeTableLayout.setStyleName("modalLayout");
                     selectionChanged(Selection.TYPE.OF_ROWS);
-
+                    
+               
                 }
-                maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue());
+                maxShowSelectedOnlyBtn.setValue(showSelectedOnlyBtn.getValue()); 
                 maxRankTable.showSelectedOnly(showSelectedOnlyBtn.getValue());
+               
+                
                 tablePopup.center();
-                tablePopup.show();
+                tablePopup.show(); 
+                
             }
         });
 
@@ -206,15 +228,18 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             }
         });
 
-        minRankTable = new RankTableLayout(selectionManager, results);
+        minRankTable = new RankTableLayout(Selection_Manager, results);
         mainRankLayout.addMember(minRankTable);
         HorizontalPanel bottomLayout = new HorizontalPanel();
         mainRankLayout.addMember(bottomLayout);
         minRankTable.setHeight("100%");
         minRankTable.draw();
         bottomLayout.setWidth("100%");
-        bottomLayout.setHeight("30px");
+        bottomLayout.setHeight("50px");
+        
         showSelectedOnlyBtn = new CheckBox("Show Selected Data Only");
+        showSelectedOnlyBtn.setStyleName("boldLabel");
+       
         showSelectedOnlyBtn.setValue(false);
         showSelectedReg = showSelectedOnlyBtn.addClickHandler(new ClickHandler() {
             @Override
@@ -229,18 +254,22 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
 
         bottomLayout.add(showSelectedOnlyBtn);
         bottomLayout.setCellHorizontalAlignment(showSelectedOnlyBtn, VerticalPanel.ALIGN_LEFT);
-        bottomLayout.setCellVerticalAlignment(showSelectedOnlyBtn, VerticalPanel.ALIGN_BOTTOM);
+        bottomLayout.setCellVerticalAlignment(showSelectedOnlyBtn, VerticalPanel.ALIGN_MIDDLE);
 
         tablePopup = new PopupPanel(false, true);
         tablePopup.setAnimationEnabled(true);
         tablePopup.ensureDebugId("cwBasicPopup-imagePopup");
+        
+        
+        
+         tablePopup.hide(true);
 
         ClickHandler rankInputPanelListener = new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 if (tablePopup != null) {
-                    tablePopup.hide();
+                    tablePopup.hide(true);
                 }
             }
         };
@@ -305,13 +334,13 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                 new AsyncCallback<RankResult>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("An error occurred while attempting to contact the server");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(RankResult result) {
-                        rankResults = result;
+//                        rankResults = result;
                         minRankTable.updateRecords(result);
                         if (maxRankTable != null) {
                             maxRankTable.updateRecords(result);
@@ -337,7 +366,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
         GWTClientService.exportRankingData(selection, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("An error occurred while attempting to contact the server");
+                Selection_Manager.connError();
                 SelectionManager.Busy_Task(false, true);
             }
 
@@ -365,7 +394,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
     @Override
     public final void selectionChanged(Selection.TYPE type) {
         if (type == Selection.TYPE.OF_ROWS) {
-            Selection sel = selectionManager.getSelectedRows();
+            Selection sel = Selection_Manager.getSelectedRows();
             if (sel != null) {// && sel.getMembers().length > 0) {
                 minRankTable.updateTable(sel.getMembers());
                 if (maxRankTable != null) {
@@ -400,9 +429,29 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             maxSaveReg.removeHandler();
         }
         minRankTable.remove();
-        selectionManager.removeSelectionChangeListener(this);
-        selectionManager = null;
+        Selection_Manager.removeSelectionChangeListener(this);
+        Selection_Manager = null;
         GWTClientService = null;
+
+    }
+
+    private VerticalPanel initInfoLayout(int h, int w) {
+        VerticalPanel infopanel = new VerticalPanel();
+        infopanel.setWidth(w + "px");
+        infopanel.setHeight(h + "px");
+        infopanel.setStyleName("whiteLayout");
+
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Rank Product Module (table) supports both users single and multiple data selections using mouse clicks for single and select and drag for multiple selection on both the minimized or popup mode.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can use The Rank Product Module in the popup mode(larger size table) to get better visualization. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can change the Rank Product input parameters (columns groups, Log2 or Linear, Permutation and seed values) used for the rank product calculations by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner on both the minimized or  popup mode.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can filter the rank product table  using (Show Selected Data Only) checkbox on the lower left corner on both the minimized or  popup mode.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can sort the data by clicking the headers of any column in the table.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can export the information in the rank product table as  a tabular file format by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+        );
+
+        infopanel.add(information);
+
+        return infopanel;
 
     }
 

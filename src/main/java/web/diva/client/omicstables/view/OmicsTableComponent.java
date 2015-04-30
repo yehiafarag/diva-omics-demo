@@ -4,6 +4,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -23,6 +26,7 @@ import com.smartgwt.client.widgets.form.fields.events.FocusHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.BodyKeyPressEvent;
 import com.smartgwt.client.widgets.grid.events.BodyKeyPressHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import java.util.HashSet;
@@ -30,6 +34,7 @@ import java.util.Set;
 import web.diva.client.selectionmanager.ModularizedListener;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
+import web.diva.client.view.core.InfoIcon;
 import web.diva.shared.model.core.model.dataset.DatasetInformation;
 
 /**
@@ -92,9 +97,21 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         omicsTableLayout.setHeight("70%");
         omicsTableLayout.setWidth("100%");
 
+        HLayout searchInfoLayout = new HLayout();
+        searchInfoLayout.setHeight(20);
+        searchInfoLayout.setMembersMargin(10);
+        omicsTableLayout.addMember(searchInfoLayout);
         /*searching field */
         final DynamicForm form = new DynamicForm();
-        omicsTableLayout.addMember(form);
+        searchInfoLayout.addMember(form);
+        InfoIcon icon = new InfoIcon("Annotations Table", initInfoLayout(300,600),300,600);
+        icon.setAutoHorizontalAlignment(Label.ALIGN_CONTENT_START);
+        
+   
+        searchInfoLayout.addMember(icon);
+        searchInfoLayout.setAlign(Alignment.CENTER);
+        searchInfoLayout.setMargin(10);
+        
         form.setAutoFocus(true);
         form.setNumCols(3);
         form.setWidth100();
@@ -104,7 +121,7 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         searchingField.setDefaultValue("Enter One Keyword");
         searchingField.setWrapTitle(false);
         searchingField.setTitleAlign(Alignment.LEFT);
-        form.setMargin(10);
+//        form.setMargin(5);
 
         searchingFieldFocusReg = searchingField.addFocusHandler(new FocusHandler() {
 
@@ -147,8 +164,11 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
 
         form.setFields(searchingField, button);
         form.setColWidths(new Object[]{50, "*", 80});
+        
+       
         searchingField.setWidth("*");
         form.draw();
+        form.setTop(-7);
 
         /*end*/
         this.omicsIdTable = new OmicsTable(datasetInfo);
@@ -488,6 +508,25 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         }
         selectionManager.removeSelectionChangeListener(this);
         selectionManager = null;
+    }
+    
+    private VerticalPanel initInfoLayout(int h,int w) {
+        VerticalPanel infopanel = new VerticalPanel();
+        infopanel.setWidth(w+"px");
+        infopanel.setHeight(h+"px");
+
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The dataset annotations table supports search and select for specific molecules (proteins or genes)."
+                + "users can use keyword from  any of the available annotations.<br/>"
+                + "The module support multiple selection data from tables using mouse select and drag.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can sort the data by clicking the headers of any column in the table.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can switch from rows selection mode into column selection mode using the top control panel <img src='images/controller.png' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can export the data-set (full or row groups) as  a tabular file format using dataset button <img src='images/dsExpBtn.png' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can create customized colour group using create row button  <img src='images/rowGrBtn.png' alt='' style='width:auto;height:16px'/>  and column group button <img src='images/colGrBtn.png' alt='' style='width:auto;height:16px'/>. </p>");
+
+        infopanel.add(information);
+
+        return infopanel;
+
     }
 
     private native void sendOnChangeEvent(DynamicForm form, String formItemName, String oldValue, String newValue) /*-{

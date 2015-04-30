@@ -2,7 +2,7 @@
 package web.diva.client.omicstables.view;
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
+//import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.smartgwt.client.types.Alignment;
@@ -53,7 +53,7 @@ public class LeftPanelView extends SectionStack {
     private SelectItem colSelectionTable = null;
     private RowGroupPanel exportPanel = null, subDsPanel, activeGroupPanel = null;
     private DatasetInformation datasetInfo = null;
-    private SelectionManager selectionManager = null;
+    private SelectionManager Selection_Manager = null;
     private DivaServiceAsync GWTClientService = null;
     private OmicsTableComponent omicsTable = null;
     private IButton colGroupBtn;
@@ -80,7 +80,7 @@ public class LeftPanelView extends SectionStack {
     public LeftPanelView(SelectionManager selectionManagers, DivaServiceAsync GWTClientService, DatasetInformation datasetInfos, int width, int height) {
 
         this.setVisibilityMode(VisibilityMode.MULTIPLE);
-        this.selectionManager = selectionManagers;
+        this.Selection_Manager = selectionManagers;
         this.GWTClientService = GWTClientService;
         this.datasetInfo = datasetInfos;
 
@@ -91,7 +91,7 @@ public class LeftPanelView extends SectionStack {
         this.setScrollSectionIntoView(false);
         rowSelectionSection = new SectionStackSection("&nbsp;Selection (" + 0 + "/" + datasetInfo.getRowsNumb() + ")");
 
-        rowSelectionSection.setControls();
+      
         rowSelectionSection.setCanCollapse(false);
         this.addSection(rowSelectionSection);
         final VLayout rowSelectionLayout = new VLayout();
@@ -111,7 +111,7 @@ public class LeftPanelView extends SectionStack {
         controlItem.setAlign(Alignment.RIGHT);
 
         controlItem.setValueMap(controls);
-        controlItem.setValue(rowControl);
+        
 
         controlItemChangeHandlerReg = controlItem.addChangeHandler(new com.smartgwt.client.widgets.form.fields.events.ChangeHandler() {
 
@@ -119,8 +119,8 @@ public class LeftPanelView extends SectionStack {
             public void onChange(com.smartgwt.client.widgets.form.fields.events.ChangeEvent event) {
                 if (event.getValue().toString().equalsIgnoreCase(rowControl)) {
 
-                    if (selectionManager.getSelectedRows() != null && selectionManager.getSelectedRows().getMembers() != null) {
-                        rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedRows().getMembers().length + "/" + datasetInfo.getRowsNumb() + ")");
+                    if (Selection_Manager.getSelectedRows() != null && Selection_Manager.getSelectedRows().getMembers() != null) {
+                        rowSelectionSection.setTitle("&nbsp;Selection (" + Selection_Manager.getSelectedRows().getMembers().length + "/" + datasetInfo.getRowsNumb() + ")");
                     } else {
                         rowSelectionSection.setTitle("&nbsp;Selection (" + 0 + "/" + datasetInfo.getRowsNumb() + ")");
                     }
@@ -133,8 +133,8 @@ public class LeftPanelView extends SectionStack {
                     colSelectionLayout.setWidth("100%");
                     colSelectionLayout.setHeight("2%");
 
-                    if (selectionManager.getSelectedColumns() != null && selectionManager.getSelectedColumns().getMembers() != null) {
-                        rowSelectionSection.setTitle("&nbsp;Selection (" + selectionManager.getSelectedColumns().getMembers().length + "/" + datasetInfo.getColNumb() + ")");
+                    if (Selection_Manager.getSelectedColumns() != null && Selection_Manager.getSelectedColumns().getMembers() != null) {
+                        rowSelectionSection.setTitle("&nbsp;Selection (" + Selection_Manager.getSelectedColumns().getMembers().length + "/" + datasetInfo.getColNumb() + ")");
                     } else {
                         rowSelectionSection.setTitle("&nbsp;Selection (" + 0 + "/" + datasetInfo.getColNumb() + ")");
                     }
@@ -144,7 +144,7 @@ public class LeftPanelView extends SectionStack {
 
                 }
             }
-        });
+        });  
         DynamicForm form = new DynamicForm();
 
         form.setItems(controlItem);
@@ -169,7 +169,7 @@ public class LeftPanelView extends SectionStack {
         colSelectionLayout.setHeight(30);
         colSelectionLayout.setAlign(VerticalAlignment.TOP);
 
-        omicsTable = new OmicsTableComponent(selectionManager, datasetInfos, datasetInfos.getRowsNumb(), rowSelectionSection, controlItem);
+        omicsTable = new OmicsTableComponent(Selection_Manager, datasetInfos, datasetInfos.getRowsNumb(), rowSelectionSection, controlItem);
         rowSelectionLayout.addMember(omicsTable.getOmicsTableLayout());
 
         HorizontalPanel rowGBtnLayout = new HorizontalPanel();
@@ -180,7 +180,7 @@ public class LeftPanelView extends SectionStack {
         final com.smartgwt.client.widgets.events.ClickHandler createRowGroupHandler = new com.smartgwt.client.widgets.events.ClickHandler() {
             @Override
             public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-                Selection sel = selectionManager.getSelectedRows();
+                Selection sel = Selection_Manager.getSelectedRows();
                 if (groupPanel.getForm().validate()) {
                     createRowGroup(groupPanel.getName(), groupPanel.getColor(), groupPanel.getDescription(), sel.getMembers());
                 }
@@ -266,7 +266,7 @@ public class LeftPanelView extends SectionStack {
                     if (subDsPanel == null) {
                         initSubDsPanel(datasetInfo.getRowGroupList());
                     }
-                    if (selectionManager.getSelectedRows() == null && datasetInfo.getRowGroupList().size() == 1) {
+                    if (Selection_Manager.getSelectedRows() == null && datasetInfo.getRowGroupList().size() == 1) {
                         Notification.notifi("", "You Need To Select Data or Create Row Group First ");
                     } else {
                         updateSubDsPanel();
@@ -291,7 +291,7 @@ public class LeftPanelView extends SectionStack {
             }
         });
 
-        IMenuButton datasetMenuBtn = new IMenuButton("Dataset", datasetMenu);
+        IMenuButton datasetMenuBtn = new IMenuButton("Export Dataset", datasetMenu);
         rowGBtnLayout.add(datasetMenuBtn);
         datasetMenuBtn.setWidth("9%");
         datasetMenuBtn.setAlign(Alignment.CENTER);
@@ -308,7 +308,7 @@ public class LeftPanelView extends SectionStack {
         rowSelectionLayout.setAlign(Alignment.CENTER);
 
         /* end of new  group and ds  layout*/
-        rowGroupTable = new GroupTable(selectionManager, "row");
+        rowGroupTable = new GroupTable(Selection_Manager, "row");
         rowGroupTable.updateRecords(datasetInfo.getRowGroupList());
         rowSelectionLayout.addMember(rowGroupTable);
 
@@ -319,7 +319,7 @@ public class LeftPanelView extends SectionStack {
         final com.smartgwt.client.widgets.events.ClickHandler colGroupHandler = new com.smartgwt.client.widgets.events.ClickHandler() {
             @Override
             public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-                Selection sel = selectionManager.getSelectedColumns();
+                Selection sel = Selection_Manager.getSelectedColumns();
                 if (groupPanel.getForm().validate()) {
                     createColGroup(groupPanel.getName(), groupPanel.getColor(), groupPanel.getDescription(), sel.getMembers());
                 }
@@ -365,9 +365,12 @@ public class LeftPanelView extends SectionStack {
                 updateAndShowGroupPanel("col");
             }
         });
-        colGroupTable = new GroupTable(selectionManager, "col");
+        colGroupTable = new GroupTable(Selection_Manager, "col");
         colGroupTable.updateRecords(datasetInfo.getColGroupsList());
         colSelectionLayout.addMember(colGroupTable);
+        rowSelectionLayout.setVisible(true);
+        colSelectionLayout.setVisible(false);
+        controlItem.setValue(rowControl);
 
     }
 
@@ -379,18 +382,18 @@ public class LeftPanelView extends SectionStack {
      */
     private void updateAndShowGroupPanel(String type) {
         if (type.equalsIgnoreCase("col")) {
-            if (selectionManager.getSelectedColumns() == null) {
+            if (Selection_Manager.getSelectedColumns() == null) {
                 Notification.notifi("", "You Need To Select Data First");
             } else {
-                groupPanel.setCount(selectionManager.getSelectedColumns().getMembers().length);
+                groupPanel.setCount(Selection_Manager.getSelectedColumns().getMembers().length);
                 groupPanel.center();
                 groupPanel.show();
             }
         } else if (type.equalsIgnoreCase("row")) {
-            if (selectionManager.getSelectedRows() == null) {
+            if (Selection_Manager.getSelectedRows() == null) {
                 Notification.notifi("", "You Need To Select Data First");
             } else {
-                groupPanel.setCount(selectionManager.getSelectedRows().getMembers().length);
+                groupPanel.setCount(Selection_Manager.getSelectedRows().getMembers().length);
                 groupPanel.center();
                 groupPanel.show();
             }
@@ -426,7 +429,7 @@ public class LeftPanelView extends SectionStack {
                     sel[x] = Integer.valueOf(stringValues[x]);
                 }
                 Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, sel);
-                selectionManager.setSelectedColumns(selection);
+                Selection_Manager.setSelectedColumns(selection);
             }
         });
         return selectCols;
@@ -478,7 +481,7 @@ public class LeftPanelView extends SectionStack {
 
                     if (gType != null) {
                         if (gType.equalsIgnoreCase("Current Selected Indexes")) {
-                            createSubDataset(gName, gType, selectionManager.getSelectedRows().getMembers());
+                            createSubDataset(gName, gType, Selection_Manager.getSelectedRows().getMembers());
                         } else {
                             createSubDataset(gName, gType, null);
 
@@ -524,7 +527,7 @@ public class LeftPanelView extends SectionStack {
     private void updateSubDsPanel() {
         DivaGroup dg = new DivaGroup();
         dg.setColor("../images/lightgray.png");
-        dg.setCount(selectionManager.getSelectedRows().getMembers().length);
+        dg.setCount(Selection_Manager.getSelectedRows().getMembers().length);
         dg.setName("Current Selected Indexes");
         List<DivaGroup> list = new ArrayList<DivaGroup>();
         list.addAll(datasetInfo.getRowGroupList());
@@ -546,7 +549,7 @@ public class LeftPanelView extends SectionStack {
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
@@ -578,14 +581,14 @@ public class LeftPanelView extends SectionStack {
                 new AsyncCallback<DatasetInformation>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(DatasetInformation result) {
                         groupPanel.hide(true);
-                        selectionManager.updateAllModules(result);
+                        Selection_Manager.updateAllModules(result);
 
                     }
                 });
@@ -607,14 +610,14 @@ public class LeftPanelView extends SectionStack {
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                       Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(String datasetName) {
                         saveDsPanel.hide(true);
-                        selectionManager.saveDataset(datasetName);
+                        Selection_Manager.saveDataset(datasetName);
                         SC.say("Done", "Dataset Successfully Saved");
                     }
                 });
@@ -633,14 +636,14 @@ public class LeftPanelView extends SectionStack {
                 new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(String datasetId) {
                         subDsPanel.hide(true);
-                        selectionManager.updateDropdownList(datasetId);
+                        Selection_Manager.updateDropdownList(datasetId);
                         SC.say("Done", "Successfully Stored Sub-Dataset");
                     }
                 });
@@ -662,14 +665,14 @@ public class LeftPanelView extends SectionStack {
                 new AsyncCallback<DatasetInformation>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("ERROR IN SERVER CONNECTION");
+                        Selection_Manager.connError();
                         SelectionManager.Busy_Task(false, true);
                     }
 
                     @Override
                     public void onSuccess(DatasetInformation result) {
                         groupPanel.hide(true);
-                        selectionManager.updateAllModules(result);
+                        Selection_Manager.updateAllModules(result);
                     }
                 });
 
@@ -710,7 +713,7 @@ public class LeftPanelView extends SectionStack {
         subDsPanel = null;
         activeGroupPanel = null;
         datasetInfo = null;
-        selectionManager = null;
+        Selection_Manager = null;
         GWTClientService = null;
 
         omicsTable = null;
