@@ -22,7 +22,6 @@ import web.diva.client.DivaServiceAsync;
 import web.diva.client.selectionmanager.ModularizedListener;
 import web.diva.client.selectionmanager.Selection;
 import web.diva.client.selectionmanager.SelectionManager;
-import web.diva.client.view.core.HeaderLayout;
 import web.diva.client.view.core.InfoIcon;
 import web.diva.client.view.core.SaveAsPanel;
 

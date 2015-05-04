@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Slider;
 import com.smartgwt.client.widgets.events.ValueChangedEvent;
 import com.smartgwt.client.widgets.events.ValueChangedHandler;
@@ -172,7 +173,7 @@ public class SomClustComponent extends ModularizedListener {
         mainClusterPanelLayout.setStyleName("frame");
      
         mainClusterPanelLayout.setAlwaysShowScrollBars(false);
-          if (clusterColumn) {
+          if (clustColumn) {
             topClusterLayout.setHeight(70 + "px");
             topClusterLayout.setWidth("20%");
             upperTreeImg = new TopTreeImg(somClusteringResults.getUpperTreeImgUrl(), somClusteringResults.getColNode(), 1, tooltip,somClusteringResults.getSquareL());
@@ -232,7 +233,7 @@ public class SomClustComponent extends ModularizedListener {
         spacer3.setHeight("20px");
           bottomClusterLayout.add(spacer3);
           
-        if (upperTreeImg != null) {
+        if (clustColumn && upperTreeImg != null) {
            uperTreeReg= upperTreeImg.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
@@ -339,6 +340,7 @@ public class SomClustComponent extends ModularizedListener {
             }
         });
 
+         
         /* the end of thumb layout*/
         /* the start of maxmize layout*/
         clusteringPopup = new PopupPanel(false, true);
@@ -496,6 +498,7 @@ public class SomClustComponent extends ModularizedListener {
         }
         top = (toptreewidth + somClusteringResults.getSideTreeHeight() - (somClusteringResults.getSideTreeWidth() + somClusteringResults.getHeatmapWidth() + somClusteringResults.getInteractiveColumnWidth()) + somClusteringResults.getSideTreeWidth()) * -1;
 
+       
         maxClusterLayout.setWidth("10%");
         maxClusterLayout.setHeight("2%");
         final VerticalPanel vp = new VerticalPanel();
@@ -503,7 +506,6 @@ public class SomClustComponent extends ModularizedListener {
         vp.setWidth(maxClusterheight + "px");
         vp.getElement().setAttribute("style", "overflow-y: hidden;");
 //       vp.add(maxClusterLayout);
-
 
         maxClusterLayout.add(maxTopClusterLayout);
 
@@ -515,7 +517,7 @@ public class SomClustComponent extends ModularizedListener {
         maxClusterLayout.setCellVerticalAlignment(maxMiddleClusterLayout, VerticalPanel.ALIGN_MIDDLE);
 
         //top clustering layout include spacer 1 and rotated side tree
-        if (clusterColumn) {
+        if (clustColumn) {
             maxTopClusterLayout.setHeight(70 + "px");
             maxTopClusterLayout.setWidth("10%");//(sideTreeImg1.getWidth()+upperTreeImg.getWidth()+interactiveColImage.getWidth())+"px");
             maxUpperTreeImg = new MaxmizedTopTreeImg(somClusteringResults.getUpperTreeImgUrl(), somClusteringResults.getColNode(), 2, maxmizeTooltip, somClusteringResults.getSquareL());
@@ -540,6 +542,7 @@ public class SomClustComponent extends ModularizedListener {
         } else {
             maxTopClusterLayout.setHeight(0 + "px");
         }
+       
 
         initMaxmizeLayout(somClusteringResults);
         maxClustInfoLabel.setWidth(280 + "px");
@@ -549,9 +552,8 @@ public class SomClustComponent extends ModularizedListener {
 
 //            maxBottomClusterLayout.setCellWidth(maxClustInfoLabel, maxClustInfoLabel.getWidth() + "px");
         maxBottomClusterLayout.add(maxScaleImg);
-        
-        
-        
+
+
         nvigatorSlider = new Slider();  
         nvigatorSlider.setMinValue(0.0);  
         nvigatorSlider.setMaxValue(100.0);  
@@ -566,10 +568,7 @@ public class SomClustComponent extends ModularizedListener {
         nvigatorSlider.setShowTitle(false);
         nvigatorSlider.setVertical(false);  
         nvigatorSlider.disable();
-//        nvigatorSlider.setImage("linear-gradient(to bottom, #fafafa 1%, #f0f0f0 46%, #e3e3e3 50%, #fafafa 100%)", "images/screen.png");
-        nvigatorSlider.setBackgroundImage(upperTreeImg.getUrl());
 
-//        zoomSlider.addValueChangedHandler(zoomSliderValueChangeHandler);  
         maxBottomClusterLayout.add(nvigatorSlider);
         nvigatorSlider.draw();
 
@@ -635,43 +634,37 @@ public class SomClustComponent extends ModularizedListener {
 //                  vp.getElement().setAttribute("style","overflow-y: hidden; zoom:"+event.getValue()+";");
 //                vp.getElement().setAttribute("style","	-webkit-transform: scale("+event.getValue()+","+ event.getValue()+");-moz-transform: scale("+event.getValue()+","+ event.getValue()+");-ms-transform: scale("+event.getValue()+","+ event.getValue()+");-o-transform: scale("+event.getValue()+","+ event.getValue()+"),transform: scale("+event.getValue()+"," +event.getValue()+")");
 
-                
-
-                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto;-moz-transform: rotate(90deg) scale(" + event.getValue()+ ");  -o-transform:rotate(90deg) scale(" + event.getValue() + "); -ms-transform: rotate(90deg) scale("+event.getValue()+"); -webkit-transform:rotate(90deg) scale("+event.getValue()+");  transform: rotate(90deg) scale("+event.getValue()+"); position: absolute;  top:"+top+"px;   left:"+ 100+"px; ");
+                maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto;-moz-transform: rotate(90deg) scale(" + event.getValue() + ");  -o-transform:rotate(90deg) scale(" + event.getValue() + "); -ms-transform: rotate(90deg) scale(" + event.getValue() + "); -webkit-transform:rotate(90deg) scale(" + event.getValue() + ");  transform: rotate(90deg) scale(" + event.getValue() + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
                 maxSideTreeImg.setScale(event.getValue());
                 maxHeatMapImg.setScale(event.getValue());
                 maxInteractiveColImage.setScale(event.getValue());
-                if(clustColumn)
+                if (clustColumn) {
                     maxUpperTreeImg.setScale(event.getValue());
+                }
 //            maxSideTreeImg.onZoom();
 //            maxSideTreeImg.setHeight((sideTreeImg1.getHeight()*event.getValue())+"px");
-            
-            
-            
+                
+
             }
-        }); 
+        });
 //            zoomSlider.setShowTitle(false);
 //        zoomSlider.setShowValue(true);
         maxBottomClusterLayout.add(zoomSlider);
         zoomSlider.draw();
-     
-       
-  
- 
-         
+        
         maxBottomClusterLayout.setCellHorizontalAlignment(nvigatorSlider, HorizontalPanel.ALIGN_LEFT);
         maxBottomClusterLayout.setCellVerticalAlignment(nvigatorSlider, HorizontalPanel.ALIGN_TOP);
-         maxBottomClusterLayout.setCellHorizontalAlignment(zoomSlider, HorizontalPanel.ALIGN_LEFT);
+        maxBottomClusterLayout.setCellHorizontalAlignment(zoomSlider, HorizontalPanel.ALIGN_LEFT);
         maxBottomClusterLayout.setCellVerticalAlignment(zoomSlider, HorizontalPanel.ALIGN_TOP);
         maxBottomClusterLayout.setCellHorizontalAlignment(maxClustInfoLabel, HorizontalPanel.ALIGN_LEFT);
-         maxBottomClusterLayout.setCellVerticalAlignment(maxClustInfoLabel, HorizontalPanel.ALIGN_MIDDLE);maxBottomClusterLayout.setCellHorizontalAlignment(maxScaleImg, HorizontalPanel.ALIGN_LEFT);
-         maxBottomClusterLayout.setCellVerticalAlignment(maxScaleImg, HorizontalPanel.ALIGN_MIDDLE);
-        
-//            maxBottomClusterLayout.setCellWidth(maxUpperTreeImg, maxUpperTreeImg.getWidth() + "px");
-            
-      
+        maxBottomClusterLayout.setCellVerticalAlignment(maxClustInfoLabel, HorizontalPanel.ALIGN_MIDDLE);
+        maxBottomClusterLayout.setCellHorizontalAlignment(maxScaleImg, HorizontalPanel.ALIGN_LEFT);
+        maxBottomClusterLayout.setCellVerticalAlignment(maxScaleImg, HorizontalPanel.ALIGN_MIDDLE);
 
-        if (maxUpperTreeImg != null) {
+//            maxBottomClusterLayout.setCellWidth(maxUpperTreeImg, maxUpperTreeImg.getWidth() + "px");
+
+
+        if (clustColumn && maxUpperTreeImg != null) {
            maxUpperTreeReg= maxUpperTreeImg.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {                 
@@ -1019,30 +1012,28 @@ public class SomClustComponent extends ModularizedListener {
             @Override
             public void onSuccess(SomClustTreeSelectionResult result) {
                 upperTreeImg.setUrl(result.getTreeImg1Url());// 
-                  maxUpperTreeImg.setUrl(result.getTreeImg1Url());//
+                maxUpperTreeImg.setUrl(result.getTreeImg1Url());//
                 if (result.getSelectedIndices() != null) {
                     update = false;
                     Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, result.getSelectedIndices());
                     Selection_Manager.setSelectedColumns(selection);
-                   
+
                 }
 //                Selection_Manager.Busy_Task(false, false);
             }
         });
     }
-    
-    
-      private VerticalPanel initInfoLayout(int h, int w) {
+
+    private VerticalPanel initInfoLayout(int h, int w) {
         VerticalPanel infopanel = new VerticalPanel();
         infopanel.setWidth(w + "px");
         infopanel.setHeight(h + "px");
         infopanel.setStyleName("whiteLayout");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports direct mouse selections on the side, top tree or on the heat-map in both minimized and popup mode. <br/><center> <img src='images/hcselect.png' alt='' style='width:auto;height:100px'/></center></p>"
-                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can change the Hierarchical Clustering input parameters (Linkage, distance Measure, column clustering) used in the clustering calculations by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner on both the minimized or  popup mode.</p>"
-                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended for users to use the Hierarchical Clustering module in the popup mode to get better visualization and to access the full Hierarchical Clustering  module features. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
-                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports (zoom and select)  where the useres can zoom  to the desired level using zoom scroll bar <img src='images/hczoom.png' alt='' style='width:auto;height:20px'/> then select data</p>"
-                
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports direct mouse selections on the side, top trees or on the heat-map in both minimized and popup mode. <br/><center> <img src='images/hcselect.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can change the Hierarchical Clustering input parameters (Linkage, distance Measure, column clustering) used in the clustering calculations by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner on both the minimized or  popup mode.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended for users to use the Hierarchical Clustering module in the popup mode to get better visualization and to access the full Hierarchical Clustering  module features. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports (zoom and select) where the users can zoom  to the desired level using zoom scroll bar <img src='images/hczoom.png' alt='' style='width:auto;height:20px'/> then select data</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In Hierarchical Clustering popup mode users can export the full Hierarchical Clustering image(side, top dendrograms and heat-map with selection)  as pdf file by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
         );
 
