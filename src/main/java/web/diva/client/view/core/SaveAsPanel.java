@@ -95,24 +95,32 @@ public class SaveAsPanel extends PopupPanel {
         btnsLayout.setCellVerticalAlignment(openLink, HorizontalPanel.ALIGN_MIDDLE);
         btnsLayout.setCellHorizontalAlignment(openLink, HorizontalPanel.ALIGN_CENTER);
 
-        ClickHandler hideHandler = new ClickHandler() {
+//        ClickHandler hideHandler = new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+////                reg1.removeHandler();
+////                reg2.removeHandler();
+//                clear();                
+//                hide(true);
+//
+//            }
+//        }; 
+//       reg1 =downloadLink.addClickHandler(hideHandler);
+//       reg2= openLink.addClickHandler(hideHandler);
+//        closeBtn.addClickHandler(hideHandler);
+        closeBtn.addDomHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                reg1.removeHandler();
-                reg2.removeHandler();
-                clear();                
+                clear();
                 hide(true);
-
             }
-        }; 
-       reg1 =downloadLink.addClickHandler(hideHandler);
-       reg2= openLink.addClickHandler(hideHandler);
-        closeBtn.addClickHandler(hideHandler);
+        }, ClickEvent.getType());
 
         framLayout.add(topLayout);
         framLayout.add(mainBodyLayout);
-           this.setWidget(framLayout);
+        this.setWidget(framLayout);
         framLayout.setStyleName("modalPanelLayout");
 
     }

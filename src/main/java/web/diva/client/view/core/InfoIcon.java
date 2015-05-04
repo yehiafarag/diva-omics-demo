@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -31,42 +32,44 @@ public class InfoIcon extends Label implements ClickHandler{
         imagePopup.setGlassEnabled(false);
         imagePopup.setModal(false);
       
-        infoLayout.setStyleName("whiteLayout");
-        
+        infoLayout.setStyleName("whiteLayout");        
         imagePopup.setAutoHideEnabled(true);
-    
-        imagePopup.addDomHandler(new ClickHandler() {
+  
+        VerticalPanel popupLayout = new VerticalPanel();
+        popupLayout.setHeight(height + "px");
+        popupLayout.setWidth(width + "px");
+        popupLayout.setSpacing(10);
+        popupLayout.setStyleName("modalLayout");
+        HorizontalPanel topPanel = new HorizontalPanel();
+        topPanel.setWidth((width-20)+"px");
+        
+        Label minmizeBtn = new Label();
+        minmizeBtn.addStyleName("minmize");
+        minmizeBtn.setHeight("16px");
+        minmizeBtn.setWidth("16px");
+        
+        minmizeBtn.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (imagePopup.isShowing()) {
+                  if (imagePopup.isShowing()) {
                     imagePopup.hide(true);
                 } else {
                     imagePopup.center();
                     imagePopup.show();
                 }
             }
-        }, ClickEvent.getType());
-        
-      
+        });
 
-//        infoLayout.addDomHandler(new MouseOutHandler() {
-//
-//            @Override
-//            public void onMouseOut(MouseOutEvent event) {
-//               imagePopup.hide(true);
-//            }
-//        },MouseOutEvent.getType());
-        
-        VerticalPanel popupLayout = new VerticalPanel();
-        popupLayout.setHeight(height + "px");
-        popupLayout.setWidth(width+ "px");
-        popupLayout.setSpacing(10);
-        popupLayout.setStyleName("modalLayout");
+
 //        popupLayout.getElement().setAttribute("style", "top:30%;");
         HTML title = new HTML("<b><span style='margin:30px;margin-top:50px;font-size:14px'>Information</span></b>");
         
-        popupLayout.add(title);
+        topPanel.add(title);
+        topPanel.add(minmizeBtn);
+        topPanel.setCellHorizontalAlignment(minmizeBtn, HorizontalPanel.ALIGN_RIGHT);
+         topPanel.setCellVerticalAlignment(minmizeBtn, HorizontalPanel.ALIGN_TOP);
+         popupLayout.add(topPanel);
         popupLayout.add(infoLayout);
         imagePopup.setWidget(popupLayout);
         

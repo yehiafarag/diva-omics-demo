@@ -104,14 +104,13 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         /*searching field */
         final DynamicForm form = new DynamicForm();
         searchInfoLayout.addMember(form);
-        InfoIcon icon = new InfoIcon("Annotations Table", initInfoLayout(300,600),300,600);
+        InfoIcon icon = new InfoIcon("Annotations Table", initInfoLayout(300, 600), 300, 600);
         icon.setAutoHorizontalAlignment(Label.ALIGN_CONTENT_START);
-        
-   
+
         searchInfoLayout.addMember(icon);
         searchInfoLayout.setAlign(Alignment.CENTER);
         searchInfoLayout.setMargin(10);
-        
+
         form.setAutoFocus(true);
         form.setNumCols(3);
         form.setWidth100();
@@ -164,8 +163,7 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
 
         form.setFields(searchingField, button);
         form.setColWidths(new Object[]{50, "*", 80});
-        
-       
+
         searchingField.setWidth("*");
         form.draw();
         form.setTop(-7);
@@ -509,19 +507,19 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         selectionManager.removeSelectionChangeListener(this);
         selectionManager = null;
     }
-    
-    private VerticalPanel initInfoLayout(int h,int w) {
+
+    private VerticalPanel initInfoLayout(int h, int w) {
         VerticalPanel infopanel = new VerticalPanel();
-        infopanel.setWidth(w+"px");
-        infopanel.setHeight(h+"px");
+        infopanel.setWidth(w + "px");
+        infopanel.setHeight(h + "px");
 
         HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The dataset annotations table supports search and select for specific molecules (proteins or genes)."
                 + "users can use keyword from  any of the available annotations.<br/>"
                 + "The module support multiple selection data from tables using mouse select and drag.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can sort the data by clicking the headers of any column in the table.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can switch from rows selection mode into column selection mode using the top control panel <img src='images/controller.png' alt='' style='width:auto;height:16px'/>.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can export the data-set (full or row groups) as  a tabular file format using dataset button <img src='images/dsExpBtn.png' alt='' style='width:auto;height:16px'/>.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The user can create customized colour group using create row button  <img src='images/rowGrBtn.png' alt='' style='width:auto;height:16px'/>  and column group button <img src='images/colGrBtn.png' alt='' style='width:auto;height:16px'/>. </p>");
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can switch between rows and columns election modes using the top control panel <img src='images/controller.png' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can export full data-set or part of it (row groups) as  a tabular file format using dataset button <img src='images/dsExpBtn.png' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can create customized colour group using create row button  <img src='images/rowGrBtn.png' alt='' style='width:auto;height:16px'/>  and column group button <img src='images/colGrBtn.png' alt='' style='width:auto;height:16px'/>. </p>");
 
         infopanel.add(information);
 

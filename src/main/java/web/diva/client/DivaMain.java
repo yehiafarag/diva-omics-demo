@@ -454,13 +454,13 @@ public class DivaMain implements EntryPoint, ChangeHandler {
                                 hierarchicalClustering.selectRootNode();
                             }
                         };
-                        // Schedule the timer to run once in 0.5 seconds.
-                        if (result.getRowNames().length < 5000) {
-//                            t.schedule(500);
+//                         Schedule the timer to run once in 0.5 seconds.
+//                        if (result.getRowNames().length < 5000) {
+////                            t.schedule(500);
+//                            SelectionManager.Busy_Task(false, true);
+//                        } else {
                             SelectionManager.Busy_Task(false, true);
-                        } else {
-                            SelectionManager.Busy_Task(false, true);
-                        }
+//                        }
                         init = false;
                     }
                 });
