@@ -80,9 +80,9 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
     @Override
     public void onModuleLoad() {
-//        if (Window.Navigator.getUserAgent().contains("MSIE")) {
-//            oldIE = true;
-//        }
+        if (Window.Navigator.getUserAgent().contains("MSIE")) {
+            oldIE = true;
+        }
 
         masterWidth = Page.getScreenWidth();
         masterHeight = Page.getScreenHeight();
@@ -366,9 +366,12 @@ public class DivaMain implements EntryPoint, ChangeHandler {
 
         leftSideLayout.setCellVerticalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_MIDDLE);
         leftSideLayout.setCellHorizontalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_LEFT);
-
-        HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
+        
+           HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">Getting started tutorials available <a target=\"_blank\" href='" +"tutorial/diva_tutorial.pdf" + "'>here</a>. </font></p>");
         leftSideLayout.add(info2Label);
+
+        HTML info3Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
+        leftSideLayout.add(info3Label);
 
         Image screenImg = new Image("images/divascreen1.png");
         screenImg.getElement().setAttribute("style", "width:640px;");

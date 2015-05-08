@@ -881,13 +881,13 @@ public class PCAPlotComponent extends ModularizedListener {
         infopanel.setHeight(h + "px");
         infopanel.setStyleName("whiteLayout");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'> PCA module supports direct mouse selections in both the minimized and popup modes using the mouse click and drag. <br/><center> <img src='images/pca-selection.png' alt='' style='width:auto;height:100px'/></center></p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended for users to use PCA module in the popup mode to get better visualization and to access the full PCA module features. Users can switch to PCA popup mode by clicking on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In popup mode users can export the PCA scatter plot images as pdf files by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'> Users can change the plotted Principal Components by updating the x-axes and y-axes Principal Component indexs by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'> PCA module supports (zoom and select) mode where the users can activate zooming by ticking the zoom-checkbox  and select the choosen area to zoom on the chart.<center><img src='images/zoompca.png' alt='' style='width:auto;height:100px'/></center></p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>After zooming to desired level the user can reactivate the selection mode by unchecked the zoom checkbox.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can reset the chart by clicking on zoom out icon <img src='images/zoomout.png' alt='' style='width:auto;height:16px'/></center></p>."
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'> The PCA plot supports direct mouse selections in both the minimized and maximized state using mouse click and drag.<br/><center> <img src='images/pca-selection.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended to use the PCA plot in the maximized state <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to get better visualization and to get access to all PCA plot features.</p>."
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In the maximized state one can export the PCA plot as PDF by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The principal components used can be changed by clicking the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The PCA plot supports zoom and select. Activate zooming mode by selecting the zoom checkbox and select the chosen area in the chart.<center><img src='images/zoompca.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>After zooming to the desired level, reactivate the selection mode by unchecking the zoom checkbox.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Reset the chart by clicking the zoom out icon <img src='images/zoomout.png' alt='' style='width:auto;height:16px'/>.</p>"
         );
 
         infopanel.add(information);

@@ -293,8 +293,10 @@
                 </configuration>
             </plugin>
         </plugins>
-        
-        <resources>
+          <resources>
+            <resource>
+                <directory>tutorial</directory>
+            </resource>
             <resource>
                 <directory>js</directory>
             </resource>

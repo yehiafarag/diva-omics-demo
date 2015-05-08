@@ -513,13 +513,16 @@ public final class OmicsTableComponent extends ModularizedListener implements Is
         infopanel.setWidth(w + "px");
         infopanel.setHeight(h + "px");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The dataset annotations table supports search and select for specific molecules (proteins or genes)."
-                + "users can use keyword from  any of the available annotations.<br/>"
-                + "The module support multiple selection data from tables using mouse select and drag.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can sort the data by clicking the headers of any column in the table.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can switch between rows and columns election modes using the top control panel <img src='images/controller.png' alt='' style='width:auto;height:16px'/>.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can export full data-set or part of it (row groups) as  a tabular file format using dataset button <img src='images/dsExpBtn.png' alt='' style='width:auto;height:16px'/>.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can create customized colour group using create row button  <img src='images/rowGrBtn.png' alt='' style='width:auto;height:16px'/>  and column group button <img src='images/colGrBtn.png' alt='' style='width:auto;height:16px'/>. </p>");
+        HTML information = new HTML(
+                  "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The dataset annotations table allows the user to search for and select specific proteins or genes using keywords from any of the columns. Multiple selection is supported using mouse select and drag.</p>"
+               
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Sort the table by clicking the desired column header.</p>"
+                          
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Switch between row and column selection mode using the top control panel <br/> "
+                          + "<img src='images/controller.png' alt='' style='width:auto;height:16px'/></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Export full or partial dataset (row groups) in tabular file format via the Export Dataset option <br/> "
+                          + "<img src='images/dsExpBtn.png' alt='' style='width:auto;height:16px'/>.</p>"                          
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Create a colored groups using Create Row Group <img src='images/rowGrBtn.png' alt='' style='width:auto;height:16px'/> and Create Column Group <img src='images/colGrBtn.png' alt='' style='width:auto;height:16px'/>. </p>");
 
         infopanel.add(information);
 

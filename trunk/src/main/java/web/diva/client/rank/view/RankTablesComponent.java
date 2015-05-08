@@ -111,7 +111,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             }
         };
         minSaveReg = minSaveBtn.addClickHandler(exportRankHandler);
-        InfoIcon icon = new InfoIcon("Rank Product", initInfoLayout(450,600),450,600);
+        InfoIcon icon = new InfoIcon("Rank Product", initInfoLayout(300,600),300,600);
         btnsLayout.add(icon);
         btnsLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
         
@@ -169,7 +169,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     maxTopLayout.setCellHorizontalAlignment(maxSaveBtn, HorizontalPanel.ALIGN_RIGHT);
                     maxSaveReg = maxSaveBtn.addClickHandler(exportRankHandler);
                     
-                    InfoIcon maxIcon = new InfoIcon("Rank Product", initInfoLayout(450,600),450,600);
+                    InfoIcon maxIcon = new InfoIcon("Rank Product", initInfoLayout(300,600),300,600);
                     maxTopLayout.add(maxIcon);
                     maxTopLayout.setCellHorizontalAlignment(maxIcon, HorizontalPanel.ALIGN_RIGHT);
                     
@@ -441,12 +441,13 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
         infopanel.setHeight(h + "px");
         infopanel.setStyleName("whiteLayout");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Rank Product Module (table) supports both users single and multiple data selections using mouse clicks for single and select and drag for multiple selection on both the minimized or popup mode.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can use The Rank Product Module in the popup mode(larger size table) to get better visualization. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can change the Rank Product input parameters (columns groups, Log2 or Linear, Permutation and seed values) used for the rank product calculations by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner on both the minimized or  popup mode.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can filter the rank product table  using (Show Selected Data Only) checkbox on the lower left corner on both the minimized or  popup mode.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can sort the data by clicking the headers of any column in the table.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can export the information in the rank product table as  a tabular file format by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+        HTML information = new HTML(
+                "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Click the maximize icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to increase the size of the table. Use the maximized state to get better visualization.</p>."
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Rank Product Table supports single and multiple row selection using mouse clicks for single selection and select and drag for multiple selection.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Rank Product parameters can be changed by clicking the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Filter the Rank Product Table using the Show Selected Data Only checkbox in the lower left corner.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Sort the table by clicking the desired column header.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Export the table content as a tabular file by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>."
         );
 
         infopanel.add(information);
