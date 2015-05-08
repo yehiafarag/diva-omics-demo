@@ -111,7 +111,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
             }
         };
         minSaveReg = minSaveBtn.addClickHandler(exportRankHandler);
-        InfoIcon icon = new InfoIcon("Rank Product", initInfoLayout(300,600),300,600);
+        InfoIcon icon = new InfoIcon("Rank Product", initInfoLayout(310,600),310,600);
         btnsLayout.add(icon);
         btnsLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
         
@@ -169,7 +169,7 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                     maxTopLayout.setCellHorizontalAlignment(maxSaveBtn, HorizontalPanel.ALIGN_RIGHT);
                     maxSaveReg = maxSaveBtn.addClickHandler(exportRankHandler);
                     
-                    InfoIcon maxIcon = new InfoIcon("Rank Product", initInfoLayout(300,600),300,600);
+                    InfoIcon maxIcon = new InfoIcon("Rank Product", initInfoLayout(310,600),310,600);
                     maxTopLayout.add(maxIcon);
                     maxTopLayout.setCellHorizontalAlignment(maxIcon, HorizontalPanel.ALIGN_RIGHT);
                     
@@ -448,7 +448,8 @@ public class RankTablesComponent extends ModularizedListener implements IsSerial
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Filter the Rank Product Table using the Show Selected Data Only checkbox in the lower left corner.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Sort the table by clicking the desired column header.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Export the table content as a tabular file by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>."
-        );
+                 + "<p align=\"right\" style='margin-left:30px;font-size:14px;line-height: 150%;float: right;'><i>Full tutorial available <a target=\"_blank\" href='" +"tutorial/diva_tutorial.pdf" + "'>here</a>.</i></p>");
+
 
         infopanel.add(information);
 

@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Slider;
 import com.smartgwt.client.widgets.events.ValueChangedEvent;
 import com.smartgwt.client.widgets.events.ValueChangedHandler;
@@ -88,19 +87,19 @@ public class SomClustComponent extends ModularizedListener {
     private final HandlerRegistration sideTreeReg, maxSideTree1Reg, minSettingBtnReg, clusteringProcessBtnReg, maxmizeBtnReg, settingBtnReg, saveBtnReg, minmizeBtnReg;
     private final VLayout mainClusteringPopupBodyLayout;
     private SomClusteringResult somClusteringResults;
-    public SomClustComponent(SomClusteringResult somClusteringResults, final SelectionManager Selection_Manager, DivaServiceAsync DivaClientService,boolean clusterColumn,int width,int height) {
+
+    public SomClustComponent(SomClusteringResult somClusteringResults, final SelectionManager Selection_Manager, DivaServiceAsync DivaClientService, boolean clusterColumn, int width, int height) {
         this.clustColumn = clusterColumn;
         this.GWTClientService = DivaClientService;
         this.somClusteringResults = somClusteringResults;
-        tooltip.setStyleName("clustertooltip");        
+        tooltip.setStyleName("clustertooltip");
         mainThumbClusteringLayout = new VLayout();
         mainThumbClusteringLayout.setStyleName("somclustering");
         mainThumbClusteringLayout.setOverflow(Overflow.HIDDEN);
-        mainThumbClusteringLayout.setHeight(height+"px");
-        mainThumbClusteringLayout.setWidth(width +"px");
+        mainThumbClusteringLayout.setHeight(height + "px");
+        mainThumbClusteringLayout.setWidth(width + "px");
         mainThumbClusteringLayout.setMargin(0);
         mainThumbClusteringLayout.setMembersMargin(0);
-        
 
         HorizontalPanel topLayout = new HorizontalPanel();
         mainThumbClusteringLayout.addMember(topLayout);
@@ -123,7 +122,7 @@ public class SomClustComponent extends ModularizedListener {
         topLayout.add(btnsLayout);
         topLayout.setCellHorizontalAlignment(btnsLayout, HorizontalPanel.ALIGN_RIGHT);
         topLayout.setCellVerticalAlignment(btnsLayout, HorizontalPanel.ALIGN_TOP);
-        
+
         Label minSettingBtn = new Label();
         minSettingBtn.addStyleName("settings");
         minSettingBtn.setHeight("16px");
@@ -134,21 +133,15 @@ public class SomClustComponent extends ModularizedListener {
         maxmizeBtn.addStyleName("maxmize");
         maxmizeBtn.setHeight("16px");
         maxmizeBtn.setWidth("16px");
-        
-         InfoIcon icon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400,620),400,620);
+
+        InfoIcon icon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400, 620), 400, 620);
         btnsLayout.add(icon);
         btnsLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
-        
-        
-        
+
         btnsLayout.add(maxmizeBtn);
         btnsLayout.setCellHorizontalAlignment(maxmizeBtn, HorizontalPanel.ALIGN_RIGHT);
-        
-       
 
         mainThumbClusteringLayout.addMember(mainClusterPanelLayout);
-        
-        
 
         //add tooltip panel after clustering panel
         mainThumbClusteringLayout.addMember(tooltipPanel);
@@ -160,27 +153,27 @@ public class SomClustComponent extends ModularizedListener {
         tooltipPanel.setCellVerticalAlignment(tooltip, HorizontalPanel.ALIGN_BOTTOM);
         tooltip.setWidth("350px");
         tooltip.setHeight("24px");
-        
-        sideTreeImg = new SplitSideTreeImg(somClusteringResults.getSideTreeImg(), somClusteringResults.getRowNode(), 2, tooltip,somClusteringResults.getSquareL(),somClusteringResults.getSideTreeWidth(),somClusteringResults.getSideTreeHeight());        
-     
-        heatMapImg = new SplitHeatmapImg(somClusteringResults.getHeatMapImg(), somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues(), tooltip,1,somClusteringResults.getSquareL(),somClusteringResults.getSquareW(),somClusteringResults.getHeatmapWidth(),somClusteringResults.getReIndexer(),Selection_Manager);
-        interactiveColImage = new SplitInteractiveClusterColumnSelectionImg(somClusteringResults.getInteractiveColumnImgUrl().getInteractiveColumn(),somClusteringResults.getRowNames(),tooltip,1,somClusteringResults.getSquareL(),somClusteringResults.getInteractiveColumnWidth(),somClusteringResults.getReIndexer(),Selection_Manager);
-       
+
+        sideTreeImg = new SplitSideTreeImg(somClusteringResults.getSideTreeImg(), somClusteringResults.getRowNode(), 2, tooltip, somClusteringResults.getSquareL(), somClusteringResults.getSideTreeWidth(), somClusteringResults.getSideTreeHeight());
+
+        heatMapImg = new SplitHeatmapImg(somClusteringResults.getHeatMapImg(), somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues(), tooltip, 1, somClusteringResults.getSquareL(), somClusteringResults.getSquareW(), somClusteringResults.getHeatmapWidth(), somClusteringResults.getReIndexer(), Selection_Manager);
+        interactiveColImage = new SplitInteractiveClusterColumnSelectionImg(somClusteringResults.getInteractiveColumnImgUrl().getInteractiveColumn(), somClusteringResults.getRowNames(), tooltip, 1, somClusteringResults.getSquareL(), somClusteringResults.getInteractiveColumnWidth(), somClusteringResults.getReIndexer(), Selection_Manager);
+
         scaleImg = new Image(somClusteringResults.getScaleImgUrl());
-        
+
         mainClusterPanelLayout.setWidth("100%");
-        mainClusterPanelLayout.setHeight((height-50)+"px");
+        mainClusterPanelLayout.setHeight((height - 50) + "px");
         mainClusterPanelLayout.setStyleName("frame");
-     
+
         mainClusterPanelLayout.setAlwaysShowScrollBars(false);
-          if (clustColumn) {
+        if (clustColumn) {
             topClusterLayout.setHeight(70 + "px");
             topClusterLayout.setWidth("20%");
-            upperTreeImg = new TopTreeImg(somClusteringResults.getUpperTreeImgUrl(), somClusteringResults.getColNode(), 1, tooltip,somClusteringResults.getSquareL());
-            spacer.setSize((somClusteringResults.getSideTreeWidth()+ "px"), (70 + "px"));
+            upperTreeImg = new TopTreeImg(somClusteringResults.getUpperTreeImgUrl(), somClusteringResults.getColNode(), 1, tooltip, somClusteringResults.getSquareL());
+            spacer.setSize((somClusteringResults.getSideTreeWidth() + "px"), (70 + "px"));
             spacer.setStyleName("borderless");
 
-            spacer2.setSize((somClusteringResults.getInteractiveColumnWidth()+ "px"), (70 + "px"));
+            spacer2.setSize((somClusteringResults.getInteractiveColumnWidth() + "px"), (70 + "px"));
             spacer2.setStyleName("borderless");
 
             topClusterLayout.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
@@ -190,15 +183,13 @@ public class SomClustComponent extends ModularizedListener {
 
             topClusterLayout.add(upperTreeImg);
             topClusterLayout.setCellHorizontalAlignment(upperTreeImg, HorizontalPanel.ALIGN_LEFT);
-            topClusterLayout.setCellWidth(upperTreeImg, somClusteringResults.getTopTreeWidth()  + "px");
+            topClusterLayout.setCellWidth(upperTreeImg, somClusteringResults.getTopTreeWidth() + "px");
             topClusterLayout.add(spacer2);
             topClusterLayout.setCellHorizontalAlignment(spacer2, HorizontalPanel.ALIGN_LEFT);
-            topClusterLayout.setCellWidth(spacer2, somClusteringResults.getInteractiveColumnWidth()+"px");
-        } else{
+            topClusterLayout.setCellWidth(spacer2, somClusteringResults.getInteractiveColumnWidth() + "px");
+        } else {
             topClusterLayout.setHeight(0 + "px");
         }
-
-       
 
         mainClusterPanelLayout.add(clusterLayout);
         clusterLayout.setWidth("100%");
@@ -217,35 +208,30 @@ public class SomClustComponent extends ModularizedListener {
         clusterLayout.add(bottomClusterLayout);
         clusterLayout.setCellHorizontalAlignment(bottomClusterLayout, VerticalPanel.ALIGN_CENTER);
         clusterLayout.setCellVerticalAlignment(bottomClusterLayout, VerticalPanel.ALIGN_MIDDLE);
-       
-        
-      
 
-       
         initThumLayout(somClusteringResults);
-        clustInfoLabel.setWidth(somClusteringResults.getSideTreeWidth()+ "px");
+        clustInfoLabel.setWidth(somClusteringResults.getSideTreeWidth() + "px");
         clustInfoLabel.setHeight("20px");
-        clustInfoLabel.setStyleName("info");       
+        clustInfoLabel.setStyleName("info");
         bottomClusterLayout.add(clustInfoLabel);
         bottomClusterLayout.add(scaleImg);
         Image spacer3 = new Image("images/w.png");
-        spacer3.setWidth(somClusteringResults.getInteractiveColumnWidth()+"px");
+        spacer3.setWidth(somClusteringResults.getInteractiveColumnWidth() + "px");
         spacer3.setHeight("20px");
-          bottomClusterLayout.add(spacer3);
-          
+        bottomClusterLayout.add(spacer3);
+
         if (clustColumn && upperTreeImg != null) {
-           uperTreeReg= upperTreeImg.addClickHandler(new ClickHandler() {
+            uperTreeReg = upperTreeImg.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
                     int y = (int) (event.getY());
                     int x = ((int) (event.getX()));
                     if (upperTreeImg.isSelectedNode()) {
                         updateUpperTreeSelection(x, y);
-                    }
-                    else{
-                     Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, new int[]{});
-                    SomClustComponent.this.Selection_Manager.setSelectedColumns(selection);
-                    
+                    } else {
+                        Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, new int[]{});
+                        SomClustComponent.this.Selection_Manager.setSelectedColumns(selection);
+
                     }
                 }
             });
@@ -267,40 +253,40 @@ public class SomClustComponent extends ModularizedListener {
 //            }
 //
 //        });
-         sideTreeReg=  sideTreeImg.addDomHandler(new ClickHandler() {
+        sideTreeReg = sideTreeImg.addDomHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                 int y = (int) (event.getY());
+                int y = (int) (event.getY());
                 int x = ((int) (event.getX()));
                 if (sideTreeImg.isSelectedNode()) {
                     updateSideTreeSelection(x, y);
-                }else{
-                     Selection selection = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
+                } else {
+                    Selection selection = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
                     SomClustComponent.this.Selection_Manager.setSelectedRows(selection);
-                    
-                    }
+
+                }
             }
-        },ClickEvent.getType());
-         
+        }, ClickEvent.getType());
+
         this.Selection_Manager = Selection_Manager;
         this.Selection_Manager.addSelectionChangeListener(SomClustComponent.this);
-        classtype= 4;
-        
-        final UpdatedSomClustPanel clusteringSettingPanel = new UpdatedSomClustPanel();        
+        classtype = 4;
+
+        final UpdatedSomClustPanel clusteringSettingPanel = new UpdatedSomClustPanel();
         ///done with normal mode start setteing and maxmize mode
         ClickHandler settingClickHandler = new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (clusteringPopup.isShowing()) {
                     maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto;  -moz-transform: rotate(90deg) scale(" + 1 + ");  -o-transform:rotate(90deg) scale(" + 1 + ");-ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
-                    maxSideTreeImg.setScale(1);                    
-                maxHeatMapImg.setScale(1);
-                maxInteractiveColImage.setScale(1);     
-                
+                    maxSideTreeImg.setScale(1);
+                    maxHeatMapImg.setScale(1);
+                    maxInteractiveColImage.setScale(1);
+
                     zoomSlider.setValue(1.0);
                     nvigatorSlider.setValue(0.0);
-                     nvigatorSlider.disable();
+                    nvigatorSlider.disable();
                     if (clustColumn) {
                         maxUpperTreeImg.setScale(1);
                     }
@@ -340,7 +326,6 @@ public class SomClustComponent extends ModularizedListener {
             }
         });
 
-         
         /* the end of thumb layout*/
         /* the start of maxmize layout*/
         clusteringPopup = new PopupPanel(false, true);
@@ -352,7 +337,7 @@ public class SomClustComponent extends ModularizedListener {
         mainClusteringPopupBodyLayout.setHeight(80 + "%");
 
         HorizontalPanel maxTopLayout = new HorizontalPanel();
-        
+
         mainClusteringPopupBodyLayout.addMember(maxTopLayout);
         maxTopLayout.setWidth("100%");
         maxTopLayout.setHeight("18px");
@@ -385,9 +370,8 @@ public class SomClustComponent extends ModularizedListener {
         saveBtn.setWidth("16px");
         maxTopBtnLayout.add(saveBtn);
         maxTopBtnLayout.setCellHorizontalAlignment(saveBtn, HorizontalPanel.ALIGN_RIGHT);
-        
-        
-         InfoIcon maxIcon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400,620),400,620);
+
+        InfoIcon maxIcon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400, 620), 400, 620);
         maxTopBtnLayout.add(maxIcon);
         maxTopBtnLayout.setCellHorizontalAlignment(maxIcon, HorizontalPanel.ALIGN_RIGHT);
 
@@ -422,57 +406,48 @@ public class SomClustComponent extends ModularizedListener {
                 });
             }
         };
-      saveBtnReg =  saveBtn.addClickHandler(saveHandler);
+        saveBtnReg = saveBtn.addClickHandler(saveHandler);
         minmizeBtnReg = minmizeBtn.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 maxClusterLayout.getElement().setAttribute("style", "overflow-y: auto; -moz-transform: rotate(90deg) scale(" + 1 + ");  -o-transform:rotate(90deg) scale(" + 1 + "); -ms-transform: rotate(90deg) scale(" + 1 + "); -webkit-transform:rotate(90deg) scale(" + 1 + ");  transform: rotate(90deg) scale(" + 1 + "); position: absolute;  top:" + top + "px;   left:" + 100 + "px; ");
-                maxSideTreeImg.setScale(1);                
+                maxSideTreeImg.setScale(1);
                 maxHeatMapImg.setScale(1);
                 maxInteractiveColImage.setScale(1);
                 zoomSlider.setValue(1.0);
                 nvigatorSlider.setValue(0.0);
-                 nvigatorSlider.disable();
+                nvigatorSlider.disable();
                 if (clustColumn) {
                     maxUpperTreeImg.setScale(1);
                 }
-                clusteringPopup.hide (true);
-                
-            }
+                clusteringPopup.hide(true);
 
-            
+            }
 
         });
 
-
         mainClusteringPopupBodyLayout.addMember(framMaxMainClusterPanelLayout);
-       
-       
-        
-       
-        
-        tooltipViewPortLayout = new HorizontalPanel();          
+
+        tooltipViewPortLayout = new HorizontalPanel();
         mainClusteringPopupBodyLayout.addMember(tooltipViewPortLayout);
-        tooltipViewPortLayout.setWidth(100+ "%");
+        tooltipViewPortLayout.setWidth(100 + "%");
         tooltipViewPortLayout.setHeight("50px");
         tooltipViewPortLayout.setStyleName("whiteLayout");
         tooltipViewPortLayout.getElement().setAttribute("style", "overflow:auto");
-        
+
         VerticalPanel tooltipLayout = new VerticalPanel();
         tooltipLayout.setStyleName("whiteLayout");
         tooltipViewPortLayout.add(tooltipLayout);
         tooltipLayout.setWidth("270px");
         tooltipLayout.setHeight("50px");
 
-        
         tooltipLayout.add(maxmizeTooltip);
         maxmizeTooltip.setWidth("270px");
         maxmizeTooltip.setStyleName("clustertooltip");
         tooltipViewPortLayout.add(maxBottomClusterLayout);
         tooltipViewPortLayout.setCellHorizontalAlignment(maxBottomClusterLayout, HorizontalPanel.ALIGN_LEFT);
 
-        
         framMaxMainClusterPanelLayout.setWidth("100%");//(RootPanel.get("diva_content_area").getOffsetHeight()-100)+"px");//((sideTreeImg1.getWidth()+heatMapImg.getWidth()+10)+"px");
         framMaxMainClusterPanelLayout.setHeight("100%");//((heatMapImg.getHeight()+70+50)+"px");        
         framMaxMainClusterPanelLayout.setAlwaysShowScrollBars(false);
@@ -485,8 +460,8 @@ public class SomClustComponent extends ModularizedListener {
 
         maxScaleImg = new Image(somClusteringResults.getScaleImgUrl());
 
-        final int maxClusterheight = somClusteringResults.getSideTreeWidth()+ somClusteringResults.getHeatmapWidth()+somClusteringResults.getInteractiveColumnWidth();
-     
+        final int maxClusterheight = somClusteringResults.getSideTreeWidth() + somClusteringResults.getHeatmapWidth() + somClusteringResults.getInteractiveColumnWidth();
+
         framMaxMainClusterPanelLayout.setStylePrimaryName("scrolx");
         framMaxMainClusterPanelLayout.getElement().setAttribute("style", "overflow-y: auto; position: relative; zoom: 1; width: 100%; height:100%;");
 
@@ -498,7 +473,6 @@ public class SomClustComponent extends ModularizedListener {
         }
         top = (toptreewidth + somClusteringResults.getSideTreeHeight() - (somClusteringResults.getSideTreeWidth() + somClusteringResults.getHeatmapWidth() + somClusteringResults.getInteractiveColumnWidth()) + somClusteringResults.getSideTreeWidth()) * -1;
 
-       
         maxClusterLayout.setWidth("10%");
         maxClusterLayout.setHeight("2%");
         final VerticalPanel vp = new VerticalPanel();
@@ -542,7 +516,6 @@ public class SomClustComponent extends ModularizedListener {
         } else {
             maxTopClusterLayout.setHeight(0 + "px");
         }
-       
 
         initMaxmizeLayout(somClusteringResults);
         maxClustInfoLabel.setWidth(280 + "px");
@@ -553,20 +526,19 @@ public class SomClustComponent extends ModularizedListener {
 //            maxBottomClusterLayout.setCellWidth(maxClustInfoLabel, maxClustInfoLabel.getWidth() + "px");
         maxBottomClusterLayout.add(maxScaleImg);
 
-
-        nvigatorSlider = new Slider();  
-        nvigatorSlider.setMinValue(0.0);  
-        nvigatorSlider.setMaxValue(100.0);  
+        nvigatorSlider = new Slider();
+        nvigatorSlider.setMinValue(0.0);
+        nvigatorSlider.setMaxValue(100.0);
         nvigatorSlider.setShowRange(false);
         nvigatorSlider.setShowValue(false);
-        nvigatorSlider.setNumValues(100);  
+        nvigatorSlider.setNumValues(100);
         nvigatorSlider.setValue(0.0);
-        nvigatorSlider.setWidth(300);  
-        nvigatorSlider.setLeft(25);  
-        nvigatorSlider.setRoundValues(false);      
-        nvigatorSlider.setRoundPrecision(2);  
+        nvigatorSlider.setWidth(300);
+        nvigatorSlider.setLeft(25);
+        nvigatorSlider.setRoundValues(false);
+        nvigatorSlider.setRoundPrecision(2);
         nvigatorSlider.setShowTitle(false);
-        nvigatorSlider.setVertical(false);  
+        nvigatorSlider.setVertical(false);
         nvigatorSlider.disable();
 
         maxBottomClusterLayout.add(nvigatorSlider);
@@ -587,40 +559,32 @@ public class SomClustComponent extends ModularizedListener {
             }
         });
 
-
-        
-        
-        
         //zoom slider
-          
-        zoomSlider = new Slider();  
+        zoomSlider = new Slider();
         zoomSlider.setMinValue(1.0);//0.1);  
         zoomSlider.setMaxValue(5.0); //3.0 
         zoomSlider.setShowRange(true);
-      
+
         zoomSlider.setShowValue(false);
         zoomSlider.setNumValues(9);//60  
-        zoomSlider.setWidth(200);  
-        zoomSlider.setLeft(25); 
+        zoomSlider.setWidth(200);
+        zoomSlider.setLeft(25);
         zoomSlider.setValue(1.0);
-        zoomSlider.setRoundValues(false);      
-        zoomSlider.setRoundPrecision(2);  
-        zoomSlider.setTitle("zoom");  
-        zoomSlider.setVertical(false); 
+        zoomSlider.setRoundValues(false);
+        zoomSlider.setRoundPrecision(2);
+        zoomSlider.setTitle("zoom");
+        zoomSlider.setVertical(false);
         zoomSlider.setMaxValueLabel("+");
         zoomSlider.setMinValueLabel("-");
-        
-        
-      
 
 //        zoomSlider.setBackgroundImage(interactiveColImage.getUrl());
-        
         zoomSlider.addValueChangedHandler(new ValueChangedHandler() {
 
             @Override
             public void onValueChanged(ValueChangedEvent event) {
-                if( nvigatorSlider.isDisabled())
-                     nvigatorSlider.enable();
+                if (nvigatorSlider.isDisabled()) {
+                    nvigatorSlider.enable();
+                }
                 double sp = (double) framMaxMainClusterPanelLayout.getHorizontalScrollPosition();
                 double maxScroll = (double) framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition();
                 double vp = (sp / maxScroll);
@@ -643,7 +607,6 @@ public class SomClustComponent extends ModularizedListener {
                 }
 //            maxSideTreeImg.onZoom();
 //            maxSideTreeImg.setHeight((sideTreeImg1.getHeight()*event.getValue())+"px");
-                
 
             }
         });
@@ -651,7 +614,7 @@ public class SomClustComponent extends ModularizedListener {
 //        zoomSlider.setShowValue(true);
         maxBottomClusterLayout.add(zoomSlider);
         zoomSlider.draw();
-        
+
         maxBottomClusterLayout.setCellHorizontalAlignment(nvigatorSlider, HorizontalPanel.ALIGN_LEFT);
         maxBottomClusterLayout.setCellVerticalAlignment(nvigatorSlider, HorizontalPanel.ALIGN_TOP);
         maxBottomClusterLayout.setCellHorizontalAlignment(zoomSlider, HorizontalPanel.ALIGN_LEFT);
@@ -662,75 +625,66 @@ public class SomClustComponent extends ModularizedListener {
         maxBottomClusterLayout.setCellVerticalAlignment(maxScaleImg, HorizontalPanel.ALIGN_MIDDLE);
 
 //            maxBottomClusterLayout.setCellWidth(maxUpperTreeImg, maxUpperTreeImg.getWidth() + "px");
-
-
         if (clustColumn && maxUpperTreeImg != null) {
-           maxUpperTreeReg= maxUpperTreeImg.addClickHandler(new ClickHandler() {
+            maxUpperTreeReg = maxUpperTreeImg.addClickHandler(new ClickHandler() {
                 @Override
-                public void onClick(ClickEvent event) {                 
+                public void onClick(ClickEvent event) {
                     if (maxUpperTreeImg.isSelectedNode()) {
-                         int x = maxUpperTreeImg.getXcor(); 
+                        int x = maxUpperTreeImg.getXcor();
                         int y = maxUpperTreeImg.getYcor();
-                        
+
                         updateUpperTreeSelection(y, x);
-                    }
-                    else{
-                     Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, new int[]{});
-                    SomClustComponent.this.Selection_Manager.setSelectedColumns(selection);
-                    
+                    } else {
+                        Selection selection = new Selection(Selection.TYPE.OF_COLUMNS, new int[]{});
+                        SomClustComponent.this.Selection_Manager.setSelectedColumns(selection);
+
                     }
                 }
             });
         }
 
-     
-               
-               
-               
-      ClickHandler sideTreeClickHandler =     new ClickHandler() {
+        ClickHandler sideTreeClickHandler = new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (maxSideTreeImg.isSelectedNode()) {
-                   int x = maxSideTreeImg.getXcor();
-                   int y=maxSideTreeImg.getYcor();
+                    int x = maxSideTreeImg.getXcor();
+                    int y = maxSideTreeImg.getYcor();
                     updateSideTreeSelection(y, x);
-                }
-                else{
-                     Selection selection = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
+                } else {
+                    Selection selection = new Selection(Selection.TYPE.OF_ROWS, new int[]{});
                     SomClustComponent.this.Selection_Manager.setSelectedRows(selection);
-                    
-                    }
+
+                }
 
             }
 
-        };  
-      
-    
-      maxSideTree1Reg= maxSideTreeImg.addDomHandler(sideTreeClickHandler,ClickEvent.getType()); 
-         somClusteringResults = null;
+        };
+
+        maxSideTree1Reg = maxSideTreeImg.addDomHandler(sideTreeClickHandler, ClickEvent.getType());
+        somClusteringResults = null;
         clusteringPopup.setWidget(mainClusteringPopupBodyLayout);
         mainClusteringPopupBodyLayout.setStyleName("modalLayout");
 
         if (framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition() <= 0) {
-           nvigatorSlider.disable();
+            nvigatorSlider.disable();
 
         } else {
             nvigatorSlider.enable();
             nvigatorSlider.setValue(0.0);
         }
-        
+
         if (framMaxMainClusterPanelLayout.getMaximumVerticalScrollPosition() > 0) {
             nvigatorSlider.enable();
-           
+
         }
         framMaxMainClusterPanelLayout.addScrollHandler(new ScrollHandler() {
 //            boolean resize = true;
             @Override
             public void onScroll(ScrollEvent event) {
-            
-                
-                if(nvigatorSlider.isDisabled())
+
+                if (nvigatorSlider.isDisabled()) {
                     nvigatorSlider.enable();
+                }
                 double sp = (double) framMaxMainClusterPanelLayout.getHorizontalScrollPosition();
                 double maxScroll = (double) framMaxMainClusterPanelLayout.getMaximumHorizontalScrollPosition();
                 double vp = (sp / maxScroll);
@@ -753,21 +707,22 @@ public class SomClustComponent extends ModularizedListener {
     }
 //    private int maxVerticalScrol =-1000000000;
     final Slider nvigatorSlider, zoomSlider;
-    private final  Image spacer = new Image("images/w.png"),spacer2 = new Image("images/w.png"),maxSpacer = new Image("images/w.png"),maxSpacer2 = new Image("images/w.png");//,rotatSpacer = new Image("images/w.png"),rotatSpacer2 = new Image("images/w.png");
-    private final Label clustInfoLabel = new Label(),maxClustInfoLabel = new Label();
+    private final Image spacer = new Image("images/w.png"), spacer2 = new Image("images/w.png"), maxSpacer = new Image("images/w.png"), maxSpacer2 = new Image("images/w.png");//,rotatSpacer = new Image("images/w.png"),rotatSpacer2 = new Image("images/w.png");
+    private final Label clustInfoLabel = new Label(), maxClustInfoLabel = new Label();
 //    private boolean navControl=false;
+
     private void initThumLayout(SomClusteringResult somClusteringResults) {
-        if (clustColumn) {               
+        if (clustColumn) {
             upperTreeImg.setUrl(somClusteringResults.getUpperTreeImgUrl());
-            defaultTopTreeImgURL = somClusteringResults.getUpperTreeImgUrl(); 
+            defaultTopTreeImgURL = somClusteringResults.getUpperTreeImgUrl();
             upperTreeImg.setVisible(clustColumn);
             spacer.setVisible(clustColumn);
             spacer2.setVisible(clustColumn);
-        }        
+        }
 
 //        sideTreeImg1.setUrl(somClusteringResults.getSideTreeImgUrl());//"data:sideTreeImg1/png;base64,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");
 //        heatMapImg .setUrl(somClusteringResults.getHeatMapImg());
-        heatMapImg.updateTooltips(somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues()); 
+        heatMapImg.updateTooltips(somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues());
         interactiveColImage.updateTooltips(somClusteringResults.getRowNames());
         middleClusterLayout.setHeight(somClusteringResults.getSideTreeHeight() + "px");
         middleClusterLayout.add(sideTreeImg);
@@ -776,25 +731,25 @@ public class SomClustComponent extends ModularizedListener {
         heatmapLayout.add(heatMapImg);
         middleClusterLayout.add(heatmapLayout);
         middleClusterLayout.setCellWidth(heatmapLayout, somClusteringResults.getHeatmapWidth() + "px");
-      
-        middleClusterLayout.add(interactiveColImage);
-        middleClusterLayout.setCellWidth(interactiveColImage, somClusteringResults.getInteractiveColumnWidth()+"px");
 
-       clustInfoLabel.setText("Distance metrics: " + somClusteringResults.getDistanceMeasure() + " - " + "Linkage: " + somClusteringResults.getLinkage());
-       
+        middleClusterLayout.add(interactiveColImage);
+        middleClusterLayout.setCellWidth(interactiveColImage, somClusteringResults.getInteractiveColumnWidth() + "px");
+
+        clustInfoLabel.setText("Distance metrics: " + somClusteringResults.getDistanceMeasure() + " - " + "Linkage: " + somClusteringResults.getLinkage());
+
     }
-    
+
     private void initMaxmizeLayout(SomClusteringResult somClusteringResults) {
-        if (clustColumn) {     
+        if (clustColumn) {
             maxUpperTreeImg.setUrl(somClusteringResults.getUpperTreeImgUrl());
             maxUpperTreeImg.setVisible(clustColumn);
             maxSpacer.setVisible(clustColumn);
             maxSpacer2.setVisible(clustColumn);
         }
 
-        maxSideTreeImg.setUrl(somClusteringResults.getSideTreeImg()); 
-        maxHeatMapImg.updateTooltips(somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues());       
-        
+        maxSideTreeImg.setUrl(somClusteringResults.getSideTreeImg());
+        maxHeatMapImg.updateTooltips(somClusteringResults.getRowNames(), somClusteringResults.getColNames(), somClusteringResults.getValues());
+
         maxInteractiveColImage.updateTooltips(somClusteringResults.getRowNames());
         maxScaleImg.setUrl(somClusteringResults.getScaleImgUrl());
 
@@ -804,31 +759,27 @@ public class SomClustComponent extends ModularizedListener {
         maxMiddleClusterLayout.add(maxSideTreeImg);
         maxMiddleClusterLayout.setCellWidth(maxSideTreeImg, somClusteringResults.getSideTreeWidth() + "px");
         VerticalPanel maxHeatmapLayout = new VerticalPanel();
-        
+
         maxHeatmapLayout.add(maxHeatMapImg);
         maxMiddleClusterLayout.add(maxHeatmapLayout);
-        maxMiddleClusterLayout.setCellWidth(maxHeatmapLayout,somClusteringResults.getHeatmapWidth() + "px");
-       
-        
+        maxMiddleClusterLayout.setCellWidth(maxHeatmapLayout, somClusteringResults.getHeatmapWidth() + "px");
+
         maxMiddleClusterLayout.add(maxInteractiveColImage);
-        maxMiddleClusterLayout.setCellWidth(maxInteractiveColImage, somClusteringResults.getInteractiveColumnWidth()+"px");
-        
-        
-        
-        
-       rootX= somClusteringResults.getRowNode().getX();
-       rootY= somClusteringResults.getRowNode().getY();
+        maxMiddleClusterLayout.setCellWidth(maxInteractiveColImage, somClusteringResults.getInteractiveColumnWidth() + "px");
+
+        rootX = somClusteringResults.getRowNode().getX();
+        rootY = somClusteringResults.getRowNode().getY();
 
         maxClustInfoLabel.setText("Distance metrics: " + somClusteringResults.getDistanceMeasure() + " - " + "Linkage: " + somClusteringResults.getLinkage());
 
     }
     private int rootX;
     private int rootY;
-    public void selectRootNode(){
-        updateSideTreeSelection(rootX,rootY);
-    
-    }
 
+    public void selectRootNode() {
+        updateSideTreeSelection(rootX, rootY);
+
+    }
 
     public VLayout getSomclusteringLayout() {
         return mainThumbClusteringLayout;
@@ -846,7 +797,7 @@ public class SomClustComponent extends ModularizedListener {
                 }
                 update = true;
                 updateInteractiveColumnImg(selectedRows);
-                
+
             }
         } else {
             Selection sel = Selection_Manager.getSelectedColumns();
@@ -854,17 +805,16 @@ public class SomClustComponent extends ModularizedListener {
                 int[] selectedColumns = sel.getMembers();
 //                 nvigatorSlider.setBackgroundImage(upperTreeImg.getUrl());
                 if (selectedColumns != null && update) {
-                    clearColSelection();                     
+                    clearColSelection();
                 }
-                 update=true;
+                update = true;
                 SelectionManager.Busy_Task(false, true);
             }
 
         }
     }
-    
-    
-    private void updateInteractiveColumnImg(int[] selection){
+
+    private void updateInteractiveColumnImg(int[] selection) {
 //         Selection_Manager.Busy_Task(true, true);
         GWTClientService.updateSomClustInteractiveColumn(selection,
                 new AsyncCallback<InteractiveColumnsResults>() {
@@ -879,16 +829,15 @@ public class SomClustComponent extends ModularizedListener {
                     public void onSuccess(InteractiveColumnsResults result) {
                         interactiveColImage.setUrl(result.getInteractiveColumn());
                         maxInteractiveColImage.setUrl(result.getInteractiveColumn());
-                       
+
                         nvigatorSlider.setBackgroundImage(result.getNavgUrl());
                         SelectionManager.Busy_Task(false, true);
                     }
                 });
-    
-    
+
     }
-    
-   /**
+
+    /**
      * This method is responsible for invoking clustering method
      *
      * @param datasetId - datasetId
@@ -910,8 +859,8 @@ public class SomClustComponent extends ModularizedListener {
 
                     @Override
                     public void onSuccess(SomClusteringResult result) {
-                        somClusteringResults=result;
-                        Selection_Manager.updateClusteringPanel(result,clusterColumns);
+                        somClusteringResults = result;
+                        Selection_Manager.updateClusteringPanel(result, clusterColumns);
 //                        Selection_Manager.Busy_Task(false, true);
                         selectionChanged(Selection.TYPE.OF_ROWS);
                     }
@@ -922,13 +871,10 @@ public class SomClustComponent extends ModularizedListener {
     public SomClusteringResult getSomClusteringResults() {
         return somClusteringResults;
     }
-    
 
     public void clearRowSelection() {
         sideTreeImg.clearSelection();
         maxSideTreeImg.clearSelection();
-        
-       
 
     }
 
@@ -941,7 +887,7 @@ public class SomClustComponent extends ModularizedListener {
 
     @Override
     public void remove() {
-         if (clusteringProcessBtnReg != null) {
+        if (clusteringProcessBtnReg != null) {
             clusteringProcessBtnReg.removeHandler();
         }
         if (uperTreeReg != null) {
@@ -953,23 +899,23 @@ public class SomClustComponent extends ModularizedListener {
         if (minSettingBtnReg != null) {
             minSettingBtnReg.removeHandler();
         }
-         if (maxmizeBtnReg != null) {
+        if (maxmizeBtnReg != null) {
             maxmizeBtnReg.removeHandler();
         }
-          if (settingBtnReg != null) {
+        if (settingBtnReg != null) {
             settingBtnReg.removeHandler();
         }
-           if (saveBtnReg != null) {
+        if (saveBtnReg != null) {
             saveBtnReg.removeHandler();
         }
-             if (minmizeBtnReg != null) {
+        if (minmizeBtnReg != null) {
             minmizeBtnReg.removeHandler();
         }
-              
-             if (maxUpperTreeReg != null) {
+
+        if (maxUpperTreeReg != null) {
             maxUpperTreeReg.removeHandler();
         }
-               if (maxSideTree1Reg != null) {
+        if (maxSideTree1Reg != null) {
             maxSideTree1Reg.removeHandler();
         }
         Selection_Manager.removeSelectionChangeListener(this);
@@ -993,13 +939,14 @@ public class SomClustComponent extends ModularizedListener {
                     update = false;
                     Selection selection = new Selection(Selection.TYPE.OF_ROWS, result.getSelectedIndices());
                     Selection_Manager.setSelectedRows(selection);
-                   
+
                 }
 //                Selection_Manager.Busy_Task(false, false);
             }
         });
     }
- private int top;
+    private int top;
+
     private void updateUpperTreeSelection(int x, int y) {
         SelectionManager.Busy_Task(true, false);
         GWTClientService.updateUpperTree(x, y, 70, (350 - 25.0), new AsyncCallback<SomClustTreeSelectionResult>() {
@@ -1035,7 +982,7 @@ public class SomClustComponent extends ModularizedListener {
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended to use the Hierarchical Clustering component in the maximized state <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to get better visualization and to get access to all Hierarchical Clustering features.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Hierarchical Clustering plot supports zoom and select. Zoom to the desired level using the zoom scroll bar<img src='images/hczoom.png' alt='' style='width:auto;height:20px'/> and then select data.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In the maximized state one can export the complete plot as PDF by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>"
-        );
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;float: right;'><i>Full tutorial available <a target=\"_blank\" href='" + "tutorial/diva_tutorial.pdf" + "'>here</a>.</i></p>");
 
         infopanel.add(information);
 
