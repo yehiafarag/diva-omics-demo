@@ -63,7 +63,7 @@ public class InfoIcon extends Label implements ClickHandler{
 
 
 //        popupLayout.getElement().setAttribute("style", "top:30%;");
-        HTML title = new HTML("<b><span style='margin:30px;margin-top:50px;font-size:14px'>Information</span></b>");
+        HTML title = new HTML("<b><span style='margin:30px;margin-top:50px;font-size:14px'>"+moduleName+"</span></b>");
         
         topPanel.add(title);
         topPanel.add(minmizeBtn);

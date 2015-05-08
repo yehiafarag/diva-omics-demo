@@ -345,9 +345,11 @@ public class ProfilePlotComponent extends ModularizedListener {
 
         HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Click the maximize icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to increase the size of the plot.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In the maximized mode one can export the profile plot as PDF by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Please note that the current version of DiVA does not support user selection for the profile plots.</p>");
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Please note that the current version of DiVA does not support user selection for the profile plots.</p>"
+                + "<p align=\"right\" style='margin-left:30px;font-size:14px;line-height: 150%; float: right;'><i>Full tutorial available <a target=\"_blank\" href='" +"tutorial/diva_tutorial.pdf" + "'>here</a>.</i></p>");
 
         infopanel.add(information);
+
 
         return infopanel;
 

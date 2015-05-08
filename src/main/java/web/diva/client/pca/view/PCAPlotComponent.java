@@ -888,7 +888,7 @@ public class PCAPlotComponent extends ModularizedListener {
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The PCA plot supports zoom and select. Activate zooming mode by selecting the zoom checkbox and select the chosen area in the chart.<center><img src='images/zoompca.png' alt='' style='width:auto;height:100px'/></center></p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>After zooming to the desired level, reactivate the selection mode by unchecking the zoom checkbox.</p>"
                 + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Reset the chart by clicking the zoom out icon <img src='images/zoomout.png' alt='' style='width:auto;height:16px'/>.</p>"
-        );
+                + "<p align=\"right\" style='margin-left:30px;font-size:14px;line-height: 150%;float: right;'><i>Full tutorial available <a target=\"_blank\" href='" + "tutorial/diva_tutorial.pdf" + "'>here</a>.</i></p>");
 
         infopanel.add(information);
 

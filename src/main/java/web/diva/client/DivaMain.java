@@ -367,11 +367,11 @@ public class DivaMain implements EntryPoint, ChangeHandler {
         leftSideLayout.setCellVerticalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_MIDDLE);
         leftSideLayout.setCellHorizontalAlignment(tempSelectDatasetList, VerticalPanel.ALIGN_LEFT);
         
-           HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">Getting started tutorials available <a target=\"_blank\" href='" +"tutorial/diva_tutorial.pdf" + "'>here</a>. </font></p>");
+           HTML info2Label = new HTML("<p align=\"justify\" style=\"margin-top:20px;margin-left:0px;color:#585858;line-height: 200%;\"><font size=\"2\">Getting started tutorial available <a target=\"_blank\" href='" +"tutorial/diva_tutorial.pdf" + "'>here</a>. </font><br/><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
         leftSideLayout.add(info2Label);
 
-        HTML info3Label = new HTML("<p align=\"justify\" style=\"margin-top:10px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
-        leftSideLayout.add(info3Label);
+//        HTML info3Label = new HTML("<p align=\"justify\" style=\"margin-top:5px;margin-left:0px;color:#585858;\"><font size=\"2\">More information available <a target=\"_blank\" href='" + "http://diva-omics-demo.googlecode.com/" + "'>here</a>. </font></p>");
+//        leftSideLayout.add(info3Label);
 
         Image screenImg = new Image("images/divascreen1.png");
         screenImg.getElement().setAttribute("style", "width:640px;");
@@ -645,6 +645,9 @@ public class DivaMain implements EntryPoint, ChangeHandler {
      * @return new formated title
      */
     private String formatTitle(String source) {
+        if (source.equalsIgnoreCase("Robles Ms Et Al. Plos Genet. (2014)")) {
+            return "Robles MS et al. PloS Genet.(2014)";
+        }
 
         StringBuilder res = new StringBuilder();
         source = source.toLowerCase();
