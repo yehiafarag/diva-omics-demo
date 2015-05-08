@@ -791,8 +791,6 @@ public class Computing implements Serializable, IsSerializable{
             newDS.setGeneNamesArr(divaDataset.getGeneNamesArr());
             database.setDataset(newDS);
         } else {
-            
-            System.out.println("its not dataset to save");
             database.setDataset(divaDataset);
         }
         return "";

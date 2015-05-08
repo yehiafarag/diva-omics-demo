@@ -84,7 +84,7 @@ public class ProfilePlotComponent extends ModularizedListener {
         HorizontalPanel btnsPanel = new HorizontalPanel();
         btnsPanel.setWidth("34px");
         btnsPanel.setHeight("20px");
-        btnsPanel.add(new InfoIcon("Profile Plot", initInfoLayout(200,600),200,600));
+        btnsPanel.add(new InfoIcon("Profile Plot", initInfoLayout(160,600),160,600));
         
           Label maxmizeBtn = new Label();
         maxmizeBtn.addStyleName("maxmize");
@@ -181,7 +181,7 @@ public class ProfilePlotComponent extends ModularizedListener {
 
         maxTopLayout.add(maxTitle);
         maxTopLayout.setCellHorizontalAlignment(maxTitle, HorizontalPanel.ALIGN_LEFT);
-        maxTopLayout.add(new InfoIcon("Profile Plot", initInfoLayout(200,600),200,600));
+        maxTopLayout.add(new InfoIcon("Profile Plot", initInfoLayout(160,600),160,600));
         maxTopLayout.add(saveBtn);
         maxTopLayout.setCellHorizontalAlignment(saveBtn, HorizontalPanel.ALIGN_RIGHT);
         maxTopLayout.add(minmizeBtn);
@@ -343,9 +343,9 @@ public class ProfilePlotComponent extends ModularizedListener {
         infopanel.setWidth(w+"px");
         infopanel.setHeight(h+"px");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>User can use popup mode to get better visualization by clicking on  the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> in the upper right corner.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In popup mode users can export the profile plot images as pdf files by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on right upper corner.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Please note the current version of DiVA does not support user selection for Profile plot module. </p>");
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Click the maximize icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to increase the size of the plot.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In the maximized mode one can export the profile plot as PDF by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Please note that the current version of DiVA does not support user selection for the profile plots.</p>");
 
         infopanel.add(information);
 

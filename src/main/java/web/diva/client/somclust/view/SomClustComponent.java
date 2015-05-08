@@ -135,7 +135,7 @@ public class SomClustComponent extends ModularizedListener {
         maxmizeBtn.setHeight("16px");
         maxmizeBtn.setWidth("16px");
         
-         InfoIcon icon = new InfoIcon("Hierarchical Clustering", initInfoLayout(450,600),450,600);
+         InfoIcon icon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400,620),400,620);
         btnsLayout.add(icon);
         btnsLayout.setCellHorizontalAlignment(icon, HorizontalPanel.ALIGN_RIGHT);
         
@@ -387,7 +387,7 @@ public class SomClustComponent extends ModularizedListener {
         maxTopBtnLayout.setCellHorizontalAlignment(saveBtn, HorizontalPanel.ALIGN_RIGHT);
         
         
-         InfoIcon maxIcon = new InfoIcon("Hierarchical Clustering", initInfoLayout(450,600),450,600);
+         InfoIcon maxIcon = new InfoIcon("Hierarchical Clustering", initInfoLayout(400,620),400,620);
         maxTopBtnLayout.add(maxIcon);
         maxTopBtnLayout.setCellHorizontalAlignment(maxIcon, HorizontalPanel.ALIGN_RIGHT);
 
@@ -1030,11 +1030,11 @@ public class SomClustComponent extends ModularizedListener {
         infopanel.setHeight(h + "px");
         infopanel.setStyleName("whiteLayout");
 
-        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports direct mouse selections on the side, top trees or on the heat-map in both minimized and popup mode. <br/><center> <img src='images/hcselect.png' alt='' style='width:auto;height:100px'/></center></p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Users can change the Hierarchical Clustering input parameters (Linkage, distance Measure, column clustering) used in the clustering calculations by clicking on the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/> on the upper right corner on both the minimized or  popup mode.</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended for users to use the Hierarchical Clustering module in the popup mode to get better visualization and to access the full Hierarchical Clustering  module features. For using popup mode please click on the maximizing icon <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Hierarchical Clustering module supports (zoom and select) where the users can zoom  to the desired level using zoom scroll bar <img src='images/hczoom.png' alt='' style='width:auto;height:20px'/> then select data</p>"
-                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In Hierarchical Clustering popup mode users can export the full Hierarchical Clustering image(side, top dendrograms and heat-map with selection)  as pdf file by clicking on the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/> on upper right corner.</p>."
+        HTML information = new HTML("<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Hierarchical Clustering component supports direct mouse selections for the side and top trees and for the heat map in both the minimized and maximized state. <br/><center> <img src='images/hcselect.png' alt='' style='width:auto;height:100px'/></center></p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>Change the clustering parameters by clicking the setting icon <img src='images/setting.gif' alt='' style='width:auto;height:16px'/>.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>It is recommended to use the Hierarchical Clustering component in the maximized state <img src='images/maxmize.png' alt='' style='width:auto;height:16px'/> to get better visualization and to get access to all Hierarchical Clustering features.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>The Hierarchical Clustering plot supports zoom and select. Zoom to the desired level using the zoom scroll bar<img src='images/hczoom.png' alt='' style='width:auto;height:20px'/> and then select data.</p>"
+                + "<p style='margin-left:30px;font-size:14px;line-height: 150%;'>In the maximized state one can export the complete plot as PDF by clicking the save icon <img src='images/icon_save.gif' alt='' style='width:auto;height:16px'/>.</p>"
         );
 
         infopanel.add(information);
