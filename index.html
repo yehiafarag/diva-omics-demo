@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Diva-omics-demo by yehiafarag</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Diva-omics-demo</h1>
+      <h2 class="project-tagline">web-based interactive visual analysis of quantitative omics data</h2>
+      <a href="https://github.com/yehiafarag/diva-omics-demo" class="btn">View on GitHub</a>
+      <a href="https://github.com/yehiafarag/diva-omics-demo/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/yehiafarag/diva-omics-demo/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="diva-omics" class="anchor" href="#diva-omics" aria-hidden="true"><span class="octicon octicon-link"></span></a>DiVA-omics</h1>
+
+<p>DiVA-omics is a proof-of-concept web-based interactive visual analysis system for the analysis of quantitative omics datasets. It is straightforward to use and does not require any advanced bioinformatics skills.</p>
+
+<p>The unique feature of DiVA-omics is that it supports the analysis of large omics datasets and multiple interactive visualizations of the results, directly in your browser and without having to first download the data.</p>
+
+<hr>
+
+<p><em>Try the DiVA-omics demo!</em>     <a href="http://129.177.231.63/diva-omics-demo-3.0"> <img src="https://raw.githubusercontent.com/yehiafarag/diva-omics-demo/master/Wiki/button_s.png" alt="visit DiVA Demo"></a>      <a href="http://129.177.231.63/diva-omics-demo-3.0/tutorial/diva_tutorial.pdf">DiVA Tutorial</a></p>
+
+<hr>
+
+<h2>
+<a id="main-features" class="anchor" href="#main-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Main Features</h2>
+
+<ul>
+<li>Analysis and interactive visualizations:
+
+<ul>
+<li>Hierarchical clustering </li>
+<li>Principal component analysis (PCA)</li>
+<li>Rank product</li>
+<li>Profile plot</li>
+<li>Interactive tables</li>
+</ul>
+</li>
+<li>Create customized colored sub groups </li>
+<li>Export the results as text files or high quality images</li>
+<li>Easy input via tab-separated values files</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/yehiafarag/diva-omics-demo/master/Wiki/Slide4_small.png" alt="DiVA omics demo overview "></p>
+
+<hr>
+
+<h2>
+<a id="supported-browsers" class="anchor" href="#supported-browsers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported Browsers</h2>
+
+<p>DiVA has been tested on Chrome, Firefox, Opera, Safari and Internet Explorer. Note that Internet Explorer 11 or newer is required. Using the latest version of all browsers is recommended. It is also strongly recommended to run the browser in full screen mode to get the most out of DiVA.</p>
+
+<hr>
+
+<h2>
+<a id="example-datasets" class="anchor" href="#example-datasets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Datasets</h2>
+
+<p>To display the usability of the system in exploring omics data and extracting biologically meaningful patterns, the online demo includes three example datasets: small (391 rows x 7 columns), medium (5373 rows x 12 columns) and large (26 857 rows x 23 columns), showing that the system maintains its responsiveness even with growing dataset size.</p>
+
+<p>Interesting data points can be selected in the individual plots or tables. The selections are propagated to all the other components, making it straightforward to explore the data from different angles.</p>
+
+<hr>
+
+<h2>
+<a id="system-setup" class="anchor" href="#system-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>System Setup</h2>
+
+<p>Before you start using the system you need to setup a Java web container that support supports servlet hosting required for GWT deployment. We recommend <a href="http://tomcat.apache.org/">Apache Tomcat 7</a> or newer with <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE 7 JDK or newer</a> as main Java web server. </p>
+
+<p>A zipped folder (diva-omics-demo.zip) containing both the WAR file and the DiVA example files is available<br>
+<a href="https://drive.google.com/file/d/0B1_T5KQIvzHhbVhqU2lNbmlIMUE/view?usp=sharing">here</a> . The complete code can also be <a href="https://github.com/yehiafarag/diva-omics-pro.git">checked out</a> using SVN.</p>
+
+<p>Please also note that you will have to update the path for the divaFiles folder in the deployment-descriptor file (web.xml).</p>
+
+<hr>
+
+<p><code>&lt;context-param&gt;</code></p>
+
+<hr>
+
+<pre><code>`&lt;param-name&gt; fileFolder  &lt;/param-name&gt;`
+</code></pre>
+
+<hr>
+
+<pre><code>`&lt;param-value&gt;  path to the folder\divaFiles &lt;/param-value&gt;`
+</code></pre>
+
+<hr>
+
+<p><code>&lt;/context-param&gt;</code></p>
+
+<hr>
+
+<p>The web.xml file is located under the WEB-INF folder.</p>
+
+<p>For Maven users please note that some of the jar files are not directly available online and you will therefore have to manually add them to your local Maven repository.</p>
+
+<p>For implementation details please see <a href="https://github.com/yehiafarag/diva-omics-pro/wiki/Development">DiVA omics main implementation challenges</a>.</p>
+
+<p>For further questions about setting up DiVA-omics please do not hesitate to contact the developers.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/yehiafarag/diva-omics-demo">Diva-omics-demo</a> is maintained by <a href="https://github.com/yehiafarag">yehiafarag</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
