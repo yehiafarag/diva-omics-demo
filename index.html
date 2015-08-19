@@ -76,30 +76,15 @@
 
 <p>Before you start using the system you need to setup a Java web container that support supports servlet hosting required for GWT deployment. We recommend <a href="http://tomcat.apache.org/">Apache Tomcat 7</a> or newer with <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java SE 7 JDK or newer</a> as main Java web server. </p>
 
-<p>A zipped folder (diva-omics-demo.zip) containing both the WAR file and the DiVA example files is available<br>
-<a href="https://drive.google.com/file/d/0B1_T5KQIvzHhbVhqU2lNbmlIMUE/view?usp=sharing">here</a> . The complete code can also be <a href="https://github.com/yehiafarag/diva-omics-pro.git">checked out</a> using SVN.</p>
+<p>A zipped folder (diva-omics-demo.zip) containing both the WAR file and the DiVA example files is available <a href="https://drive.google.com/file/d/0B1_T5KQIvzHhbVhqU2lNbmlIMUE/view?usp=sharing">here</a> . The complete code can also be <a href="https://github.com/yehiafarag/diva-omics-pro.git">checked out</a> using SVN.</p>
 
 <p>Please also note that you will have to update the path for the divaFiles folder in the deployment-descriptor file (web.xml).</p>
 
-<hr>
-
-<p><code>&lt;context-param&gt;</code></p>
-
-<hr>
-
-<pre><code>`&lt;param-name&gt; fileFolder  &lt;/param-name&gt;`
+<pre><code> &lt;context-param&gt;
+    &lt;param-name&gt; fileFolder  &lt;/param-name&gt;
+    &lt;param-value&gt;  path to the folder\divaFiles &lt;/param-value&gt;
+ &lt;/context-param&gt;
 </code></pre>
-
-<hr>
-
-<pre><code>`&lt;param-value&gt;  path to the folder\divaFiles &lt;/param-value&gt;`
-</code></pre>
-
-<hr>
-
-<p><code>&lt;/context-param&gt;</code></p>
-
-<hr>
 
 <p>The web.xml file is located under the WEB-INF folder.</p>
 
